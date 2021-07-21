@@ -1,5 +1,6 @@
 import * as React from 'react'
 import {Container, Navbar} from 'react-bootstrap'
+import {Layers} from 'react-bootstrap-icons'
 
 const NavBar = () => {
     return (
@@ -7,9 +8,7 @@ const NavBar = () => {
             <Navbar bg="dark" variant="dark">
                 <Container>
                     <Navbar.Brand href="#home">
-                        <img
-                            alt=""
-                            src="/logo.svg"
+                        <Layers
                             width="30"
                             height="30"
                             className="d-inline-block align-top"

@@ -9,7 +9,7 @@ function App() {
       <>
           <NavBar/>
           <Container >
-              <Row >
+              <Row style={{width:'100%'}}>
                   <Col xs={3} id="sidebar-wrapper">
                       <Sidebar />
                   </Col>
