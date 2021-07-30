@@ -1,8 +1,11 @@
 import React from "react";
 import {Badge, Nav} from 'react-bootstrap'
 import classes from './Dashboard.module.css'
+import {useSelector} from 'react-redux'
+import {useTypedSelector} from '../hooks/useTypedSelector'
 
-const Sidebar: React.FC<any> = props => {
+const Sidebar: React.FC<any> = () => {
+    const info = useTypedSelector(state => state.index.info)
     return (
         <>
 
@@ -13,7 +16,7 @@ const Sidebar: React.FC<any> = props => {
                 <div className={classes.main}>
                     <img src="https://avatars.githubusercontent.com/u/78543687?s=400&u=78895e08cc6d10f51e57f60053262620138813f0&v=4" className={classes.avatar} alt=""/>
                     <div>
-                    <h3>Дмитрий Дружинин</h3>
+                    <h3>{info.name}Дмитрий Дружинин</h3>
                     <h5>MERN-dev</h5>
                     </div>
                     <div>
@@ -21,6 +24,7 @@ const Sidebar: React.FC<any> = props => {
                     </div>
                     <div>
                         Работал с множеством библиотек<br/>
+                        {}
                         REACT/NEXT EXPRESS/NEST GRAPHQL <br/>
 
                     </div>
