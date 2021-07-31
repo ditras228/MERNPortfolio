@@ -7,6 +7,7 @@ import './components/Dashboard.module.css'
 import {useDispatch} from 'react-redux'
 import {useEffect} from 'react'
 import {get} from './redux/thunk'
+import ModalItem from './components/ModalItem'
 function App() {
   const dispatch = useDispatch()
   useEffect(()=>{
@@ -26,7 +27,7 @@ function App() {
               </Row>
 
           </Container>
-
+          <ModalItem/>
       </>
   );
 }

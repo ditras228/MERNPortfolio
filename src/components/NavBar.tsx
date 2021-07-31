@@ -5,7 +5,7 @@ import {Layers} from 'react-bootstrap-icons'
 const NavBar = () => {
     return (
         <>
-            <Navbar bg="dark" variant="dark">
+            <Navbar bg="dark" variant="dark" sticky={'top'}>
                 <Container>
                     <Navbar.Brand href="#home">
                         <Layers

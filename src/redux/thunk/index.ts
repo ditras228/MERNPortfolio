@@ -26,7 +26,7 @@ export const addWork=(data: any)=>{
             const response = await indexAPI.addWork(data)
             dispatch(
                 {type: ReduxActionTypes.SET_WORKS,
-                    payload: response.data.works
+                    payload: response.data
                 })
         }catch(e){
             console.log(e)
@@ -40,7 +40,7 @@ export const deleteWork=(id: string)=>{
             const response = await indexAPI.deleteWork(id)
             dispatch(
                 {type: ReduxActionTypes.SET_WORKS,
-                    payload: response.data.works
+                    payload: response.data
                 })
         }catch(e){
             console.log(e)

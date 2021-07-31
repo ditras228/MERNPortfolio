@@ -2,21 +2,35 @@ import * as React from 'react'
 import {Button, Card} from 'react-bootstrap'
 import {Dice2, Github} from 'react-bootstrap-icons'
 import   classes from './Dashboard.module.css'
-
-const Item = () => {
-    const tags=[
-        'Mongodb',
-        'ExpressJS',
-        'ReactJS',
-        'NodeJS'
-    ]
+import {IWork} from '../redux/reducers'
+import {indexAPI} from '../API'
+import {useDispatch} from 'react-redux'
+import {deleteWork} from '../redux/thunk'
+type props={
+    work: IWork
+}
+const Item = ({work}: props) => {
+    const dispatch=useDispatch()
+    const redirectHandler=(key:string)=>{
+        let redirectTo=''
+        key==='github'
+            ?redirectTo= work.links.github
+            :redirectTo= work.links.demo
+        window.location.href=redirectTo
+    }
+    const deleteHandler=()=>{
+        dispatch(deleteWork(work._id))
+    }
     return (
-        <Card  border="success" >
+        <Card  border="success" style={{marginBottom: 10}}>
             <Card.Body>
-                <Card.Title><h3>MERNDISK</h3></Card.Title>
-                <Card.Title style={{marginBottom: 20}}><h5>Облачное хранилище</h5></Card.Title>
+                <Card.Title>
+                    <div className={classes.cardTittle}><h3>{work.name}</h3><Button onClick={deleteHandler} className={classes.closeButton}>X</Button>
+                    </div>
+                </Card.Title>
+                <Card.Title style={{marginBottom: 20}}><h5>{work.desc}</h5></Card.Title>
                 {
-                    tags.map(item=>(
+                    work.tags.map(item=>(
                         <Button disabled={true} style={{marginRight: 10}}>{item}</Button>
                     ))
                 }
@@ -25,15 +39,9 @@ const Item = () => {
                 <Card.Text>
                     <div  style={{fontSize:18}}>
                         <ul>
-                            <li>
-                                Загрузка/скачивание/поиск файлов, либо папок
-                            </li>
-                            <li>
-                                Система Drag&drop,
-                            </li>
-                            <li>
-                                Рекурсивная загрузка папок на сервер, выгрузка с помощью ZIP архива
-                            </li>
+                            {work.mark.map(mark=>(
+                                <li>{mark}</li>
+                            ))}
                         </ul>
                     </div>
 
@@ -43,10 +51,10 @@ const Item = () => {
 
                 </div>
                     <div className={classes.grid}>
-                        <Button variant="primary" size="lg" className={classes.item}>
+                        <Button onClick={()=>redirectHandler('demo')} variant="primary" size="lg" className={classes.item}>
                            <Dice2/> Демо
                         </Button>
-                        <Button variant="secondary" size="lg" className={classes.item}>
+                        <Button onClick={()=>redirectHandler('github')} variant="secondary" size="lg" className={classes.item}>
                            <Github/> Github
                         </Button>
                     </div>

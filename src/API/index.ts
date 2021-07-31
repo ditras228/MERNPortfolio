@@ -11,13 +11,13 @@ export const indexAPI={
     getWorks(){
         return instance.get('/works')
     },
-    updateInfo(data: any){
+        updateInfo(data: any){
         return instance.post('/info', data)
     },
     addWork(data: any){
         return instance.post('/works', data)
     },
     deleteWork(id: string){
-        return instance.delete(`/works?${id}`)
+        return instance.delete(`/works?id=${id}`)
     }
 }
