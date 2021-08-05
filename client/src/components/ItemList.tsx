@@ -18,7 +18,10 @@ const ItemList = ({isAuth}: any) => {
     const works=useTypedSelector(state=>state.index.works)
     return (
         <Container style={{paddingTop: 30}}>
-            <Button disabled={!isAuth} onClick={openHandler} style={{width: '100%', marginBottom: '20px'}}>Добавить</Button>
+            {
+                isAuth &&  <Button  onClick={openHandler} style={{width: '100%', marginBottom: '20px'}}>Добавить</Button>
+
+            }
             {
                 works.map((work: IWork)=>(
                     <Item isAuth={isAuth} key={work._id} work={work}/>

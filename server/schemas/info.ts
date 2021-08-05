@@ -2,6 +2,7 @@ import {Schema} from 'mongoose'
 import * as mongoose from 'mongoose'
 
 const InfoSchema = new  Schema({
+    image:{type: String, required: true},
     name:{type: String, required: true},
     job:{type: String, required: true},
     desc:{type: String, required: true},
@@ -12,6 +13,7 @@ const InfoSchema = new  Schema({
 module.exports=mongoose.model<IInfo>('InfoSchema', InfoSchema);
 
 export interface IInfo  extends mongoose.Document{
+    image:string
     name:string
     desc:string,
     workWidth:string,

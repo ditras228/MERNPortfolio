@@ -58,7 +58,7 @@ const ModalItem = () => {
     },[marks])
     return (
         <Modal show={isActive} onHide={closeHandler}>
-            <Modal.Header closeButton>
+            <Modal.Header>
                 <Modal.Title>
                     Создать работу
                 </Modal.Title>

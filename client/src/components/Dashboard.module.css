@@ -9,7 +9,7 @@
     box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 
 }
-#sidebar-wrapper{
+.sidebarWrapper{
     min-height: 100vh !important;
     width: 100vw;
     margin-left: -1rem;
@@ -18,12 +18,12 @@
     -o-transition: margin .25s ease-out;
     transition: margin .25s ease-out;
 }
-#sidebar-wrapper .sidebar-heading {
+.sidebarWrapper .sidebar-heading {
     padding: 0.875rem 1.25rem;
     font-size: 1.2rem;
 }
 
-#page-content-wrapper {
+.pageContentWrapper {
     min-width: 0;
     width: 100%;
 }
@@ -32,15 +32,26 @@
     width:100px;
     height:100px;
     margin: 0 auto;
+    transition: 0.3s;
+    box-shadow: 0 0 0 2pt #343a40;
+    filter: sepia(60%);
+}
+.avatar:hover {
+    box-shadow: 0 0 0 2pt #343a40;
+    opacity: 0.9;
+    transform: scale(1.2);
+    cursor: pointer;
+    filter: sepia(0);
+
 }
 .main{
     padding-top: 40px;
     text-align: center;
     height: calc(100vh - 56px)!important;
     display: grid;
-    grid-template-rows: repeat(auto-fit, 1fr);
+    grid-template-rows: repeat(auto-fill, 1fr);
     position: fixed;
-    width: 250px;
+    width: 350px;
 }
 
 .social{
@@ -60,13 +71,12 @@
     align-items: center;
 }
 .editContact{
-    padding: 2px;
     display: grid;
+    margin-bottom: 5px;
     grid-template-columns: 1fr 25px;
     grid-template-rows: 25px 25px;
     text-align: left;
-    border: 1px solid gray;
-    border-radius: 5px;
+    border-bottom: 1px solid gray;
     grid-gap: 5px;
 }
 .editContactTittle{
@@ -100,4 +110,35 @@
 .cardTittle{
     display: grid;
     grid-template-columns: 1fr 40px;
+}
+.row{
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    grid-gap: 50px;
+}
+.tags{
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(0px, 150px));
+}
+.who:after{
+    content: '';
+    display: block;
+    background-color: black;
+    width:50px;
+    height:2px;
+    margin: 20px auto 0 auto;
+}
+
+
+@media screen and  (max-width: 900px){
+    .row{
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+    }
+    .main{
+        position: static;
+        width: 100%;
+    }
+
 }

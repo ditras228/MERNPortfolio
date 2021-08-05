@@ -21,6 +21,7 @@ export type IWork={
     links: {github: any, demo: any}
 }
 export type IInfo={
+    image: string,
     name: string,
     job: string,
     desc: string,

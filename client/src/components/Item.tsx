@@ -26,15 +26,18 @@ const Item = ({work, isAuth}: props) => {
         <Card  border="success" style={{marginBottom: 10}}>
             <Card.Body>
                 <Card.Title>
-                    <div className={classes.cardTittle}><h3>{work.name}</h3><Button onClick={deleteHandler} className={classes.closeButton} disabled={!isAuth}>X</Button>
+                    <div className={classes.cardTittle}><h3>{work.name}</h3>
+                        {isAuth && <Button onClick={deleteHandler} className={classes.closeButton} disabled={!isAuth}>X</Button>}
                     </div>
                 </Card.Title>
                 <Card.Title style={{marginBottom: 20}}><h5>{work.desc}</h5></Card.Title>
-                {
-                    work.tags.map(item=>(
-                        <Button disabled={true} style={{marginRight: 10}}>{item}</Button>
-                    ))
-                }
+                <div className={classes.tags}>
+                    {
+                        work.tags.map(item=>(
+                            <Button disabled={true} style={{marginRight: 10}}>{item}</Button>
+                        ))
+                    }
+                </div>
                 <hr/>
 
                 <Card.Text>

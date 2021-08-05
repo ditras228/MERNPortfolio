@@ -21,7 +21,7 @@ const NavBar = () => {
                         />{' '}
                             MERNPortfolio
                     </Navbar.Brand>
-                    <Button onClick={authHandler}>Войти</Button>
+                    <Button onClick={authHandler}>Админ</Button>
                 </Container>
             </Navbar>
         </>

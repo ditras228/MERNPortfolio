@@ -3,33 +3,30 @@ import NavBar from './components/NavBar'
 import ItemList from './components/ItemList'
 import Sidebar from './components/Sidebar'
 import {Col, Container, Row} from 'react-bootstrap'
-import './components/Dashboard.module.css'
 import {useDispatch} from 'react-redux'
 import {useEffect} from 'react'
 import {get} from './redux/thunk'
 import ModalItem from './components/ModalItem'
 import {useTypedSelector} from './hooks/useTypedSelector'
 import ModalAuth from './components/ModalAuth'
+import classes from './components/Dashboard.module.css'
 
 function App() {
     const isAuth = useTypedSelector(state => state.index.isAuth)
+    const name = useTypedSelector(state => state.index.info.name)
     const dispatch = useDispatch()
     useEffect(() => {
+        document.title=name || 'Загрузка...'
         dispatch(get())
-    }, [])
+    }, [name])
     return (
         <>
             <NavBar/>
             <Container>
-                <Row style={{width: '100%'}}>
-                    <Col xs={3} id="sidebar-wrapper">
+                <div className={classes.row}>
                         <Sidebar isAuth={isAuth}/>
-                    </Col>
-                    <Col xs={9} id="page-content-wrapper">
                         <ItemList isAuth={isAuth}/>
-                    </Col>
-                </Row>
-
+                </div>
             </Container>
             <ModalItem/>
             <ModalAuth/>

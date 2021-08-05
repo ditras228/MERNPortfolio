@@ -32,8 +32,8 @@ const ModalAuth = () => {
     }
     return (
         <Modal show={active} onHide={closeHandler}>
-            <Modal.Header closeButton>
-                <Modal.Title>Вход</Modal.Title>
+            <Modal.Header>
+                <Modal.Title>Админ панель</Modal.Title>
             </Modal.Header>
             <Modal.Body className={classes.editGrid}>
                 <FormControl

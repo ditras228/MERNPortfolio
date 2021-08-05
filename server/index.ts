@@ -36,9 +36,10 @@ app.post('/auth', async (req: express.Request & any, res: express.Response) => {
              const compare= bcrypt.compareSync( data.password ,findByName.password)
                 if(compare){
                     console.log(compare)
-
                 const token = jwt.sign({login: findByName.login}, process.env.JWT_SECRET)
-                return res.json(token)
+                if(!token){
+                    return res.json(token)
+                }
             }
 
         }
@@ -63,6 +64,7 @@ app.post('/info', async (req: express.Request & any, res: express.Response) => {
             await infoSchema.deleteMany()
             const body = req.body
             const info = new infoSchema({
+                image: body.image,
                 name: body.name,
                 job: body.job,
                 desc: body.desc,

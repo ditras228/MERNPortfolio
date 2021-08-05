@@ -11,7 +11,7 @@ const Sidebar: React.FC<any> = ({isAuth}) => {
     return (
         <>
 
-            <Nav className="col-md-12 d-none d-md-block bg-light sidebar"
+            <Nav
                  activeKey="/home"
                  onSelect={selectedKey => alert(`selected ${selectedKey}`)}
 

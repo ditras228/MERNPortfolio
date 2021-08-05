@@ -27,6 +27,7 @@ const EditInfo = ({info}: props) => {
 
     const formik = useFormik({
         initialValues: {
+            image: info.image,
             name: info.name,
             job: info.job,
             desc: info.desc,
@@ -63,7 +64,16 @@ const EditInfo = ({info}: props) => {
     return (
         <div>
             <div className={classes.editGrid}>
+                <Button onClick={() => formik.handleSubmit()} style={{width: '100%'}}>Сохранить</Button>
+                <FormControl
+                    placeholder="Изображение"
+                    aria-label="Recipient's username"
+                    aria-describedby="basic-addon2"
+                    name={'image'}
+                    value={formik.values.image}
+                    onChange={formik.handleChange}
 
+                />
                 <FormControl
                     placeholder="Имя"
                     aria-label="Recipient's username"
@@ -123,25 +133,13 @@ const EditInfo = ({info}: props) => {
                             <div>
                                 <div className={classes.editContactTittle}>
                                     <div className={classes.contactLine}>
-                                        <div>
-                                            key
-                                        </div>
-                                        <div className={classes.contactLineRight}>
                                             {contact.key}
-
-                                        </div>
                                     </div>
 
 
                                 </div>
                                 <div className={classes.contactLine}>
-                                    <div>
-                                        value
-                                    </div>
-                                    <div className={classes.contactLineRight}>
                                         {contact.value}
-
-                                    </div>
                                 </div>
                             </div>
 
@@ -175,8 +173,7 @@ const EditInfo = ({info}: props) => {
 
                 <Button onClick={() => addContactHandler()} style={{width: '100%', marginTop: 5}}>Добавить
                     новый</Button>
-                <hr/>
-                <Button onClick={() => formik.handleSubmit()} style={{width: '100%'}}>Сохранить</Button>
+
 
 
             </div>
