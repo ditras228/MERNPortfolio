@@ -62,9 +62,6 @@ const EditInfo = ({info}: props) => {
     }
     return (
         <div>
-            <img
-                src="https://avatars.githubusercontent.com/u/78543687?s=400&u=78895e08cc6d10f51e57f60053262620138813f0&v=4"
-                className={classes.avatar} alt="" style={{marginBottom:20}}/>
             <div className={classes.editGrid}>
 
                 <FormControl
