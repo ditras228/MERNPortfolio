@@ -151,7 +151,7 @@ const EditInfo = ({info}: props) => {
 
                     })
                 }
-                <div className={classes.editGrid}>
+                <div className={classes.addContact}>
 
                     <FormControl
                         placeholder="Тип контакта"

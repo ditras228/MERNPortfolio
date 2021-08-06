@@ -130,7 +130,10 @@
     margin: 20px auto 0 auto;
 }
 
-
+.addContact{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
 @media screen and  (max-width: 900px){
     .row{
         grid-template-columns: 1fr;

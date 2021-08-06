@@ -37,7 +37,7 @@ app.post('/auth', async (req: express.Request & any, res: express.Response) => {
                 if(compare){
                     console.log(compare)
                 const token = jwt.sign({login: findByName.login}, process.env.JWT_SECRET)
-                if(!token){
+                if(token){
                     return res.json(token)
                 }
             }

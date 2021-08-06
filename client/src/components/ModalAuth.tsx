@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {Alert, Button, FormControl, Modal} from 'react-bootstrap'
 import {useFormik} from 'formik'
 import classes from './Dashboard.module.css'
@@ -15,7 +15,8 @@ const validationSchema = yup.object({
 
 const ModalAuth = () => {
     const active = useTypedSelector(state=>state.index.isAuthModal)
-    const error = useTypedSelector(state=>state.index.errors).filter((error:any)=>error.name!=='auth')[0]
+    const error = useTypedSelector(state=>state.index.errors).filter((error:any)=>error.name=='auth')[0]
+
     const dispatch=useDispatch()
     const formik = useFormik({
         initialValues: {
@@ -54,7 +55,7 @@ const ModalAuth = () => {
                     type={'password'}
                 />
                 {!isEmpty(formik.errors) && <Alert variant={'danger'}>Не все поля заполнены</Alert>}
-                {!isEmpty(error) && <Alert variant={'danger'}>{error.value}</Alert>}
+                {error && <Alert variant={'danger'}>{error.value}</Alert>}
                 <Button style={{width: '100%'}} onClick={()=>   formik.handleSubmit()}>Войти</Button>
             </Modal.Body>
         </Modal>

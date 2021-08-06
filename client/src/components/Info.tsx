@@ -1,8 +1,8 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import classes from './Dashboard.module.css'
 import {IInfo} from '../redux/reducers'
 import {OverlayTrigger, Tooltip} from 'react-bootstrap'
-import {useHistory} from 'react-router'
+
 type props = {
     info: IInfo
 }
@@ -12,8 +12,8 @@ const renderTooltip = (props:any) => (
     </Tooltip>
 );
 const Info = ({info} : props) => {
-    const router= useHistory()
-    const getGitHub = info.contacts.map((contact:any)=>contact.type!=='guthub'[0])
+    const getGitHub = info.contacts?.filter((contact:any)=>contact.key=='GitHub')[0].value
+
     return (
         <>
             <OverlayTrigger
@@ -23,8 +23,7 @@ const Info = ({info} : props) => {
             >
                 <img src={info.image} className={classes.avatar} alt=""
                      onClick={
-                         ()=>router.push
-                         (`https://github.com/ditras228${getGitHub}`)
+                         ()=>window.location.href=(`https://github.com/${getGitHub}`)
                      }/>
 
             </OverlayTrigger>,
