@@ -26,7 +26,7 @@ const Info = ({info} : props) => {
                          ()=>window.location.href=(`https://github.com/${getGitHub}`)
                      }/>
 
-            </OverlayTrigger>,
+            </OverlayTrigger>
             <div className={classes.who}>
                 <h3>{info.name}</h3>
                 <h5>{info.job}</h5>
