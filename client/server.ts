@@ -1,7 +1,7 @@
 const express = require('express')
 const path = require('path')
 
-const PORT= 3002
+const PORT= 80
 
 const app = express()
 
