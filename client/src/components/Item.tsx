@@ -16,7 +16,7 @@ const Item = ({work, isAuth}: props) => {
     let ourLink = false as boolean
     useEffect(()=>{
         console.log(window.location.href)
-        if(window.location.href==work.links.demo){
+        if('none'==work.links.demo){
             ourLink=true
         }
     },[])
