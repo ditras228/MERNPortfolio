@@ -13,13 +13,8 @@ type props={
 }
 const Item = ({work, isAuth}: props) => {
     const dispatch=useDispatch()
-    let ourLink = false as boolean
-    useEffect(()=>{
-        console.log(window.location.href)
-        if('none'==work.links.demo){
-            ourLink=true
-        }
-    },[])
+    const isOurLink= work.links.demo==='/'?true:false
+
     const redirectHandler=(key:string)=>{
         let redirectTo=''
         key==='github'
@@ -63,8 +58,9 @@ const Item = ({work, isAuth}: props) => {
 
                 </div>
                     <div className={classes.grid}>
-                        <Button disabled={ourLink} onClick={()=>redirectHandler('demo')} variant="primary" size="lg" className={classes.item}>
-                           <Dice2/>{!ourLink?'Демо':'Вы находитесь здесь'}
+                        <Button disabled={isOurLink}
+                                onClick={()=>redirectHandler('/')} variant="primary" size="lg" className={classes.item}>
+                           <Dice2/> {!isOurLink?'Демо':'Вы находитесь здесь'}
                         </Button>
                         <Button onClick={()=>redirectHandler('github')} variant="secondary" size="lg" className={classes.item}>
                            <Github/> Github

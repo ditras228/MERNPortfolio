@@ -66,9 +66,9 @@
     grid-gap: 10px;
 }
 .item{
-    display: grid;
+    display: grid!important;
     grid-template-columns: auto 1fr;
-    align-items: center;
+    align-items:center
 }
 .editContact{
     display: grid;
