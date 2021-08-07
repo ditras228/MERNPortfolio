@@ -6,12 +6,19 @@ import {IWork} from '../redux/reducers'
 import {indexAPI} from '../API'
 import {useDispatch} from 'react-redux'
 import {deleteWork} from '../redux/thunk'
+import {useEffect} from "react";
 type props={
     work: IWork,
     isAuth:boolean
 }
 const Item = ({work, isAuth}: props) => {
     const dispatch=useDispatch()
+    let ourLink = false as boolean
+    useEffect(()=>{
+        if(window.location.href==work.links.demo){
+            ourLink=true
+        }
+    },[])
     const redirectHandler=(key:string)=>{
         let redirectTo=''
         key==='github'
@@ -55,8 +62,8 @@ const Item = ({work, isAuth}: props) => {
 
                 </div>
                     <div className={classes.grid}>
-                        <Button onClick={()=>redirectHandler('demo')} variant="primary" size="lg" className={classes.item}>
-                           <Dice2/> Демо
+                        <Button disabled={ourLink} onClick={()=>redirectHandler('demo')} variant="primary" size="lg" className={classes.item}>
+                           <Dice2/>{!ourLink?'Демо':'Вы находитесь здесь'}
                         </Button>
                         <Button onClick={()=>redirectHandler('github')} variant="secondary" size="lg" className={classes.item}>
                            <Github/> Github
