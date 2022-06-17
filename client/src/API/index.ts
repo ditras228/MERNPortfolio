@@ -1,9 +1,9 @@
+require("dotenv").config()
 import axios from 'axios'
-export const baseURL= 'http://87.236.22.121:5000/'
+export const baseURL= process.env["BASE_URL"]
 export const instance = axios.create({
     baseURL: baseURL
 })
-
 export const indexAPI={
     auth(data: any){
         return instance.post('/auth', data)
