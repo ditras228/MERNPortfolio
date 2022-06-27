@@ -1,0 +1,10 @@
+.dev-tools{
+  display: grid;
+  grid-template-columns: repeat(3, 50px);
+  margin-bottom: 18px;
+  grid-column-gap: 20px;
+  padding-left: 3px;
+  &__item{
+    height: 50px;
+  }
+}

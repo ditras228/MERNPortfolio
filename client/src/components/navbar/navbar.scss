@@ -1,0 +1,9 @@
+@import "../../styles/mixins/font";
+
+.navbar{
+  padding: 12px 24px;
+  @include font(32px, 32px, 400, 1px);
+  color: #fff;
+  background-color: #14142A;
+  margin-bottom: 19px;
+}

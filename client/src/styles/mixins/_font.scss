@@ -1,0 +1,14 @@
+@mixin fontInitial ($size: 13px, $height: 20px, $weight: 400) {
+  font-size: $size;
+  line-height: $height;
+  font-weight: $weight;
+  font-family: 'Poppins', sans-serif;
+}
+
+@mixin font($size: 13px, $height: 20px, $weight: 400, $spacing: .4px) {
+  font-weight: $weight;
+  font-size: $size;
+  line-height: $height;
+  letter-spacing: $spacing;
+  font-family: 'Poppins', sans-serif;
+}

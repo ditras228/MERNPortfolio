@@ -1,33 +1,34 @@
 import React from "react";
-import { Button, Container } from "react-bootstrap";
-import Item from "./Item";
-import { ReduxActionTypes } from "../types/redux";
+import Item from "../item/item";
+import { ReduxActionTypes } from "../../types/redux";
 import { useDispatch } from "react-redux";
-import { useTypedSelector } from "../hooks/useTypedSelector";
-import { IWork } from "../redux/reducers";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
+import { IWork } from "../../redux/reducers";
 
 const ItemList = ({ isAuth }: any) => {
   const dispatch = useDispatch();
+  const works = useTypedSelector((state) => state.index.works);
+
   const openHandler = () => {
     dispatch({
       type: ReduxActionTypes.IS_MODAL_WORKS,
     });
   };
-  const works = useTypedSelector((state) => state.index.works);
+
   return (
-    <Container style={{ paddingTop: 30 }}>
+    <div>
       {isAuth && (
-        <Button
+        <button
           onClick={openHandler}
           style={{ width: "100%", marginBottom: "20px" }}
         >
           Добавить
-        </Button>
+        </button>
       )}
       {works.map((work: IWork) => (
         <Item isAuth={isAuth} key={work._id} work={work} />
       ))}
-    </Container>
+    </div>
   );
 };
 
