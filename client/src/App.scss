@@ -1,0 +1,9 @@
+.app{
+  &__container{
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 375px 1fr;
+    grid-column-gap: 106px;
+  }
+}

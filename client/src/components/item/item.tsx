@@ -2,6 +2,7 @@ import * as React from "react";
 import { IWork } from "../../redux/reducers";
 import { useDispatch } from "react-redux";
 import { deleteWork } from "../../redux/thunk";
+import "./item.scss";
 
 type props = {
   work: IWork;
@@ -25,68 +26,33 @@ const Item = ({ work, isAuth }: props) => {
   };
 
   return (
-    <div></div>
-    // <Card border="success" style={{ marginBottom: 10 }}>
-    //   <Card.Body>
-    //     <Card.Title>
-    //       <div className={classes.cardTittle}>
-    //         <h3>{work.name}</h3>
-    //         {isAuth && (
-    //           <Button
-    //             onClick={deleteHandler}
-    //             className={classes.closeButton}
-    //             disabled={!isAuth}
-    //           >
-    //             X
-    //           </Button>
-    //         )}
-    //       </div>
-    //     </Card.Title>
-    //     <Card.Title style={{ marginBottom: 20 }}>
-    //       <h5>{work.desc}</h5>
-    //     </Card.Title>
-    //     <div className={classes.tags}>
-    //       {work.tags.map((item) => (
-    //         <Button disabled={true} style={{ marginRight: 10 }}>
-    //           {item}
-    //         </Button>
-    //       ))}
-    //     </div>
-    //     <hr />
-    //
-    //     <Card.Text>
-    //       <div style={{ fontSize: 18 }}>
-    //         <ul>
-    //           {work.mark.map((mark) => (
-    //             <li>{mark}</li>
-    //           ))}
-    //         </ul>
-    //       </div>
-    //     </Card.Text>
-    //     <div>
-    //       <hr />
-    //     </div>
-    //     <div className={classes.grid}>
-    //       <Button
-    //         disabled={isOurLink}
-    //         onClick={() => redirectHandler("/")}
-    //         variant="primary"
-    //         size="lg"
-    //         className={classes.item}
-    //       >
-    //         <Dice2 /> {!isOurLink ? "Демо" : "Вы находитесь здесь"}
-    //       </Button>
-    //       <Button
-    //         onClick={() => redirectHandler("github")}
-    //         variant="secondary"
-    //         size="lg"
-    //         className={classes.item}
-    //       >
-    //         <Github /> Github
-    //       </Button>
-    //     </div>
-    //   </Card.Body>
-    // </Card>
+    <div className="work">
+      <div className="work__title">Облачное хранилище</div>
+      <div className="work__tags">
+        <div className="work__tags__item">MongoDB</div>
+        <div className="work__tags__item">ExpressJS</div>
+        <div className="work__tags__item">ReactJS</div>
+        <div className="work__tags__item">NodeJS</div>
+      </div>
+      <div className="work__functional-list">
+        <div className="work__functional-list__item">
+          Загрузка, поиск, скачивание файлов, либо папок
+        </div>
+        <div className="work__functional-list__item">Система drag & drop</div>
+        <div className="work__functional-list__item">
+          Рекурсивная загрузка папок на сервер
+        </div>
+        <div className="work__functional-list__item">Система авторизации</div>
+        <div className="work__functional-list__item">
+          Рассылка писем на Email
+        </div>
+      </div>
+      <div className="work__buttons">
+        <button className="work__buttons__item--fill">Демо</button>
+        <button className="work__buttons__item">GitHub</button>
+        <button className="work__buttons__item">Figma</button>
+      </div>
+    </div>
   );
 };
 

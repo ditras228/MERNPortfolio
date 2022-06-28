@@ -8,7 +8,7 @@ import { get } from "./redux/thunk";
 import ModalAuthItem from "./components/modals/modal-auth/modal-auth-item";
 import { useTypedSelector } from "./hooks/useTypedSelector";
 import ModalAuth from "./components/modals/modal-auth/modal-auth";
-
+import "./App.scss";
 function App() {
   const dispatch = useDispatch();
   const isAuth = useTypedSelector((state) => state.index.isAuth);
@@ -20,15 +20,15 @@ function App() {
   }, [name]);
 
   return (
-    <>
+    <div className="app">
       <Navbar />
-      <div>
+      <div className="app__container">
         <Sidebar isAuth={isAuth} />
         <ItemList isAuth={isAuth} />
       </div>
       <ModalAuthItem />
       <ModalAuth />
-    </>
+    </div>
   );
 }
 

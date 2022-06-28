@@ -4,6 +4,7 @@ import { ReduxActionTypes } from "../../types/redux";
 import { useDispatch } from "react-redux";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { IWork } from "../../redux/reducers";
+import "./item-list.scss";
 
 const ItemList = ({ isAuth }: any) => {
   const dispatch = useDispatch();
@@ -16,7 +17,7 @@ const ItemList = ({ isAuth }: any) => {
   };
 
   return (
-    <div>
+    <div className="item-list">
       {isAuth && (
         <button
           onClick={openHandler}

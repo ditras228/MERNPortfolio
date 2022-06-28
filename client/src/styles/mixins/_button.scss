@@ -1,0 +1,21 @@
+@mixin button-fill($size: 16px, $height: 28px, $weight: 600, $spacing: .75px) {
+  height: 64px;
+  align-items: center;
+  display: grid;
+  text-align: center;
+  font-weight: $weight;
+  font-size: $size;
+  line-height: $height;
+  letter-spacing: $spacing;
+  font-family: 'Poppins', sans-serif;
+  background-color: #5F2EEA;
+  border-radius: 16px;
+  border-color:  transparent;
+  color: #ffffff;
+}
+@mixin button($size: 16px, $height: 28px, $weight: 600, $spacing: .75px) {
+ @include button-fill($size, $height, $weight, $spacing);
+  background-color: transparent;
+  color: #5F2EEA;
+  border-color:  #5F2EEA;
+}
