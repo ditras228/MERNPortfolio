@@ -48,9 +48,11 @@ const Item = ({ work, isAuth }: props) => {
         </div>
       </div>
       <div className="work__buttons">
-        <button className="work__buttons__item--fill">Демо</button>
-        <button className="work__buttons__item">GitHub</button>
-        <button className="work__buttons__item">Figma</button>
+        <div className="work__buttons__group">
+          <button className="work__buttons__group__item">GitHub</button>
+          <button className="work__buttons__group__item">Figma</button>
+        </div>
+        <button className="work__buttons__item-fill">Демо</button>
       </div>
     </div>
   );

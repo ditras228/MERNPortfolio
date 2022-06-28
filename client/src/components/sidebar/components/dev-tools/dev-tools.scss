@@ -1,3 +1,5 @@
+@import "../../../../styles/mixins/screen";
+
 .dev-tools{
   display: grid;
   grid-template-columns: repeat(3, 50px);
@@ -6,5 +8,9 @@
   padding-left: 3px;
   &__item{
     height: 50px;
+  }
+
+  @include screen-lg{
+    margin-bottom: 26px;
   }
 }

@@ -13,7 +13,7 @@ const Skills = () => {
       </div>
       <div className="skills__item">разрабатывал серверную логику на Go</div>
       <div className="skills__item">
-        отличный навык верстки, опыт работы с Figma
+        отличные навыки верстки, опыт работы с Figma
       </div>
     </div>
   );

@@ -12,10 +12,21 @@
   border-radius: 16px;
   border-color:  transparent;
   color: #ffffff;
+
+  &:hover{
+    cursor: pointer;
+  }
 }
+
 @mixin button($size: 16px, $height: 28px, $weight: 600, $spacing: .75px) {
  @include button-fill($size, $height, $weight, $spacing);
   background-color: transparent;
   color: #5F2EEA;
   border-color:  #5F2EEA;
+}
+
+@mixin button-small($size: 14px, $height: 24px, $weight: 600, $spacing: .75px) {
+  @include button-fill($size, $height, $weight, $spacing);
+  padding:  6px 24px;
+  height: auto;
 }

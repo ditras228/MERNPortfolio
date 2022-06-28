@@ -1,5 +1,12 @@
+@import "../../styles/mixins/screen";
+
 .item-list{
   padding: 15px 24px;
   display: grid;
   grid-row-gap: 50px;
+
+  @include screen-lg{
+    padding: 10px 0 0 0;
+    grid-column: 2/3;
+  }
 }

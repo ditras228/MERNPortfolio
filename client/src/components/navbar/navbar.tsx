@@ -10,9 +10,13 @@ const Navbar = () => {
   };
 
   return (
-    <div className={"navbar"}>
-      MERNPortfolio
-      <button onClick={authHandler}>Админ</button>
+    <div className="navbar">
+      <div className="navbar__container">
+        MERNPortfolio
+        <button className="navbar__container__admin-btn" onClick={authHandler}>
+          Админка
+        </button>
+      </div>
     </div>
   );
 };

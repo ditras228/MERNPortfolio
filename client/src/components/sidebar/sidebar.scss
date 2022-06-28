@@ -1,4 +1,10 @@
+@import "../../styles/mixins/screen";
+
 .sidebar{
   padding: 0 21px;
   height: 100vh;
+  @include screen-lg{
+    position: fixed;
+    max-width: 375px;
+  }
 }

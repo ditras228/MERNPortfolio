@@ -1,21 +1,26 @@
 @import "../../styles/mixins/font";
 @import "../../styles/mixins/button";
+@import "../../styles/mixins/screen";
 
-.work{
-  height: 100vh;
+.work {
 
-  &__title{
+  &__title {
     @include font(32px, 34px, 700, 2.5px);
     margin-bottom: 27px;
+
+    @include screen-lg {
+      margin-bottom: 17px;
+    }
   }
-  &__tags{
+
+  &__tags {
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 26px;
     grid-row-gap: 10px;
     grid-column-gap: 13px;
 
-    &__item{
+    &__item {
       @include font(13px, 18px, 400, 1px);
       color: #2A00A2;
       padding: 8px 16px 8px 44px;
@@ -23,7 +28,7 @@
       background-color: #E4DAFF;
       position: relative;
 
-      &::before{
+      &::before {
         content: '';
         position: absolute;
         left: 16px;
@@ -35,18 +40,23 @@
       }
 
     }
+
+    @include screen-lg {
+      margin-bottom: 21px;
+    }
   }
-  &__functional-list{
+
+  &__functional-list {
     display: grid;
     grid-row-gap: 27px;
     margin-bottom: 56px;
 
-    &__item{
+    &__item {
       padding-left: 52px;
       position: relative;
       @include font(16px, 28px, 400, 1px);
 
-      &:before{
+      &:before {
         content: '';
         width: 32px;
         height: 32px;
@@ -56,20 +66,46 @@
         top: 50%;
         transform: translate(0, -50%);
         background: url("../../svg/radio/radio.svg");
+
+        @include screen-lg {
+          left: 8px;
+        }
+      }
+
+      @include screen-lg {
+        padding-left: 55px;
+      }
     }
+
+    @include screen-lg {
+      grid-row-gap: 22px;
+      margin-bottom: 37px;
     }
   }
-  &__buttons{
+
+  &__buttons {
     display: grid;
     grid-row-gap: 15px;
 
-    &__item{
-      @include button();
-
-      &--fill{
-        @include button-fill();
+    &__group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-column-gap: 5px;
+      &__item {
+        @include button();
+        width: 100%;
       }
+    }
+
+    &__item-fill {
+      @include button-fill();
     }
   }
 
+  @include screen-lg {
+    background: #FFFFFF;
+    border-radius: 32px;
+    box-shadow: (0px 8px 16px rgba(17, 17, 17, 0.04));
+    padding: 32px;
+  }
 }
