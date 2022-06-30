@@ -1,12 +1,12 @@
 import React from "react";
-import Item from "../item/item";
+import WorkItem from "./components/work-item/work-item";
 import { ReduxActionTypes } from "../../types/redux";
 import { useDispatch } from "react-redux";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { IWork } from "../../redux/reducers";
-import "./item-list.scss";
+import "./work-list.scss";
 
-const ItemList = ({ isAuth }: any) => {
+const WorkList = ({ isAuth }: any) => {
   const dispatch = useDispatch();
   const works = useTypedSelector((state) => state.index.works);
 
@@ -27,10 +27,10 @@ const ItemList = ({ isAuth }: any) => {
         </button>
       )}
       {works.map((work: IWork) => (
-        <Item isAuth={isAuth} key={work._id} work={work} />
+        <WorkItem isAuth={isAuth} key={work._id} work={work} />
       ))}
     </div>
   );
 };
 
-export default ItemList;
+export default WorkList;

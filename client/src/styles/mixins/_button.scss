@@ -12,9 +12,12 @@
   border-radius: 16px;
   border-color:  transparent;
   color: #ffffff;
-
+  transition: background-color  0.2s ease-in-out,
+              color  0.2s ease-in-out,
+              border 0.2s ease-in-out;
   &:hover{
     cursor: pointer;
+    background-color: #2A00A2 ;
   }
 }
 
@@ -23,6 +26,12 @@
   background-color: transparent;
   color: #5F2EEA;
   border-color:  #5F2EEA;
+
+  &:hover{
+    border-color: #2A00A2;
+    color: #2A00A2;
+    background-color: transparent;
+  }
 }
 
 @mixin button-small($size: 14px, $height: 24px, $weight: 600, $spacing: .75px) {

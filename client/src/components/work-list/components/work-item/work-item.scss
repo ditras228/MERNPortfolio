@@ -1,6 +1,6 @@
-@import "../../styles/mixins/font";
-@import "../../styles/mixins/button";
-@import "../../styles/mixins/screen";
+@import "../../../../styles/mixins/font";
+@import "../../../../styles/mixins/button";
+@import "../../../../styles/mixins/screen";
 
 .work {
 
@@ -34,7 +34,7 @@
         left: 16px;
         top: 50%;
         transform: translateY(-50%);
-        background: url("./../../svg/tag/tag.svg");
+        background: url("../../../../svg/tag/tag.svg");
         width: 20px;
         height: 20px;
       }
@@ -65,7 +65,7 @@
         left: 0;
         top: 50%;
         transform: translate(0, -50%);
-        background: url("../../svg/radio/radio.svg");
+        background: url("../../../../svg/radio/radio.svg");
 
         @include screen-lg {
           left: 8px;

@@ -1,15 +1,15 @@
 import * as React from "react";
-import { IWork } from "../../redux/reducers";
+import { IWork } from "../../../../redux/reducers";
 import { useDispatch } from "react-redux";
-import { deleteWork } from "../../redux/thunk";
-import "./item.scss";
+import { deleteWork } from "../../../../redux/thunk";
+import "./work-item.scss";
 
 type props = {
   work: IWork;
   isAuth: boolean;
 };
 
-const Item = ({ work, isAuth }: props) => {
+const WorkItem = ({ work, isAuth }: props) => {
   const dispatch = useDispatch();
   const isOurLink = work.links.demo === "/";
 
@@ -58,4 +58,4 @@ const Item = ({ work, isAuth }: props) => {
   );
 };
 
-export default Item;
+export default WorkItem;
