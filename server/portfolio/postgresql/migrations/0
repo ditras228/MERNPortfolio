@@ -1,0 +1,17 @@
+CREATE TABLE public.info
+(
+    id          INT PRIMARY KEY,
+    name        TEXT NOT NULL,
+    job         TEXT NOT NULL,
+    description TEXT NOT NULL,
+    experience  TEXT NOT NULL,
+    telegram    TEXT NOT NULL,
+    github      TEXT NOT NULL
+);
+
+INSERT INTO public.info(id, name, job, description, experience, telegram, github)
+VALUES (0, 'Дмитрий Дружинин', 'Middle Fullstack',
+        'Созданием сайтов занимаюсь более трёх лет',
+        'опыт коммерческой разработки в команде',
+        '89118780302',
+        'ditras228')
