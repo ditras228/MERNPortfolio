@@ -3,7 +3,7 @@
 package model
 
 type Info struct {
-	Text       string  `json:"text"`
+	Name       string  `json:"name"`
 	Job        string  `json:"job"`
 	Desc       string  `json:"desc"`
 	Experience string  `json:"experience"`
@@ -11,7 +11,21 @@ type Info struct {
 	Github     *string `json:"github"`
 }
 
-type NewInfo struct {
-	Text   string `json:"text"`
-	UserID string `json:"userId"`
+type Work struct {
+	ID          int     `json:"id"`
+	Name        string  `json:"name"`
+	Tags        string  `json:"tags"`
+	Description string  `json:"description"`
+	Github      *string `json:"github"`
+	Demo        string  `json:"demo"`
+	Figma       string  `json:"figma"`
+}
+
+type EditInfo struct {
+	Name       string  `json:"name"`
+	Job        string  `json:"job"`
+	Desc       string  `json:"desc"`
+	Experience string  `json:"experience"`
+	Telegram   string  `json:"telegram"`
+	Github     *string `json:"github"`
 }

@@ -11,18 +11,34 @@ import (
 	"portfolio/graph/model"
 )
 
-func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewInfo) (*model.Info, error) {
-	panic(fmt.Errorf("not implemented"))
+func (r *mutationResolver) EditInfo(ctx context.Context, input model.EditInfo) (*model.Info, error) {
+	one, err := container.InfoRepository.FindOne(context.TODO())
+	if err != nil {
+		fmt.Println(err)
+		return nil, nil
+	}
+	one = model.Info(input)
+
+	return &one, nil
 }
 
 func (r *queryResolver) GetInfo(ctx context.Context) (*model.Info, error) {
-	one, err := container.Repository.FindOne(context.TODO())
+	one, err := container.InfoRepository.FindOne(context.TODO())
 	if err != nil {
 		fmt.Println(err)
 		return nil, nil
 	}
 	fmt.Println(one.Job)
 	return &one, nil
+}
+
+func (r *queryResolver) GetWorks(ctx context.Context) ([]*model.Work, error) {
+	works, err := container.WorkRepository.FindAll(context.TODO())
+	if err != nil {
+		fmt.Println(err)
+		return nil, nil
+	}
+	return works, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.

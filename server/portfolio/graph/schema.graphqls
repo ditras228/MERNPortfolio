@@ -3,12 +3,21 @@
 # https://gqlgen.com/getting-started/
 
 type Info{
-  text: String!
+  name: String!
   job: String!
   desc: String!
   experience: String!
   telegram: String!
   github: String
+}
+type  Work{
+  id: Int!
+  name: String!
+  tags: String!
+  description: String!
+  github: String
+  demo: String!
+  figma: String!
 }
 #type Todo {
 #  id: ID!
@@ -38,14 +47,19 @@ type Info{
 
 type Query {
   getInfo: Info!
+  getWorks: [Work]!
 }
 
-input NewInfo {
-  text: String!
-  userId: String!
+input editInfo {
+  name: String!
+  job: String!
+  desc: String!
+  experience: String!
+  telegram: String!
+  github: String
 }
 
 type Mutation {
-  createTodo(input: NewInfo!): Info!
+  editInfo(input: editInfo!): Info!
 }
 
