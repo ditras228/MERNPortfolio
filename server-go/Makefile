@@ -6,7 +6,7 @@ dev:
 	go run server.go
 
 drop:
-	$(call _warning, "Дроп миграций");
+	$(call _warning, "\nДроп миграций");
 	migrate -database postgresql://postgres:secret@localhost:5432/stage?sslmode=disable -path ./schema/ drop
 
 define _info
