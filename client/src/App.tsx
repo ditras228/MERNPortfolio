@@ -9,6 +9,12 @@ import ModalAuthItem from "./components/modals/modal-auth/modal-auth-item";
 import { useTypedSelector } from "./hooks/useTypedSelector";
 import ModalAuth from "./components/modals/modal-auth/modal-auth";
 import "./App.scss";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+
+const client = new ApolloClient({
+  uri: "http://localhost:8080/ ",
+  cache: new InMemoryCache(),
+});
 
 function App() {
   const dispatch = useDispatch();
@@ -21,15 +27,17 @@ function App() {
   }, [name]);
 
   return (
-    <div className="app">
-      <Navbar />
-      <div className="app__container">
-        <Sidebar isAuth={isAuth} />
-        <WorkList isAuth={isAuth} />
+    <ApolloProvider client={client}>
+      <div className="app">
+        <Navbar />
+        <div className="app__container">
+          <Sidebar isAuth={isAuth} />
+          <WorkList isAuth={isAuth} />
+        </div>
+        <ModalAuthItem />
+        <ModalAuth />
       </div>
-      <ModalAuthItem />
-      <ModalAuth />
-    </div>
+    </ApolloProvider>
   );
 }
 

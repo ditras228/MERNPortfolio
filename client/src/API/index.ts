@@ -1,16 +1,31 @@
 import axios from "axios";
 import { AppConfig } from "../config/app-config";
-
+import { gql } from "@apollo/client";
+import { print } from "graphql";
 export const instance = axios.create({
   baseURL: AppConfig.BASE_URL,
 });
+const ADD_SKILL = gql`
+  query getInfo {
+    getInfo {
+      name
+      job
+      desc
+      experience
+      telegram
+      github
+    }
+  }
+`;
 
 export const indexAPI = {
   auth(data: any) {
     return instance.post("/auth", data);
   },
   getInfo() {
-    return instance.get("/");
+    return instance.post("grapql", {
+      query: print(ADD_SKILL),
+    });
   },
   getWorks() {
     return instance.get("/works");

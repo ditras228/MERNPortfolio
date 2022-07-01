@@ -8,7 +8,7 @@ export const get = () => {
       const responseWorks = await indexAPI.getWorks();
       dispatch({
         type: ReduxActionTypes.SET_INFO,
-        payload: responseInfo.data,
+        payload: responseInfo,
       });
       dispatch({
         type: ReduxActionTypes.SET_WORKS,
