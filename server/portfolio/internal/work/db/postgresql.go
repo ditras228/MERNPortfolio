@@ -3,8 +3,8 @@ package work
 import (
 	"context"
 	"portfolio/graph/model"
+	"portfolio/infrastructure/postgresql"
 	"portfolio/internal/work"
-	postgres "portfolio/postgresql"
 )
 
 type repository struct {

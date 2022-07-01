@@ -2,10 +2,10 @@ package container
 
 import (
 	"context"
+	"portfolio/infrastructure/postgresql"
 	config "portfolio/internal"
 	info "portfolio/internal/info/db"
 	work "portfolio/internal/work/db"
-	postgres "portfolio/postgresql"
 )
 
 var cfg = config.GetConfig()

@@ -1,0 +1,13 @@
+input  updateWork{
+  id: Int!
+  name: String!
+  tags: String!
+  description: String!
+  github: String
+  demo: String!
+  figma: String!
+}
+
+input  deleteWork{
+  id: Int!
+}

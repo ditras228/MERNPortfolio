@@ -1,0 +1,14 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+
+type  Work{
+  id: Int!
+  name: String!
+  tags: String!
+  description: String!
+  github: String
+  demo: String!
+  figma: String!
+}

@@ -2,64 +2,23 @@
 #
 # https://gqlgen.com/getting-started/
 
-type Info{
-  name: String!
-  job: String!
-  desc: String!
-  experience: String!
-  telegram: String!
-  github: String
-}
-type  Work{
-  id: Int!
-  name: String!
-  tags: String!
-  description: String!
-  github: String
-  demo: String!
-  figma: String!
-}
-#type Todo {
-#  id: ID!
-#  text: String!
-#  done: Boolean!
-#  user: User!
-#}
-#
-#type User {
-#  id: ID!
-#  name: String!
-#}
-#
-#type Query {
-#  todos: [Todo!]!
-#}
-#
-#input NewTodo {
-#  text: String!
-#  userId: String!
-#}
-#
-#type Mutation {
-#  createTodo(input: NewTodo!): Todo!
-#}
-#
 
 type Query {
+  # Получить инфу
   getInfo: Info!
+
+  # Получить работы
   getWorks: [Work]!
 }
 
-input editInfo {
-  name: String!
-  job: String!
-  desc: String!
-  experience: String!
-  telegram: String!
-  github: String
-}
-
 type Mutation {
-  editInfo(input: editInfo!): Info!
+  # Обновить инфу
+  updateInfo(input: updateInfo!): Info!
+
+  # Обновить работу
+  updateWork(input: updateWork!): Work!
+
+  # Удалить работу
+  deleteWork(input: deleteWork!): Work!
 }
 

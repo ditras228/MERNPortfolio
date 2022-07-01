@@ -3,8 +3,8 @@ package info
 import (
 	"context"
 	"portfolio/graph/model"
+	"portfolio/infrastructure/postgresql"
 	"portfolio/internal/info"
-	"portfolio/postgresql"
 )
 
 type repository struct {
@@ -16,7 +16,6 @@ func (r *repository) EditInfo(ctx context.Context) (model.Info, error) {
 	if err != nil {
 		return model.Info{}, err
 	}
-	info.Name = "123"
 	return info, nil
 }
 func (r *repository) FindOne(ctx context.Context) (model.Info, error) {

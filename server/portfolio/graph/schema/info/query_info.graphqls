@@ -1,0 +1,8 @@
+type Info{
+  name: String!
+  job: String!
+  desc: String!
+  experience: String!
+  telegram: String!
+  github: String
+}
