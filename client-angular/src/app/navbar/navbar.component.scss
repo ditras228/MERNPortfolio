@@ -1,0 +1,33 @@
+@import "../../styles/mixins/font";
+@import "../../styles/mixins/button";
+@import '../../styles/mixins/screen';
+
+.navbar {
+  @include font(32px, 32px, 400, 1px);
+  color: #fff;
+  background-color: #14142A;
+
+
+  &__container {
+    padding: 12px 24px;
+    align-items: center;
+    max-width: 1200px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    margin: 0 auto 19px auto;
+    width: 100%;
+
+    &__admin-btn {
+      @include button-small();
+      display: none;
+
+      @include screen-lg {
+        display: block;
+      }
+    }
+
+    @include screen-lg {
+      padding: 10px 0;
+    }
+  }
+}
