@@ -1,5 +1,5 @@
-@import "./../client-angular/src/styles/mixins/font";
-@import "./../client-angular/src/styles/mixins/screen";
+@import "../../../styles/mixins/font";
+@import "../../../styles/mixins/screen";
 
 .skills{
   display: grid;
@@ -20,7 +20,7 @@
       left: 8px;
       top: 50%;
       transform: translate(0, -50%);
-      background: url("../../svg/checkbox/checkbox.svg");
+      background: url("../../../svg/checkbox/checkbox.svg");
     }
   }
   @include screen-lg{

@@ -3,9 +3,12 @@
 .app{
   overflow: hidden;
   @include screen-lg {
+    background-color: #FCFCFC;
+
     &__container {
       max-width: 1200px;
       margin: 0 auto;
+      padding: 0;
       display: grid;
       grid-template-columns: 375px 1fr;
       grid-column-gap: 106px;

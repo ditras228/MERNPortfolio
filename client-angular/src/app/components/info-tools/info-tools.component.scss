@@ -1,0 +1,25 @@
+@import "../../../styles/mixins/screen";
+@import "../../../styles/mixins/icon";
+
+.dev-tools{
+  display: grid;
+  grid-template-columns: repeat(3, 50px);
+  margin-bottom: 18px;
+  grid-column-gap: 20px;
+  padding-left: 3px;
+  &__item{
+    height: 50px;
+    @include icon('/tools/angular.svg');
+
+    &.golang{
+      @include icon('/tools/golang.svg');
+    }
+    &.graphql{
+      @include icon('/tools/grapql.svg');
+    }
+  }
+
+  @include screen-lg{
+    margin-bottom: 26px;
+  }
+}

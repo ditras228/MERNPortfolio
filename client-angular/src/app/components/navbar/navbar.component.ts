@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {Store} from "@ngrx/store";
+import {setInfo} from "../../store/app.actions";
 
 @Component({
   selector: 'app-navbar',
@@ -7,8 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor() { }
-
+  constructor(private store: Store) { }
+  admin(){
+this.store.dispatch(setInfo({info: '123'}))
+  }
   ngOnInit(): void {
   }
 
