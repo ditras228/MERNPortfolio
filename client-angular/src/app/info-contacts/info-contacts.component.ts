@@ -6,7 +6,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./info-contacts.component.scss']
 })
 export class InfoContactsComponent implements OnInit {
-
   constructor() { }
 
   ngOnInit(): void {

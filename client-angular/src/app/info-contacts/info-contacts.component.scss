@@ -1,0 +1,29 @@
+@import "../client-angular/src/styles/mixins/font";
+@import "../client-angular/src/styles/mixins/icon";
+
+.contacts{
+  display: grid;
+  grid-row-gap: 12px;
+  padding-left: 3px;
+  padding-right: 3px;
+
+  &__item{
+    display: grid;
+    grid-template-columns: 40px 1fr;
+
+    &__icon{
+      height: 40px;
+      @include icon('social/telegram.svg');
+
+      &--github{
+        @include icon('social/github.svg');
+      }
+    }
+
+    &__text{
+      @include font(16px, 28px, 600, 0.9px);
+      text-align: right;
+      align-self: center;
+    }
+  }
+}

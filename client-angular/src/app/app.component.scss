@@ -1,6 +1,7 @@
 @import 'src/styles/mixins/screen';
 
 .app{
+  overflow: hidden;
   @include screen-lg {
     &__container {
       max-width: 1200px;

@@ -4,9 +4,11 @@ go 1.18
 
 require (
 	github.com/99designs/gqlgen v0.17.10
+	github.com/go-chi/chi v1.5.4
 	github.com/ilyakaznacheev/cleanenv v1.3.0
 	github.com/jackc/pgconn v1.8.0
 	github.com/jackc/pgx/v4 v4.10.1
+	github.com/rs/cors v1.8.2
 	github.com/vektah/gqlparser/v2 v2.4.5
 )
 
