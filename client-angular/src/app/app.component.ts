@@ -1,10 +1,27 @@
-import { Component } from '@angular/core';
+import {Component, OnInit, PLATFORM_ID,Inject} from '@angular/core';
+import {getWorks} from "./store/app.actions";
+import {Store} from "@ngrx/store";
+
+import {isPlatformBrowser, isPlatformServer} from '@angular/common';
+
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'client-angular';
+
+  constructor(private store$: Store,
+              @Inject(PLATFORM_ID) private platformId
+  ) { }
+
+  ngOnInit(): void{
+    if(isPlatformServer(this.platformId)){
+      this.store$.dispatch(getWorks())
+    }
+  }
+
 }

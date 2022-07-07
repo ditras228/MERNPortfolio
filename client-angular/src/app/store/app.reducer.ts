@@ -1,13 +1,17 @@
 import {createReducer, on} from "@ngrx/store";
-import {setInfo} from "./app.actions";
+import {setInfo, setWorks} from "./app.actions";
+import {Info, Work} from "../../generated/graphql";
 
 export interface State {
-  info: string
+  info: Info,
+  works: Work[] | null
 }
 const initialState: State = {
-  info: ''
+  info: {} as unknown as Info,
+  works: [] as Work[]
 }
 export const appReducer= createReducer(
   initialState,
-  on(setInfo, (state, { info }) => ({...state, info: info}))
+  on(setInfo, (state, { info }) => ({...state, info: info})),
+  on(setWorks, (state, { works }) => ({...state, works: works}))
 )

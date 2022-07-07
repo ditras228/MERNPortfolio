@@ -1,8 +1,16 @@
-import {createAction, props} from "@ngrx/store";
+import {createAction} from "@ngrx/store";
+import {Info, Work} from "../../generated/graphql";
 
-export const setInfo = createAction('[App] SetInfo', props<{info : string}>())
-export const setWorks = createAction('[App] SetWorks')
-export const getHabitsSuccessAction = createAction(
-  "[App] Get Habits Success",
-  (habits: any[]) => ({ habits })
+// Info
+export const getInfo = createAction('[App] getInfo')
+export const setInfo = createAction(
+  "[App] SetInfo",
+  (info: Info) => ({ info })
+);
+
+// Works
+export const getWorks = createAction('[App] getWorks')
+export const setWorks = createAction(
+  "[App] SetWorks",
+  (works: Work[] | any) => ({ works })
 );

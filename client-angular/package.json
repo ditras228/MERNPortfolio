@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "gen": "graphql-codegen --config codegen.yml && node src/post-processing"
   },
   "private": true,
   "dependencies": {
@@ -19,6 +20,8 @@
     "@angular/platform-browser-dynamic": "^14.0.0",
     "@angular/router": "^14.0.0",
     "@apollo/client": "^3.6.9",
+    "@graphql-codegen/cli": "^2.7.0",
+    "@graphql-codegen/typescript-graphql-request": "^4.4.10",
     "@ngrx/effects": "^14.0.1",
     "@ngrx/store": "^14.0.1",
     "@ngrx/store-devtools": "^14.0.1",
@@ -33,6 +36,11 @@
     "@angular-devkit/build-angular": "^14.0.4",
     "@angular/cli": "~14.0.4",
     "@angular/compiler-cli": "^14.0.0",
+    "@graphql-codegen/cli": "2.7.0",
+    "@graphql-codegen/introspection": "2.1.1",
+    "@graphql-codegen/typescript": "2.6.0",
+    "@graphql-codegen/typescript-apollo-angular": "3.4.13",
+    "@graphql-codegen/typescript-operations": "^2.4.3",
     "@types/jasmine": "~4.0.0",
     "jasmine-core": "~4.1.0",
     "karma": "~6.3.0",
