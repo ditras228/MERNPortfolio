@@ -6,5 +6,5 @@ import (
 )
 
 type Repository interface {
-	FindAll(ctx context.Context) ([]*model.Work, error)
+	FindAll(ctx context.Context) ([]*model.GetWork, error)
 }

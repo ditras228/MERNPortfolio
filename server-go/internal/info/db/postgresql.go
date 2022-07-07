@@ -3,6 +3,7 @@ package info
 import (
 	"context"
 	"portfolio/graph/model"
+	modeld "portfolio/graph/model/GetInfo"
 	"portfolio/infrastructure/postgresql"
 	"portfolio/internal/info"
 )
@@ -11,14 +12,14 @@ type repository struct {
 	client postgres.Client
 }
 
-func (r *repository) EditInfo(ctx context.Context) (model.Info, error) {
-	info, err := r.FindOne(ctx)
+func (r *repository) UpdateInfo(ctx context.Context) (model.GetInfo, error) {
+	info2, err := r.FindOne(ctx)
 	if err != nil {
-		return model.Info{}, err
+		return model.GetInfo{}, err
 	}
-	return info, nil
+	return info2, nil
 }
-func (r *repository) FindOne(ctx context.Context) (model.Info, error) {
+func (r *repository) FindOne(ctx context.Context) (model.GetInfo, error) {
 	q := `
 		SELECT 
 			name, job, description, experience,
@@ -30,7 +31,7 @@ func (r *repository) FindOne(ctx context.Context) (model.Info, error) {
 			id = 0
 		`
 
-	var inf model.Info
+	var inf modeld.GetInfoModel
 
 	err := r.client.QueryRow(ctx, q).Scan(
 		&inf.Name, &inf.Job,
@@ -38,9 +39,21 @@ func (r *repository) FindOne(ctx context.Context) (model.Info, error) {
 		&inf.Telegram, &inf.Github,
 	)
 	if err != nil {
-		return model.Info{}, err
+		return model.GetInfo{}, err
 	}
-	return inf, nil
+	var infModel model.GetInfo
+
+	// Transfer to DTO
+	infModel.Name = inf.Name
+	infModel.Desc = inf.Desc
+	infModel.Job = inf.Job
+	infModel.Experience = inf.Experience
+	infModel.Contacts = &model.Contacts{
+		Telegram: inf.Telegram,
+		Github:   inf.Github,
+	}
+
+	return infModel, nil
 }
 func NewRepository(client postgres.Client) info.Repository {
 	return &repository{

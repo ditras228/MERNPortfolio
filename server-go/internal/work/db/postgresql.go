@@ -11,7 +11,7 @@ type repository struct {
 	client postgres.Client
 }
 
-func (r *repository) FindAll(ctx context.Context) ([]*model.Work, error) {
+func (r *repository) FindAll(ctx context.Context) ([]*model.GetWork, error) {
 	q := `
 		SELECT 
 			id, name, tags, description,
@@ -24,9 +24,9 @@ func (r *repository) FindAll(ctx context.Context) ([]*model.Work, error) {
 	if err != nil {
 		return nil, err
 	}
-	works := make([]*model.Work, 0)
+	works := make([]*model.GetWork, 0)
 	for rows.Next() {
-		var wrk model.Work
+		var wrk model.GetWork
 
 		err = rows.Scan(&wrk.ID, &wrk.Name, &wrk.Tags, &wrk.Description,
 			&wrk.Github, &wrk.Demo)

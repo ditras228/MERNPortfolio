@@ -11,18 +11,30 @@ import (
 	"portfolio/graph/model"
 )
 
-func (r *mutationResolver) EditInfo(ctx context.Context, input model.EditInfo) (*model.Info, error) {
+func (r *mutationResolver) UpdateInfo(ctx context.Context, input model.UpdateInfo) (*model.GetInfo, error) {
 	one, err := container.InfoRepository.FindOne(context.TODO())
 	if err != nil {
 		fmt.Println(err)
 		return nil, nil
 	}
-	one = model.Info(input)
+	one = model.GetInfo{
+		Name:       input.Name,
+		Desc:       input.Desc,
+		Experience: input.Experience,
+	}
 
 	return &one, nil
 }
 
-func (r *queryResolver) GetInfo(ctx context.Context) (*model.Info, error) {
+func (r *mutationResolver) UpdateWork(ctx context.Context, input model.UpdateWork) (*model.GetWork, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
+func (r *mutationResolver) DeleteWork(ctx context.Context, input model.DeleteWork) (*model.GetWork, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
+func (r *queryResolver) GetInfo(ctx context.Context) (*model.GetInfo, error) {
 	one, err := container.InfoRepository.FindOne(context.TODO())
 	if err != nil {
 		fmt.Println(err)
@@ -32,7 +44,7 @@ func (r *queryResolver) GetInfo(ctx context.Context) (*model.Info, error) {
 	return &one, nil
 }
 
-func (r *queryResolver) GetWorks(ctx context.Context) ([]*model.Work, error) {
+func (r *queryResolver) GetWorks(ctx context.Context) ([]*model.GetWork, error) {
 	works, err := container.WorkRepository.FindAll(context.TODO())
 	if err != nil {
 		fmt.Println(err)
@@ -49,10 +61,3 @@ func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
 
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
-
-// !!! WARNING !!!
-// The code below was going to be deleted when updating resolvers. It has been copied here so you have
-// one last chance to move it out of harms way if you want. There are two reasons this happens:
-//  - When renaming or deleting a resolver the old code will be put in here. You can safely delete
-//    it when you're done.
-//  - You have helper methods in this file. Move them out to keep these resolver files clean.

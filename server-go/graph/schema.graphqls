@@ -1,24 +1,19 @@
-# GraphQL schema example
-#
-# https://gqlgen.com/getting-started/
-
-
 type Query {
   # Получить инфу
-  getInfo: Info!
+  getInfo: GetInfo!
 
   # Получить работы
-  getWorks: [Work]!
+  getWorks: [GetWork]!
 }
 
 type Mutation {
   # Обновить инфу
-  updateInfo(input: updateInfo!): Info!
+  updateInfo(input: UpdateInfo!): GetInfo!
 
   # Обновить работу
-  updateWork(input: updateWork!): Work!
+  updateWork(input: UpdateWork!): GetWork!
 
   # Удалить работу
-  deleteWork(input: deleteWork!): Work!
+  deleteWork(input: DeleteWork!): GetWork!
 }
 

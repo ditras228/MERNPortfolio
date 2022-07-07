@@ -9,6 +9,10 @@ drop:
 	$(call _warning, "\nДроп миграций");
 	migrate -database postgresql://postgres:secret@localhost:5432/stage?sslmode=disable -path ./schema/ drop
 
+gen:
+	$(call _info, "\nГенерация GraphQL типов");
+	go run github.com/99designs/gqlgen generate.
+
 define _info
 	$(call _echoColor, $1, 6)
 endef

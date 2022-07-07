@@ -2,16 +2,24 @@
 
 package model
 
-type Info struct {
-	Name       string  `json:"name"`
-	Job        string  `json:"job"`
-	Desc       string  `json:"desc"`
-	Experience string  `json:"experience"`
-	Telegram   string  `json:"telegram"`
-	Github     *string `json:"github"`
+type Contacts struct {
+	Telegram string `json:"telegram"`
+	Github   string `json:"github"`
 }
 
-type Work struct {
+type DeleteWork struct {
+	ID int `json:"id"`
+}
+
+type GetInfo struct {
+	Name       string    `json:"name"`
+	Job        string    `json:"job"`
+	Desc       string    `json:"desc"`
+	Experience string    `json:"experience"`
+	Contacts   *Contacts `json:"contacts"`
+}
+
+type GetWork struct {
 	ID          int     `json:"id"`
 	Name        string  `json:"name"`
 	Tags        string  `json:"tags"`
@@ -21,11 +29,21 @@ type Work struct {
 	Figma       string  `json:"figma"`
 }
 
-type EditInfo struct {
-	Name       string  `json:"name"`
-	Job        string  `json:"job"`
-	Desc       string  `json:"desc"`
-	Experience string  `json:"experience"`
-	Telegram   string  `json:"telegram"`
-	Github     *string `json:"github"`
+type UpdateInfo struct {
+	Name       string `json:"name"`
+	Job        string `json:"job"`
+	Desc       string `json:"desc"`
+	Experience string `json:"experience"`
+	Telegram   string `json:"telegram"`
+	Github     string `json:"github"`
+}
+
+type UpdateWork struct {
+	ID          int     `json:"id"`
+	Name        string  `json:"name"`
+	Tags        string  `json:"tags"`
+	Description string  `json:"description"`
+	Github      *string `json:"github"`
+	Demo        string  `json:"demo"`
+	Figma       string  `json:"figma"`
 }

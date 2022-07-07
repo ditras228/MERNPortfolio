@@ -1,9 +1,4 @@
-# GraphQL schema example
-#
-# https://gqlgen.com/getting-started/
-
-
-type  Work{
+type  GetWork{
   id: Int!
   name: String!
   tags: String!
@@ -12,3 +7,4 @@ type  Work{
   demo: String!
   figma: String!
 }
+
