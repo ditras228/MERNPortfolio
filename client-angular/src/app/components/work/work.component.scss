@@ -17,27 +17,28 @@
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 26px;
-    grid-row-gap: 10px;
-    grid-column-gap: 13px;
+    grid-row-gap: 8px;
+    grid-column-gap: 8px;
 
     &__item {
-      @include font(13px, 18px, 400, 1px);
+      @include font(12px, 24px, 400, 1px);
       color: #2A00A2;
-      padding: 8px 16px 8px 44px;
-      border-radius: 39px;
+      padding: 0 8px ;
+      border-radius: 4px;
       background-color: #E4DAFF;
       position: relative;
+      text-transform: uppercase;
 
-      &::before {
-        content: '';
-        position: absolute;
-        left: 16px;
-        top: 50%;
-        transform: translateY(-50%);
-        @include icon('/tag/tag.svg');
-        width: 20px;
-        height: 20px;
-      }
+      //&::before {
+      //  content: '';
+      //  position: absolute;
+      //  left: 16px;
+      //  top: 50%;
+      //  transform: translateY(-50%);
+      //  @include icon('/tag/tag.svg');
+      //  width: 20px;
+      //  height: 20px;
+      //}
 
     }
 
@@ -47,33 +48,40 @@
   }
 
   &__functional-list {
-    display: grid;
-    grid-row-gap: 27px;
-    margin-bottom: 56px;
+    ul{
+      display: grid;
+      grid-row-gap: 27px;
+      margin-bottom: 56px;
+      padding: 0;
 
-    &__item {
-      padding-left: 52px;
-      position: relative;
-      @include font(16px, 28px, 400, 1px);
+      li{
+        display: block;
+          padding-left: 52px;
+          position: relative;
+          @include font(16px, 28px, 400, 1px);
 
-      &:before {
-        content: '';
-        width: 32px;
-        height: 32px;
-        position: absolute;
-        border-radius: 50%;
-        left: 0;
-        top: 50%;
-        transform: translate(0, -50%);
-        @include icon('/radio/radio.svg');
+          &:before {
+            content: '';
+            width: 32px;
+            height: 32px;
+            position: absolute;
+            border-radius: 50%;
+            left: 0;
+            top: 50%;
+            transform: translate(0, -50%);
+            @include icon('/radio/radio.svg');
 
-        @include screen-lg {
-          left: 8px;
-        }
-      }
+            @include screen-lg {
+              left: 8px;
+            }
+          }
 
-      @include screen-lg {
-        padding-left: 55px;
+          @include screen-lg {
+            padding-left: 55px;
+            @include font(20px, 32px, 400, 1.5px);
+
+          }
+
       }
     }
 
@@ -88,9 +96,9 @@
     grid-row-gap: 15px;
 
     &__group {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-column-gap: 5px;
+      display: flex;
+      column-gap: 5px;
+
       &__item {
         @include button();
         width: 100%;
@@ -104,8 +112,8 @@
 
   @include screen-lg {
     background: #FFFFFF;
-    border-radius: 32px;
-    box-shadow: (0px 8px 16px rgba(17, 17, 17, 0.04));
     padding: 32px;
+    box-shadow: 0px 2px 2px rgb(0 32 51 / 2%), 0px 2px 8px rgb(0 32 51 / 16%);
+    border-radius: 4px;
   }
 }

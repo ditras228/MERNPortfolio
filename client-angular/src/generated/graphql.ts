@@ -15,34 +15,27 @@ export type Scalars = {
   Float: number;
 };
 
-export type Info = {
-  __typename?: 'Info';
-  desc: Scalars['String'];
-  experience: Scalars['String'];
-  github?: Maybe<Scalars['String']>;
-  job: Scalars['String'];
-  name: Scalars['String'];
+export type Contacts = {
+  __typename?: 'Contacts';
+  github: Scalars['String'];
   telegram: Scalars['String'];
 };
 
-export type Mutation = {
-  __typename?: 'Mutation';
-  editInfo: Info;
+export type DeleteWork = {
+  id: Scalars['Int'];
 };
 
-
-export type MutationEditInfoArgs = {
-  input: EditInfo;
+export type GetInfo = {
+  __typename?: 'GetInfo';
+  contacts: Contacts;
+  desc: Scalars['String'];
+  experience: Scalars['String'];
+  job: Scalars['String'];
+  name: Scalars['String'];
 };
 
-export type Query = {
-  __typename?: 'Query';
-  getInfo: Info;
-  getWorks: Array<Maybe<Work>>;
-};
-
-export type Work = {
-  __typename?: 'Work';
+export type GetWork = {
+  __typename?: 'GetWork';
   demo: Scalars['String'];
   description: Scalars['String'];
   figma: Scalars['String'];
@@ -52,24 +45,62 @@ export type Work = {
   tags: Scalars['String'];
 };
 
-export type EditInfo = {
+export type Mutation = {
+  __typename?: 'Mutation';
+  deleteWork: GetWork;
+  updateInfo: GetInfo;
+  updateWork: GetWork;
+};
+
+
+export type MutationDeleteWorkArgs = {
+  input: DeleteWork;
+};
+
+
+export type MutationUpdateInfoArgs = {
+  input: UpdateInfo;
+};
+
+
+export type MutationUpdateWorkArgs = {
+  input: UpdateWork;
+};
+
+export type Query = {
+  __typename?: 'Query';
+  getInfo: GetInfo;
+  getWorks: Array<Maybe<GetWork>>;
+};
+
+export type UpdateInfo = {
   desc: Scalars['String'];
   experience: Scalars['String'];
-  github?: InputMaybe<Scalars['String']>;
+  github: Scalars['String'];
   job: Scalars['String'];
   name: Scalars['String'];
   telegram: Scalars['String'];
 };
 
+export type UpdateWork = {
+  demo: Scalars['String'];
+  description: Scalars['String'];
+  figma: Scalars['String'];
+  github?: InputMaybe<Scalars['String']>;
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  tags: Scalars['String'];
+};
+
 export type GetWorksQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetWorksQuery = { __typename: 'Query', result: Array<{ __typename: 'Work', demo: string, description: string, figma: string, github?: string | null, id: number, name: string, tags: string } | null> };
+export type GetWorksQuery = { __typename: 'Query', result: Array<{ __typename: 'GetWork', demo: string, description: string, figma: string, github?: string | null, id: number, name: string, tags: string } | null> };
 
 export type GetInfoQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetInfoQuery = { __typename?: 'Query', result: { __typename: 'Info', desc: string, experience: string, github?: string | null, job: string, name: string, telegram: string } };
+export type GetInfoQuery = { __typename?: 'Query', result: { __typename: 'GetInfo', desc: string, experience: string, job: string, name: string, contacts: { __typename?: 'Contacts', telegram: string, github: string } } };
 
 
 export const GetWorksDocument = `
@@ -93,10 +124,12 @@ export const GetInfoDocument = `
     __typename
     desc
     experience
-    github
     job
     name
-    telegram
+    contacts {
+      telegram
+      github
+    }
   }
 }
     `;

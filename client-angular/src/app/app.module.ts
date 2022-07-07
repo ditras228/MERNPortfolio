@@ -29,7 +29,7 @@ import {HttpClientModule} from "@angular/common/http";
     InfoContactsComponent
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     StoreModule.forRoot({info: appReducer}, {}),
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
     EffectsModule.forRoot([AppEffects]),

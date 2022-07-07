@@ -1,14 +1,14 @@
 import {createReducer, on} from "@ngrx/store";
 import {setInfo, setWorks} from "./app.actions";
-import {Info, Work} from "../../generated/graphql";
+import {GetInfo, GetWork} from "../../generated/graphql";
 
 export interface State {
-  info: Info,
-  works: Work[] | null
+  info: GetInfo,
+  works: GetWork[] | null
 }
 const initialState: State = {
-  info: {} as unknown as Info,
-  works: [] as Work[]
+  info: {} as unknown as GetInfo,
+  works: [] as GetWork[]
 }
 export const appReducer= createReducer(
   initialState,

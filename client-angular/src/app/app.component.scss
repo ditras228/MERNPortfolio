@@ -1,9 +1,11 @@
 @import 'src/styles/mixins/screen';
 
+:host{
+  background: #E2E9EE;
+}
 .app{
   overflow: hidden;
   @include screen-lg {
-    background-color: #FCFCFC;
 
     &__container {
       max-width: 1200px;

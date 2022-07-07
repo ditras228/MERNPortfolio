@@ -1,5 +1,5 @@
 import {Component, OnInit, PLATFORM_ID,Inject} from '@angular/core';
-import {getWorks} from "./store/app.actions";
+import {getInfo, getWorks} from "./store/app.actions";
 import {Store} from "@ngrx/store";
 
 import {isPlatformBrowser, isPlatformServer} from '@angular/common';
@@ -19,8 +19,9 @@ export class AppComponent implements OnInit{
   ) { }
 
   ngOnInit(): void{
-    if(isPlatformServer(this.platformId)){
+    if(isPlatformBrowser(this.platformId)){
       this.store$.dispatch(getWorks())
+      this.store$.dispatch(getInfo())
     }
   }
 

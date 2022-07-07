@@ -1,29 +1,24 @@
 <div class="work">
-  <div class="work__title">Облачное хранилище</div>
+  <div class="work__title">{{work?.name}}</div>
   <div class="work__tags">
     <div class="work__tags__item">MongoDB</div>
     <div class="work__tags__item">ExpressJS</div>
     <div class="work__tags__item">ReactJS</div>
     <div class="work__tags__item">NodeJS</div>
   </div>
-  <div class="work__functional-list">
-    <div class="work__functional-list__item">
-      Загрузка, поиск, скачивание файлов, либо папок
-    </div>
-    <div class="work__functional-list__item">Система drag & drop</div>
-    <div class="work__functional-list__item">
-      Рекурсивная загрузка папок на сервер
-    </div>
-    <div class="work__functional-list__item">Система авторизации</div>
-    <div class="work__functional-list__item">
-      Рассылка писем на Email
-    </div>
+  <div class="work__functional-list" [innerHTML]="work?.description">
   </div>
   <div class="work__buttons">
     <div class="work__buttons__group">
-      <button class="work__buttons__group__item">GitHub</button>
-      <button class="work__buttons__group__item">Figma</button>
+      <button class="work__buttons__group__item" *ngIf="work?.github" (click)="openLink(work?.github)" >GitHub</button>
+      <button class="work__buttons__group__item" *ngIf="work?.figma" (click)="openLink(work?.figma)">Figma</button>
     </div>
-    <button class="work__buttons__item-fill">Демо</button>
+    <button class="work__buttons__item-fill" *ngIf="work?.demo" (click)="openLink(work?.demo)">
+      <span *ngIf="!isPortfolio(work?.demo)">Демо</span>
+      <span *ngIf="isPortfolio(work?.demo)">Вы здесь</span>
+    </button>
   </div>
 </div>
+
+
+

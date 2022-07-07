@@ -1,5 +1,6 @@
 @import "../../../styles/mixins/font";
 @import "../../../styles/mixins/icon";
+@import "../../../styles/mixins/screen";
 
 .contacts{
   display: grid;
@@ -24,6 +25,10 @@
       @include font(16px, 28px, 600, 0.9px);
       text-align: right;
       align-self: center;
+
+      @include screen-lg{
+        @include font(24px, 32px, 700, 1.5px);
+      }
     }
   }
 }

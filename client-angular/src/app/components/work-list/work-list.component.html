@@ -1,4 +1,5 @@
 <div class="work-list">
-  <app-work></app-work>
-  <app-work></app-work>
+  <ng-container *ngFor="let work of works$">
+    <app-work [work]="work"></app-work>
+  </ng-container>
 </div>

@@ -6,9 +6,11 @@ export const getInfoQuery = gql`
       __typename
       desc
       experience
-      github
       job
       name
-      telegram
+      contacts{
+        telegram
+        github
+      }
     }
   }`;

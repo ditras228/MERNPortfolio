@@ -1,8 +1,8 @@
 <div class="info">
-  <div class="info__who">Дмитрий Дружинин</div>
-  <div class="info__job">Middle Fullstack</div>
+  <div class="info__who">{{info$?.name}}</div>
+  <div class="info__job">{{info$?.job}}</div>
   <app-info-tools></app-info-tools>
-  <div class="info__desc">Созданием сайтов занимаюсь более <b>трех лет</b></div>
-  <app-info-skills></app-info-skills>
-  <app-info-contacts></app-info-contacts>
+  <div class="info__desc" [innerHTML]="info$?.desc"></div>
+  <app-info-skills [experience]="info$?.experience"></app-info-skills>
+  <app-info-contacts [contacts]="info$?.contacts"></app-info-contacts>
 </div>
