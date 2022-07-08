@@ -16,7 +16,7 @@
       width: 100px;
       height: 100px;
        @include icon("/Photos.png");
-      background-size: contain;
+      background-size: cover;
     }
   }
   &__who{

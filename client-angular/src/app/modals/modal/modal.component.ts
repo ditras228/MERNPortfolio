@@ -4,11 +4,12 @@ import {GetInfo, GetWork} from "../../../generated/graphql";
 import {Store} from "@ngrx/store";
 
 @Component({
-  selector: 'app-login-modal',
-  templateUrl: './login-modal.component.html',
-  styleUrls: ['./login-modal.component.scss']
+  selector: 'app-modal',
+  templateUrl: './modal.component.html',
+  styleUrls: ['./modal.component.scss']
 })
-export class LoginModalComponent  {
+export class ModalComponent {
+
 
 
 }

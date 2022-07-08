@@ -16,6 +16,8 @@ import {environment} from '../environments/environment';
 import {EffectsModule} from '@ngrx/effects';
 import {AppEffects} from "./store/app.effects";
 import {HttpClientModule} from "@angular/common/http";
+import {LoginModalComponent} from "./modals/login/login-modal.component";
+import {ModalComponent} from "./modals/modal/modal.component";
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import {HttpClientModule} from "@angular/common/http";
     SidebarInfoComponent,
     InfoToolsComponent,
     InfoSkillsComponent,
-    InfoContactsComponent
+    InfoContactsComponent,
+    LoginModalComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

@@ -1,0 +1,31 @@
+@import "../../../styles/mixins/screen";
+@import "../../../styles/mixins/icon";
+
+.backdrop{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgb(0,0,0,0.3);
+}
+.modal{
+  background: #FFFFFF;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 24px;
+  &__close{
+    position: absolute;
+    right: 25px;
+    top: 28px;
+    @include icon('/close/Close.svg');
+    width: 22px;
+    height: 22px;
+
+    &:hover{
+      cursor: pointer;
+    }
+  }
+}
