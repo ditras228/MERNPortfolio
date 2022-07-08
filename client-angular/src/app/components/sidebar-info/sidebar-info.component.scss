@@ -1,23 +1,45 @@
 @import "../../../styles/mixins/font";
 @import "../../../styles/mixins/screen";
+@import "../../../styles/mixins/icon";
 
 .info{
   margin-bottom: 32px;
     padding: 0 21px 0 21px;
+
+  &__test{
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-column-gap: 25px;
+    text-align: right;
+
+    &__photo{
+      width: 100px;
+      height: 100px;
+       @include icon("/Photos.png");
+      background-size: contain;
+    }
+  }
   &__who{
     @include font(32px, 36px, 400, 2.9px);
     color: #14142B;
     margin-bottom: 8px;
+
+    @include screen-lg{
+      margin-bottom: 10px;
+
+
+      background-color: #5f2eea;
+      color: #FFFFFF;
+    }
   }
 
   &__job{
     @include font(24px, 32px, 700, 1.5px);
     font-weight: bold;
     margin-bottom: 10px;
-
-
     @include screen-lg{
-      margin-bottom: 19px;
+      margin: 0;
+
     }
   }
 
@@ -26,15 +48,19 @@
     margin-bottom: 23px;
     color: #4E4B66;
     padding-left: 3px;
-    width: 95%;
+    text-align: right;
+
     @include screen-lg{
       margin-bottom: 19px;
     }
   }
   @include screen-lg{
-    width: 375px;
+    display: grid;
+    width: 465px;
     position: fixed;
     margin: 0;
     padding: 0;
+    height: calc(100vh - 60px);
+
   }
 }

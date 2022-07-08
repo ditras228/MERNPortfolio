@@ -9,15 +9,22 @@
   padding-right: 3px;
 
   &__item{
+    $root: &;
     display: grid;
     grid-template-columns: 40px 1fr;
 
     &__icon{
       height: 40px;
+      background-color: #27A6E5;
+      background-repeat: no-repeat;
+      background-position: center;
       @include icon('social/telegram.svg');
-
+      background-size: 20px;
+      transition: background-size 0.1s linear;
+      border-radius: 0;
       &--github{
         @include icon('social/github.svg');
+        background-color: #231E1B;
       }
     }
 
@@ -30,5 +37,12 @@
         @include font(24px, 32px, 700, 1.5px);
       }
     }
+    &:hover{
+      cursor: pointer;
+      #{$root}__icon{
+        background-size: 25px;
+      }
+    }
+
   }
 }

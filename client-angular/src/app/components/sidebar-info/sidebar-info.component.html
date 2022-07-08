@@ -1,8 +1,17 @@
 <div class="info">
-  <div class="info__who">{{info$?.name}}</div>
-  <div class="info__job">{{info$?.job}}</div>
-  <app-info-tools></app-info-tools>
-  <div class="info__desc" [innerHTML]="info$?.desc"></div>
+  <div class="info__test">
+    <div class="info__test__photo">
+
+    </div>
+    <div class="info__test__container">
+      <div class="info__who">{{info$?.name}}</div>
+      <div class="info__job">{{info$?.job}}</div>
+
+    </div>
+  </div>
+
+  <app-info-tools *ngIf="false"></app-info-tools>
+  <div class="info__desc"  [innerHTML]="info$?.desc"></div>
   <app-info-skills [experience]="info$?.experience"></app-info-skills>
   <app-info-contacts [contacts]="info$?.contacts"></app-info-contacts>
 </div>

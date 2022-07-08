@@ -15,10 +15,20 @@
   transition: background-color  0.2s ease-in-out,
               color  0.2s ease-in-out,
               border 0.2s ease-in-out;
+
+
   &:hover{
     cursor: pointer;
     background-color: #2A00A2 ;
   }
+
+  &:disabled{
+    opacity: 0.5;
+    cursor: default;
+    background-color: #5F2EEA;
+
+  }
+
 }
 
 @mixin button($size: 16px, $height: 28px, $weight: 600, $spacing: .75px) {
