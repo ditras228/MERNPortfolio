@@ -14,3 +14,7 @@ export const setWorks = createAction(
   "[App] SetWorks",
   (works: GetWork[] | any) => ({ works })
 );
+
+export const okay = createAction(
+  "[App] Okay"
+);

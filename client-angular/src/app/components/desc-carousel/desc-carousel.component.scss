@@ -1,0 +1,45 @@
+@import "../../../../node_modules/swiper/swiper.min.css";
+@import "../../../../node_modules/swiper/swiper-bundle.min.css";
+@import "../../../styles/mixins/icon";
+
+.swiper {
+  width: 465px;
+  height: 100%;
+}
+
+.swiper-slide {
+  /* Center slide text vertically */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+
+  position: relative;
+  &__next{
+    position: absolute;;
+  }
+  &__item{
+    position: relative;
+    padding: 6px 100px 6px 0;
+      b{
+        font-weight: bold;
+    }
+    &:after{
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 76px;
+      width: 76px;
+      @include icon('js/js.svg');
+    }
+  }
+}

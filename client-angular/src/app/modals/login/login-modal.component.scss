@@ -4,39 +4,20 @@
 
 .login{
   padding: 96px 132px;
+  &__form{
+    display: grid;
+    justify-items: center;
+  }
   &__title{
     @include font(48px,50px,  700, 1px);
     text-align: center;
     margin-bottom: 25px;
   }
   &__btn{
-    @include button();
-    width: 100%;
+    @include button-fill();
+    margin-top: 24px;
+    width: 220px;
+    border-radius: 28px;
+    height: 56px;
   }
-}
-.login__form__input__group{
-  position: relative;
-  margin-bottom: 25px;
-
-}
-.login__form__input{
-  @include input();
-  color: #14142B;
-  &:focus{
-    background-color: #FCFCFC;
-  }
-  &:focus ~ .login__form__input__label, &:not(:placeholder-shown) ~ .login__form__input__label{
-    top: 13px;
-    @include font(14px,22px,500,0.25px);
-
-  }
-}
-.login__form__input__label{
-  position: absolute;
-  left: 24px;
-  @include font(16px,28px,400,0.75px);
-  top: 50%;
-  transform: translateY(-50%);
-  color: #6E7191;
-  transition: top 0.1s linear, font-size 0.1s linear;
 }

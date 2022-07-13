@@ -47,9 +47,15 @@ export type GetWork = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  auth: UserOutput;
   deleteWork: GetWork;
   updateInfo: GetInfo;
   updateWork: GetWork;
+};
+
+
+export type MutationAuthArgs = {
+  input: UserInput;
 };
 
 
@@ -67,10 +73,19 @@ export type MutationUpdateWorkArgs = {
   input: UpdateWork;
 };
 
+export type NotFoundError = {
+  __typename?: 'NotFoundError';
+  message: Scalars['String'];
+};
+
 export type Query = {
   __typename?: 'Query';
   getInfo: GetInfo;
   getWorks: Array<Maybe<GetWork>>;
+};
+
+export type ServiceErrorInterface = {
+  message: Scalars['String'];
 };
 
 export type UpdateInfo = {
@@ -92,6 +107,27 @@ export type UpdateWork = {
   tags: Scalars['String'];
 };
 
+export type User = {
+  __typename?: 'User';
+  id: Scalars['Int'];
+  login: Scalars['String'];
+  password: Scalars['String'];
+};
+
+export type UserInput = {
+  login: Scalars['String'];
+  password: Scalars['String'];
+};
+
+export type UserOutput = NotFoundError | User;
+
+export type AuthMutationVariables = Exact<{
+  input: UserInput;
+}>;
+
+
+export type AuthMutation = { __typename?: 'Mutation', auth: { __typename: 'NotFoundError', message: string } | { __typename: 'User', login: string, password: string } };
+
 export type GetWorksQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -103,6 +139,20 @@ export type GetInfoQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetInfoQuery = { __typename?: 'Query', result: { __typename: 'GetInfo', desc: string, experience: string, job: string, name: string, contacts: { __typename?: 'Contacts', telegram: string, github: string } } };
 
 
+export const AuthDocument = `
+    mutation auth($input: UserInput!) {
+  auth(input: $input) {
+    __typename
+    ... on User {
+      login
+      password
+    }
+    ... on NotFoundError {
+      message
+    }
+  }
+}
+    `;
 export const GetWorksDocument = `
     query getWorks {
   __typename
@@ -141,6 +191,9 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    auth(variables: AuthMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<AuthMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AuthMutation>(AuthDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'auth', 'mutation');
+    },
     getWorks(variables?: GetWorksQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetWorksQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetWorksQuery>(GetWorksDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getWorks', 'query');
     },

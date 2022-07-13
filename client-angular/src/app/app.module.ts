@@ -18,6 +18,13 @@ import {AppEffects} from "./store/app.effects";
 import {HttpClientModule} from "@angular/common/http";
 import {LoginModalComponent} from "./modals/login/login-modal.component";
 import {ModalComponent} from "./modals/modal/modal.component";
+import { InputFieldComponent } from './input-field/input-field.component';
+import {FormsModule} from "@angular/forms";
+import {loginModalReducer} from "./modals/login/store/login-modal.reducer";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {LoginEffects} from "./modals/login/store/login-modal.effects";
+import { SwiperModule } from 'swiper/angular';
+import { DescCarouselComponent } from './components/desc-carousel/desc-carousel.component';
 
 @NgModule({
   declarations: [
@@ -30,18 +37,24 @@ import {ModalComponent} from "./modals/modal/modal.component";
     InfoSkillsComponent,
     InfoContactsComponent,
     LoginModalComponent,
-    ModalComponent
+    ModalComponent,
+    InputFieldComponent,
+    DescCarouselComponent
   ],
-  imports: [
-    BrowserModule.withServerTransition({ appId: 'serverApp' }),
-    StoreModule.forRoot({info: appReducer}, {}),
-    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
-    EffectsModule.forRoot([AppEffects]),
-    HttpClientModule
-  ],
+    imports: [
+      SwiperModule,
+
+      BrowserModule.withServerTransition({appId: 'serverApp'}),
+        StoreModule.forRoot({info: appReducer, login: loginModalReducer }, {}),
+        StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
+        EffectsModule.forRoot([AppEffects, LoginEffects]),
+        HttpClientModule,
+        FormsModule,
+        BrowserAnimationsModule,
+    ],
   providers: [
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {
 }

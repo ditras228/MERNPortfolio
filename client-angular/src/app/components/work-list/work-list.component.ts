@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import {selectInfo, selectWorks} from "../../store/app.selectors";
-import {GetInfo, GetWork} from "../../../generated/graphql";
+import { selectWorks} from "../../store/app.selectors";
+import {GetWork} from "../../../generated/graphql";
 import {Store} from "@ngrx/store";
 
 @Component({
   selector: 'app-work-list',
   templateUrl: './work-list.component.html',
-  styleUrls: ['./work-list.component.scss']
+  styleUrls: ['./work-list.component.scss'],
 })
 export class WorkListComponent implements OnInit {
-  works$: GetWork[] | null | undefined
+  works$: GetWork[] | any
 
   constructor(public store$: Store) { }
 

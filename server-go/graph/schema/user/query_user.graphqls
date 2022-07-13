@@ -1,0 +1,12 @@
+type GetInfo{
+  name: String!
+  job: String!
+  desc: String!
+  experience: String!
+  contacts: Contacts!
+}
+
+type Contacts{
+  telegram: String!
+  github: String!
+}

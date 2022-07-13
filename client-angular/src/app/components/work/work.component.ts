@@ -15,7 +15,6 @@ export class WorkComponent implements OnInit {
   ngOnInit(): void {
   }
   public isPortfolio(url: any):boolean{
-    console.log(window.location)
     return window.location.origin==url
   }
   public openLink(url: any): void{

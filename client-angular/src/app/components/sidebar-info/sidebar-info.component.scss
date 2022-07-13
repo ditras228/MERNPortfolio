@@ -4,38 +4,42 @@
 
 .info{
   margin-bottom: 32px;
-    padding: 0 21px 0 21px;
+  padding: 0 21px 0 21px;
 
   &__test{
     display: grid;
     grid-template-columns: auto 1fr;
-    grid-column-gap: 25px;
     text-align: right;
-
+    align-content: center;
+    margin-bottom: 50px;
+    &__container{
+      display: grid;
+      align-content: center;
+    }
     &__photo{
-      width: 100px;
-      height: 100px;
+      width: 75px;
+      height: 75px;
        @include icon("/Photos.png");
       background-size: cover;
+      border-radius: 50%;
+      border: solid 3px #fff;
+      outline: solid 3px #5F2EEA
+
     }
   }
-  &__who{
-    @include font(32px, 36px, 400, 2.9px);
-    color: #14142B;
+  &__who {
+    @include font(32px, 36px, 700, 1px);
     margin-bottom: 8px;
+    position: relative;
 
-    @include screen-lg{
+    @include screen-lg {
       margin-bottom: 10px;
 
-
-      background-color: #5f2eea;
-      color: #FFFFFF;
     }
   }
 
   &__job{
-    @include font(24px, 32px, 700, 1.5px);
-    font-weight: bold;
+    @include font(24px, 32px, 400, 1.5px);
     margin-bottom: 10px;
     @include screen-lg{
       margin: 0;
@@ -46,10 +50,8 @@
   &__desc{
     @include font(20px, 32px, 400, 1.5px);
     margin-bottom: 23px;
-    color: #4E4B66;
-    padding-left: 3px;
+    color: black;
     text-align: right;
-
     @include screen-lg{
       margin-bottom: 19px;
     }

@@ -3,11 +3,8 @@
     Админка
   </div>
   <div class="login__form">
-    <div class="login__form__input__group">
-      <input type="text" placeholder=" " class="login__form__input">
-      <label class="login__form__input__label" >Логин</label>
-    </div>
-    <input type="text" placeholder="Пороль" class="login__form__input">
-    <button class="login__btn">Войти</button>
+    <app-input-field [placeholder]="'Логин'" [internalValue]="login.value" (valueChange)="login.patchValue($event)" ></app-input-field>
+    <app-input-field [placeholder]="'Пароль'" [internalValue]="password.value" (valueChange)="password.patchValue($event)" ></app-input-field>
+    <button class="login__btn" (click)="sendForm()">Войти</button>
   </div>
 </div>

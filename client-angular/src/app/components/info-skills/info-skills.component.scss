@@ -2,6 +2,9 @@
 @import "../../../styles/mixins/screen";
 
 .skills {
+  display: grid;
+  align-content: center;
+  height: 100%;
   ul {
     display: grid;
     margin-bottom: 31px;

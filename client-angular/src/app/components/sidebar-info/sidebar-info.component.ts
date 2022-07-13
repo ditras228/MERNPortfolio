@@ -1,13 +1,15 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {Store} from "@ngrx/store";
 import {selectInfo} from "../../store/app.selectors";
 import {GetInfo} from "../../../generated/graphql";
-import {LinkService} from "../../services/link.service";
+import {SwiperOptions} from "swiper";
+import {SwiperComponent} from "swiper/angular";
 
 @Component({
   selector: 'app-sidebar-info',
   templateUrl: './sidebar-info.component.html',
-  styleUrls: ['./sidebar-info.component.scss']
+  styleUrls: ['./sidebar-info.component.scss'] ,
+  encapsulation: ViewEncapsulation.None
 })
 export class SidebarInfoComponent implements OnInit {
   info$: GetInfo | undefined
@@ -17,7 +19,13 @@ export class SidebarInfoComponent implements OnInit {
 
   ) {
   }
-
+  @ViewChild('swiper', { static: false }) swiper?: SwiperComponent;
+  slideNext(){
+    this.swiper?.swiperRef.slideNext(100);
+  }
+  slidePrev(){
+    this.swiper?.swiperRef.slidePrev(100);
+  }
   ngOnInit(): void {
     this.store$.select(selectInfo).subscribe(info => {
         this.info$ = info

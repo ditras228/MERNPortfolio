@@ -11,7 +11,14 @@
   </div>
 
   <app-info-tools *ngIf="false"></app-info-tools>
-  <div class="info__desc"  [innerHTML]="info$?.desc"></div>
+
+
+  <div class="info__desc" >
+   <app-desc-carousel [info$]="info$"></app-desc-carousel>
+
+
+
+  </div>
   <app-info-skills [experience]="info$?.experience"></app-info-skills>
   <app-info-contacts [contacts]="info$?.contacts"></app-info-contacts>
 </div>
