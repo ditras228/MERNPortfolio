@@ -1,4 +1,4 @@
-package work
+package user
 
 import (
 	"context"
@@ -6,5 +6,5 @@ import (
 )
 
 type Repository interface {
-	FindAll(ctx context.Context) ([]*model.GetWork, error)
+	Auth(ctx context.Context, input model.UserInput) (model.UserOutput, error)
 }

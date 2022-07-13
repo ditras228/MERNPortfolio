@@ -1,2 +1,1 @@
-DROP table public.work;
-DROP table public.info;
+DROP table public.user;

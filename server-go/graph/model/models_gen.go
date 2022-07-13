@@ -2,6 +2,14 @@
 
 package model
 
+type ServiceErrorInterface interface {
+	IsServiceErrorInterface()
+}
+
+type UserOutput interface {
+	IsUserOutput()
+}
+
 type Contacts struct {
 	Telegram string `json:"telegram"`
 	Github   string `json:"github"`
@@ -29,6 +37,12 @@ type GetWork struct {
 	Figma       string  `json:"figma"`
 }
 
+type NotFoundError struct {
+	Message string `json:"message"`
+}
+
+func (NotFoundError) IsUserOutput() {}
+
 type UpdateInfo struct {
 	Name       string `json:"name"`
 	Job        string `json:"job"`
@@ -46,4 +60,17 @@ type UpdateWork struct {
 	Github      *string `json:"github"`
 	Demo        string  `json:"demo"`
 	Figma       string  `json:"figma"`
+}
+
+type User struct {
+	ID       int    `json:"id"`
+	Login    string `json:"login"`
+	Password string `json:"password"`
+}
+
+func (User) IsUserOutput() {}
+
+type UserInput struct {
+	Login    string `json:"login"`
+	Password string `json:"password"`
 }

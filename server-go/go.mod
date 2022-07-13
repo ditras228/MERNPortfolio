@@ -11,6 +11,7 @@ require (
 	github.com/jackc/pgx/v4 v4.10.1
 	github.com/rs/cors v1.8.2
 	github.com/vektah/gqlparser/v2 v2.4.5
+	github.com/ztrue/tracerr v0.3.0
 )
 
 require (
@@ -29,6 +30,7 @@ require (
 	github.com/joho/godotenv v1.4.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/lib/pq v1.10.0 // indirect
+	github.com/logrusorgru/aurora v0.0.0-20181002194514-a7b3b318ed4e // indirect
 	github.com/matryer/moq v0.2.7 // indirect
 	github.com/mitchellh/mapstructure v1.3.1 // indirect
 	github.com/pkg/errors v0.9.1 // indirect

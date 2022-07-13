@@ -1,12 +1,13 @@
-type GetInfo{
-  name: String!
-  job: String!
-  desc: String!
-  experience: String!
-  contacts: Contacts!
+type User{
+  id: Int!
+  login: String!
+  password: String!
 }
 
-type Contacts{
-  telegram: String!
-  github: String!
+type NotFoundError {
+  message: String!
 }
+
+union UserOutput =
+  User |
+  NotFoundError

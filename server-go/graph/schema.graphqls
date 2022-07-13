@@ -15,5 +15,8 @@ type Mutation {
 
   # Удалить работу
   deleteWork(input: DeleteWork!): GetWork!
+
+  # Логин
+  auth(input: UserInput!): UserOutput!
 }
 

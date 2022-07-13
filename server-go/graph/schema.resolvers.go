@@ -34,6 +34,15 @@ func (r *mutationResolver) DeleteWork(ctx context.Context, input model.DeleteWor
 	panic(fmt.Errorf("not implemented"))
 }
 
+func (r *mutationResolver) Auth(ctx context.Context, input model.UserInput) (model.UserOutput, error) {
+	user, err := container.UserRepository.Auth(context.TODO(), input)
+	if err != nil {
+
+		return nil, err
+	}
+	return user, nil
+}
+
 func (r *queryResolver) GetInfo(ctx context.Context) (*model.GetInfo, error) {
 	one, err := container.InfoRepository.FindOne(context.TODO())
 	if err != nil {

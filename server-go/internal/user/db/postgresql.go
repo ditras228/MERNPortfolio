@@ -1,46 +1,49 @@
-package work
+package user
 
 import (
 	"context"
+	"github.com/ztrue/tracerr"
 	"portfolio/graph/model"
 	"portfolio/infrastructure/postgresql"
-	"portfolio/internal/work"
+	"portfolio/internal/user"
 )
 
 type repository struct {
 	client postgres.Client
 }
 
-func (r *repository) FindAll(ctx context.Context) ([]*model.GetWork, error) {
+func (r *repository) Auth(ctx context.Context, input model.UserInput) (model.UserOutput, error) {
+	if input.Login == "" {
+		return nil, tracerr.Errorf("Логин не может быть пустым")
+	}
+	if input.Password == "" {
+		return nil, tracerr.Errorf("Пароль не может быть пустым")
+	}
+
 	q := `
 		SELECT 
-			id, name, tags, description,
-			github, demo
+			login, password
 
-		FROM public.work 
+		FROM public.user
+
+		WHERE login = $1
 		`
-	rows, err := r.client.Query(ctx, q)
 
+	var usr model.User
+	row := r.client.QueryRow(ctx, q, input.Login)
+
+	err := row.Scan(&usr.Login, &usr.Password)
 	if err != nil {
-		return nil, err
+		return nil, tracerr.Errorf("Unexpected error: ", err.Error())
 	}
-	works := make([]*model.GetWork, 0)
-	for rows.Next() {
-		var wrk model.GetWork
 
-		err = rows.Scan(&wrk.ID, &wrk.Name, &wrk.Tags, &wrk.Description,
-			&wrk.Github, &wrk.Demo)
-		if err != nil {
-			return nil, err
-		}
-		works = append(works, &wrk)
+	if usr.Login == input.Login && usr.Password != input.Password {
+		return nil, tracerr.Errorf("Неверный пароль")
 	}
-	if err = rows.Err(); err != nil {
-		return nil, err
-	}
-	return works, nil
+
+	return usr, nil
 }
-func NewRepository(client postgres.Client) work.Repository {
+func NewRepository(client postgres.Client) user.Repository {
 	return &repository{
 		client: client,
 	}

@@ -11,7 +11,7 @@ CREATE TABLE public.info
 
 INSERT INTO public.info(id, name, job, description, experience, telegram, github)
 VALUES (0, 'Дмитрий Дружинин', 'Middle Fullstack',
-        'Созданием сайтов различной сложности занимаюсь более <b>трёх</b> лет',
+        'Созданием сайтов занимаюсь более <b>трёх</b> лет',
         '<ul> <li> коммерческой опыт <br/> разработки в команде </li> <li> исправлял и разрабатывал<br/> функционал на Angular </li> <li> разрабатывал API с <br/>использованием GraphQl </li> <li> разрабатывал серверную<br/> логику на Golang </li> </ul>',
         '+7 (911) 878-03-02',
         'ditras228');
