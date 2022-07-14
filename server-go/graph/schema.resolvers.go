@@ -37,7 +37,6 @@ func (r *mutationResolver) DeleteWork(ctx context.Context, input model.DeleteWor
 func (r *mutationResolver) Auth(ctx context.Context, input model.UserInput) (model.UserOutput, error) {
 	user, err := container.UserRepository.Auth(context.TODO(), input)
 	if err != nil {
-
 		return nil, err
 	}
 	return user, nil

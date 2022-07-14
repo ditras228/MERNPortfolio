@@ -88,6 +88,10 @@ type ComplexityRoot struct {
 		Login    func(childComplexity int) int
 		Password func(childComplexity int) int
 	}
+
+	WrongPassword struct {
+		Message func(childComplexity int) int
+	}
 }
 
 type MutationResolver interface {
@@ -304,6 +308,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.User.Password(childComplexity), true
 
+	case "WrongPassword.message":
+		if e.complexity.WrongPassword.Message == nil {
+			break
+		}
+
+		return e.complexity.WrongPassword.Message(childComplexity), true
+
 	}
 	return 0, false
 }
@@ -438,13 +449,16 @@ input  DeleteWork{
   password: String!
 }
 
-type NotFoundError {
+type NotFoundError implements ServiceErrorInterface{
   message: String!
 }
-
+type WrongPassword implements ServiceErrorInterface{
+  message: String!
+}
 union UserOutput =
   User |
-  NotFoundError`, BuiltIn: false},
+  NotFoundError |
+  WrongPassword`, BuiltIn: false},
 	{Name: "../schema.graphqls", Input: `type Query {
   # Получить инфу
   getInfo: GetInfo!
@@ -1882,6 +1896,50 @@ func (ec *executionContext) _User_password(ctx context.Context, field graphql.Co
 func (ec *executionContext) fieldContext_User_password(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "User",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _WrongPassword_message(ctx context.Context, field graphql.CollectedField, obj *model.WrongPassword) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_WrongPassword_message(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Message, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_WrongPassword_message(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "WrongPassword",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
@@ -3861,6 +3919,20 @@ func (ec *executionContext) _ServiceErrorInterface(ctx context.Context, sel ast.
 	switch obj := (obj).(type) {
 	case nil:
 		return graphql.Null
+	case model.NotFoundError:
+		return ec._NotFoundError(ctx, sel, &obj)
+	case *model.NotFoundError:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._NotFoundError(ctx, sel, obj)
+	case model.WrongPassword:
+		return ec._WrongPassword(ctx, sel, &obj)
+	case *model.WrongPassword:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._WrongPassword(ctx, sel, obj)
 	default:
 		panic(fmt.Errorf("unexpected type %T", obj))
 	}
@@ -3884,6 +3956,13 @@ func (ec *executionContext) _UserOutput(ctx context.Context, sel ast.SelectionSe
 			return graphql.Null
 		}
 		return ec._NotFoundError(ctx, sel, obj)
+	case model.WrongPassword:
+		return ec._WrongPassword(ctx, sel, &obj)
+	case *model.WrongPassword:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._WrongPassword(ctx, sel, obj)
 	default:
 		panic(fmt.Errorf("unexpected type %T", obj))
 	}
@@ -4117,7 +4196,7 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 	return out
 }
 
-var notFoundErrorImplementors = []string{"NotFoundError", "UserOutput"}
+var notFoundErrorImplementors = []string{"NotFoundError", "ServiceErrorInterface", "UserOutput"}
 
 func (ec *executionContext) _NotFoundError(ctx context.Context, sel ast.SelectionSet, obj *model.NotFoundError) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, notFoundErrorImplementors)
@@ -4260,6 +4339,34 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 		case "password":
 
 			out.Values[i] = ec._User_password(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var wrongPasswordImplementors = []string{"WrongPassword", "ServiceErrorInterface", "UserOutput"}
+
+func (ec *executionContext) _WrongPassword(ctx context.Context, sel ast.SelectionSet, obj *model.WrongPassword) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, wrongPasswordImplementors)
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("WrongPassword")
+		case "message":
+
+			out.Values[i] = ec._WrongPassword_message(ctx, field, obj)
 
 			if out.Values[i] == graphql.Null {
 				invalids++

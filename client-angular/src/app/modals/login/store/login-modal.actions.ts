@@ -15,3 +15,11 @@ export const submitLoginForm = createAction(
 export const setLoginVisible = createAction(
   "[App] isLoginVisible"
 );
+export const setError = createAction(
+  "[App] SetError",
+  (error: string) => ({ error })
+);
+export const setAuth = createAction(
+  "[App] Auth",
+  (isAuth:boolean)=>({isAuth})
+);

@@ -3,6 +3,7 @@ import {Store} from "@ngrx/store";
 import {selectIsLoginVisible} from "../login/store/login-modal.selectors";
 import {setLoginVisible} from "../login/store/login-modal.actions";
 import {fadeAnimation, modalAnimation} from "../../app.animation";
+import {setLock} from "../../store/app.actions";
 
 @Component({
   selector: 'app-modal',
@@ -20,6 +21,7 @@ export class ModalComponent implements OnInit{
   }
   closeModal():void{
     this.store$.dispatch(setLoginVisible())
+
   }
 
 }

@@ -6,7 +6,15 @@
 .app{
   overflow: hidden;
   @include screen-lg {
-
+    &--no-scroll{
+      position: fixed;
+      overflow: hidden;
+      margin-right: 15px;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
     &__container {
       display: grid;
       max-width: 1200px;

@@ -4,4 +4,6 @@
          (ngModelChange)="internalValueUpdate.next($event)"
   >
   <label class="input__label" >{{placeholder}}</label>
+
+  <div class="input__error" *ngIf="error">{{error}}</div>
 </div>

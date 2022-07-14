@@ -73,7 +73,7 @@ export type MutationUpdateWorkArgs = {
   input: UpdateWork;
 };
 
-export type NotFoundError = {
+export type NotFoundError = ServiceErrorInterface & {
   __typename?: 'NotFoundError';
   message: Scalars['String'];
 };
@@ -119,14 +119,19 @@ export type UserInput = {
   password: Scalars['String'];
 };
 
-export type UserOutput = NotFoundError | User;
+export type UserOutput = NotFoundError | User | WrongPassword;
+
+export type WrongPassword = ServiceErrorInterface & {
+  __typename?: 'WrongPassword';
+  message: Scalars['String'];
+};
 
 export type AuthMutationVariables = Exact<{
   input: UserInput;
 }>;
 
 
-export type AuthMutation = { __typename?: 'Mutation', auth: { __typename: 'NotFoundError', message: string } | { __typename: 'User', login: string, password: string } };
+export type AuthMutation = { __typename?: 'Mutation', auth: { __typename: 'NotFoundError', message: string } | { __typename: 'User', login: string, password: string } | { __typename: 'WrongPassword', message: string } };
 
 export type GetWorksQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -148,6 +153,9 @@ export const AuthDocument = `
       password
     }
     ... on NotFoundError {
+      message
+    }
+    ... on WrongPassword {
       message
     }
   }

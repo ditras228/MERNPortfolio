@@ -3,8 +3,9 @@
     Админка
   </div>
   <div class="login__form">
-    <app-input-field [placeholder]="'Логин'" [internalValue]="login.value" (valueChange)="login.patchValue($event)" ></app-input-field>
-    <app-input-field [placeholder]="'Пароль'" [internalValue]="password.value" (valueChange)="password.patchValue($event)" ></app-input-field>
+    <app-input-field [error]="errors?.['login']" [placeholder]="'Логин'" [internalValue]="login.value" (valueChange)="login.patchValue($event)" ></app-input-field>
+    <app-input-field [error]="errors?.['password']"  [placeholder]="'Пароль'" [internalValue]="password.value" (valueChange)="password.patchValue($event)" ></app-input-field>
+    <div>{{serverError}}</div>
     <button class="login__btn" (click)="sendForm()">Войти</button>
   </div>
 </div>

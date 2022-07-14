@@ -5,8 +5,6 @@
 .contacts{
   display: grid;
   grid-row-gap: 12px;
-  padding-left: 3px;
-  padding-right: 3px;
 
   &__item{
     $root: &;

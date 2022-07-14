@@ -4,10 +4,13 @@ type User{
   password: String!
 }
 
-type NotFoundError {
+type NotFoundError implements ServiceErrorInterface{
   message: String!
 }
-
+type WrongPassword implements ServiceErrorInterface{
+  message: String!
+}
 union UserOutput =
   User |
-  NotFoundError
+  NotFoundError |
+  WrongPassword

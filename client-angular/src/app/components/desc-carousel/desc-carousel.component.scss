@@ -1,10 +1,15 @@
 @import "../../../../node_modules/swiper/swiper.min.css";
 @import "../../../../node_modules/swiper/swiper-bundle.min.css";
 @import "../../../styles/mixins/icon";
+@import "../../../styles/mixins/screen";
 
 .swiper {
-  width: 465px;
-  height: 100%;
+  padding-top: 45px;
+  width: calc(100vw - 40px);
+
+  @include screen-lg{
+      width: 465px;
+  }
 }
 
 .swiper-slide {
@@ -27,19 +32,15 @@
     position: absolute;;
   }
   &__item{
-    position: relative;
-    padding: 6px 100px 6px 0;
+    display: grid;
+    grid-template-columns: 1fr 76px;
+    grid-column-gap: 25px;
+    padding: 25px 25px 6px 0;
       b{
         font-weight: bold;
     }
-    &:after{
-      content: '';
-      position: absolute;
-      right: 0;
-      top: 0;
-      height: 76px;
-      width: 76px;
-      @include icon('js/js.svg');
+    @include screen-lg{
+      padding: 0;
     }
   }
 }

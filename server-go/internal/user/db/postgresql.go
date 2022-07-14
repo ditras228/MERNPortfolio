@@ -34,11 +34,11 @@ func (r *repository) Auth(ctx context.Context, input model.UserInput) (model.Use
 
 	err := row.Scan(&usr.Login, &usr.Password)
 	if err != nil {
-		return nil, tracerr.Errorf("Unexpected error: ", err.Error())
+		return model.NotFoundError{Message: "Пользователь не найден"}, nil
 	}
 
 	if usr.Login == input.Login && usr.Password != input.Password {
-		return nil, tracerr.Errorf("Неверный пароль")
+		return model.WrongPassword{Message: "Неверный пароль"}, nil
 	}
 
 	return usr, nil

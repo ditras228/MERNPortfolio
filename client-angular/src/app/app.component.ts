@@ -3,6 +3,7 @@ import {getInfo, getWorks} from "./store/app.actions";
 import {Store} from "@ngrx/store";
 
 import {isPlatformBrowser, isPlatformServer} from '@angular/common';
+import {selectLock} from "./modals/login/store/login-modal.selectors";
 
 
 
@@ -14,13 +15,14 @@ import {isPlatformBrowser, isPlatformServer} from '@angular/common';
 })
 export class AppComponent implements OnInit{
   title = 'client-angular';
-
+  public isLock = false as boolean
   constructor(private store$: Store,
               @Inject(PLATFORM_ID) private platformId
   ) { }
 
   ngOnInit(): void{
     if(isPlatformBrowser(this.platformId)){
+      this.store$.select(selectLock).subscribe(value=> this.isLock=value)
       this.store$.dispatch(getWorks())
       this.store$.dispatch(getInfo())
     }

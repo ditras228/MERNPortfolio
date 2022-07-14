@@ -41,7 +41,8 @@ type NotFoundError struct {
 	Message string `json:"message"`
 }
 
-func (NotFoundError) IsUserOutput() {}
+func (NotFoundError) IsServiceErrorInterface() {}
+func (NotFoundError) IsUserOutput()            {}
 
 type UpdateInfo struct {
 	Name       string `json:"name"`
@@ -74,3 +75,10 @@ type UserInput struct {
 	Login    string `json:"login"`
 	Password string `json:"password"`
 }
+
+type WrongPassword struct {
+	Message string `json:"message"`
+}
+
+func (WrongPassword) IsServiceErrorInterface() {}
+func (WrongPassword) IsUserOutput()            {}

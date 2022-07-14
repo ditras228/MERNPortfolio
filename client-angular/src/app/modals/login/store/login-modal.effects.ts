@@ -11,7 +11,7 @@ import {GrapqlService} from "../../../services/grapql.service";
 import {HttpClient} from '@angular/common/http';
 import {switchMap, withLatestFrom} from "rxjs";
 import {map} from "rxjs/operators";
-import {setLoginForm, submitLoginForm} from "./login-modal.actions";
+import {setAuth, setError, setLoginForm, setLoginVisible, submitLoginForm} from "./login-modal.actions";
 import {okay} from "../../../store/app.actions";
 import {Store} from "@ngrx/store";
 import {selectLoginInput} from "./login-modal.selectors";
@@ -31,15 +31,32 @@ export class LoginEffects extends GrapqlService {
       switchMap(([_, state]) => {
         const formValues = selectLoginInput(state)
         console.log(formValues.login)
-        return this.doRequest<AuthMutation>(AuthDocument, {input:{login: formValues.login, password: formValues.password}} as AuthMutationVariables)
+        return this.doRequest<AuthMutation>(AuthDocument, {
+          input: {
+            login: formValues.login,
+            password: formValues.password
+          }
+        } as AuthMutationVariables)
           .pipe(map(({auth}) => {
-              if (auth.__typename === "NotFoundError") {
-                console.log('err!')
+              switch (auth.__typename) {
+                case "NotFoundError": {
+                  this.store$.dispatch(setError(auth.message))
+                  break
+                }
+                case "WrongPassword": {
+                  this.store$.dispatch(setError(auth.message))
+                  break
+                }
+                case "User": {
+                  this.store$.dispatch(setAuth(true))
+                  this.store$.dispatch(setLoginVisible())
+                  break
+                }
+                default:{
+                  this.store$.dispatch(setError('Непредвиденная ошибка'))
+                  break
+                }
               }
-              if (auth.__typename === "User") {
-                setLoginForm(auth)
-              }
-
               return okay()
             }
           ))

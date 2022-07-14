@@ -2,10 +2,15 @@
 
 .input{
   position: relative;
-  margin-bottom: 25px;
+  margin-bottom: 40px;
   $root: &;
 
-
+  &__error{
+    color: #C30052;
+    @include font(14px,22px,500, 1.5px);
+    position: absolute;
+    bottom: -28px;
+  }
   &__field{
     @include input();
     color: #14142B;

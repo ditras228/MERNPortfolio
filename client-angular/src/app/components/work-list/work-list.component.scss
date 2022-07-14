@@ -3,7 +3,6 @@
 .work-list{
   display: grid;
   grid-row-gap: 50px;
-
   @include screen-lg{
     grid-column: 2/3;
     margin-bottom: 100px;

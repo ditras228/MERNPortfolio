@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Store} from "@ngrx/store";
 import {getWorks, setInfo} from "../../store/app.actions";
-import {selectIsLoginVisible} from "../../modals/login/store/login-modal.selectors";
+import {selectIsAuth, selectIsLoginVisible} from "../../modals/login/store/login-modal.selectors";
 import {setLoginVisible} from "../../modals/login/store/login-modal.actions";
 
 @Component({
@@ -9,8 +9,12 @@ import {setLoginVisible} from "../../modals/login/store/login-modal.actions";
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent  {
+export class NavbarComponent implements OnInit {
+  public isAuth
   constructor(public store$: Store) {
+  }
+  ngOnInit() {
+    this.store$.select(selectIsAuth).subscribe(value=>this.isAuth=value)
   }
 
   showLoginHandler():void{

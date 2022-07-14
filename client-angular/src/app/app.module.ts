@@ -39,7 +39,7 @@ import { DescCarouselComponent } from './components/desc-carousel/desc-carousel.
     LoginModalComponent,
     ModalComponent,
     InputFieldComponent,
-    DescCarouselComponent
+    DescCarouselComponent,
   ],
     imports: [
       SwiperModule,
