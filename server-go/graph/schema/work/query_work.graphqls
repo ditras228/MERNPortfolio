@@ -1,7 +1,7 @@
 type  GetWork{
   id: Int!
   name: String!
-  tags: String!
+  tags: [GetTag]!
   description: String!
   github: String
   demo: String!

@@ -5,6 +5,7 @@ import {GetInfo} from "../../../generated/graphql";
 import {SwiperOptions} from "swiper";
 import {SwiperComponent} from "swiper/angular";
 import {fadeAnimation} from "../../app.animation";
+import {setEditInfoVisible} from "../../modals/login/store/login-modal.actions";
 
 @Component({
   selector: 'app-sidebar-info',
@@ -21,12 +22,9 @@ export class SidebarInfoComponent implements OnInit {
 
   ) {
   }
-  @ViewChild('swiper', { static: false }) swiper?: SwiperComponent;
-  slideNext(){
-    this.swiper?.swiperRef.slideNext(100);
-  }
-  slidePrev(){
-    this.swiper?.swiperRef.slidePrev(100);
+
+  editInfoHandler():void{
+      this.store$.dispatch(setEditInfoVisible())
   }
   ngOnInit(): void {
     this.store$.select(selectInfo).subscribe(info => {

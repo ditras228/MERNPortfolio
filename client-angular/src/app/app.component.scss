@@ -15,7 +15,7 @@
       right: 0;
       bottom: 0;
     }
-    &__container {
+    &__content {
       display: grid;
       max-width: 1200px;
       margin: 0 auto;
@@ -23,5 +23,6 @@
       grid-template-columns: 465px 1fr;
       grid-column-gap: 106px;
     }
+
   }
 }

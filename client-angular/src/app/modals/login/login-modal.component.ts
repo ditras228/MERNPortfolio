@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Store} from "@ngrx/store";
-import {loginInputs, setError, setLoginForm, submitLoginForm} from "./store/login-modal.actions";
+import {setError, setLoginForm, setLoginVisible, submitLoginForm} from "./store/login-modal.actions";
 import {sprintf} from 'sprintf-js'
 import {selectLoginError} from "./store/login-modal.selectors";
 
@@ -28,6 +28,10 @@ export class LoginModalComponent implements OnInit {
   }
 
   constructor(public store$: Store) {
+  }
+
+  closeModal():void{
+    this.store$.dispatch(setLoginVisible())
   }
 
   public getMessage(key: string, ...placeholders): string {

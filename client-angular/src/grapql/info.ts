@@ -1,18 +1,16 @@
 import {gql} from "apollo-angular";
 
-export const getWorksQuery = gql`
-  query getWorks {
-    __typename
-
-    result: getWorks {
+export const getInfoQuery = gql`
+  query getInfo {
+    result: getInfo {
       __typename
-      demo
-      description
-      figma
-      github
-      id
+      desc
+      experience
+      job
       name
-      tags
+      contacts{
+        telegram
+        github
+      }
     }
-  }
-`;
+  }`;

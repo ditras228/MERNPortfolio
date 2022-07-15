@@ -1,0 +1,27 @@
+<div class="edit-info">
+  <div class="edit-info__close" (click)="closeModal()"></div>
+
+  <app-input-field class="edit-info__field" [error]="errors?.['name']" [placeholder]="'Логин'"
+                   [internalValue]="name.value"
+                   (valueChange)="name.patchValue($event)"></app-input-field>
+  <app-input-field class="edit-info__field" [error]="errors?.['job']" [placeholder]="'Грейд'"
+                   [internalValue]="job.value"
+                   (valueChange)="job.patchValue($event)"></app-input-field>
+  <app-input-field class="edit-info__field" [error]="errors?.['desc']" [placeholder]="'Описание'"
+                   [internalValue]="desc.value"
+                   (valueChange)="desc.patchValue($event)"></app-input-field>
+  <app-text-area class="edit-info__field" [error]="errors?.['skills']" [placeholder]="'Навыки'"
+                 [internalValue]="experience.value" [rows]="10"
+                 (valueChange)="experience.patchValue($event)"></app-text-area>
+
+  <div class="edit-info__grid">
+    <app-input-field class="edit-info__grid__field" [error]="errors?.['phone']" [placeholder]="'Телеграм'"
+                     [internalValue]="telegram.value"
+                     (valueChange)="telegram.patchValue($event)"></app-input-field>
+    <app-input-field class="edit-info__grid__field" [error]="errors?.['github']" [placeholder]="'Гитхаб'"
+                     [internalValue]="github.value"
+                     (valueChange)="github.patchValue($event)"></app-input-field>
+  </div>
+  <button class="edit-info__button">Применить</button>
+
+</div>

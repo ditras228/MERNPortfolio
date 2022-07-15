@@ -5,12 +5,13 @@ import {GetInfo, GetWork} from "../../generated/graphql";
 export interface State {
   isLock: boolean,
   info: GetInfo,
-  works: GetWork[] | null
+  works: GetWork[] | null,
+
 }
 const initialState: State = {
   isLock: false,
   info: {} as unknown as GetInfo,
-  works: [] as GetWork[]
+  works: [] as GetWork[],
 }
 export const appReducer= createReducer(
   initialState,

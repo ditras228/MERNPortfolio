@@ -16,16 +16,5 @@
   top: 50%;
   transform: translate(-50%, -50%);
   border-radius: 24px;
-  &__close{
-    position: absolute;
-    right: 25px;
-    top: 28px;
-    @include icon('/close/Close.svg');
-    width: 22px;
-    height: 22px;
 
-    &:hover{
-      cursor: pointer;
-    }
-  }
 }

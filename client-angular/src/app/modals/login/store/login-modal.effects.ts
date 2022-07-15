@@ -49,6 +49,7 @@ export class LoginEffects extends GrapqlService {
                 }
                 case "User": {
                   this.store$.dispatch(setAuth(true))
+                  localStorage.setItem("token", auth.accessToken);
                   this.store$.dispatch(setLoginVisible())
                   break
                 }

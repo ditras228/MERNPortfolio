@@ -18,13 +18,16 @@ import {AppEffects} from "./store/app.effects";
 import {HttpClientModule} from "@angular/common/http";
 import {LoginModalComponent} from "./modals/login/login-modal.component";
 import {ModalComponent} from "./modals/modal/modal.component";
-import { InputFieldComponent } from './input-field/input-field.component';
+import { InputFieldComponent } from './components/input-field/input-field.component';
 import {FormsModule} from "@angular/forms";
 import {loginModalReducer} from "./modals/login/store/login-modal.reducer";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {LoginEffects} from "./modals/login/store/login-modal.effects";
 import { SwiperModule } from 'swiper/angular';
 import { DescCarouselComponent } from './components/desc-carousel/desc-carousel.component';
+import { TextAreaComponent } from './components/text-area/text-area.component';
+import { EditInfoComponent } from './modals/edit-info/edit-info.component';
+import { EditWorkComponent } from './modals/edit-work/edit-work.component';
 
 @NgModule({
   declarations: [
@@ -36,10 +39,14 @@ import { DescCarouselComponent } from './components/desc-carousel/desc-carousel.
     InfoToolsComponent,
     InfoSkillsComponent,
     InfoContactsComponent,
-    LoginModalComponent,
     ModalComponent,
+
+    LoginModalComponent,
     InputFieldComponent,
     DescCarouselComponent,
+    TextAreaComponent,
+    EditInfoComponent,
+    EditWorkComponent,
   ],
     imports: [
       SwiperModule,

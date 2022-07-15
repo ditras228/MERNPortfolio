@@ -6,6 +6,7 @@ import (
 	modeld "portfolio/graph/model/GetInfo"
 	"portfolio/infrastructure/postgresql"
 	"portfolio/internal/info"
+	"portfolio/pkg/utils"
 )
 
 type repository struct {
@@ -47,7 +48,9 @@ func (r *repository) FindOne(ctx context.Context) (model.GetInfo, error) {
 	infModel.Name = inf.Name
 	infModel.Desc = inf.Desc
 	infModel.Job = inf.Job
-	infModel.Experience = inf.Experience
+
+	infModel.Experience = utils.FormatHTML(inf.Experience)
+
 	infModel.Contacts = &model.Contacts{
 		Telegram: inf.Telegram,
 		Github:   inf.Github,

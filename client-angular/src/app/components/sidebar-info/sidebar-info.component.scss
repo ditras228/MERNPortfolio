@@ -1,11 +1,24 @@
 @import "../../../styles/mixins/font";
 @import "../../../styles/mixins/screen";
 @import "../../../styles/mixins/icon";
+@import "../../../styles/mixins/button";
 
 .info{
   margin-bottom: 32px;
   padding: 0 21px 0 21px;
-
+  &__edit{
+    @include button-small();
+    left: -120px;
+    top: 50px;
+    position: absolute;
+    display: grid;
+    justify-content: center;
+    &__icon{
+      @include icon('icon/edit.svg');
+      width: 30px;
+      height: 30px;
+    }
+  }
   &__test{
     align-content: center;
     text-align: center;

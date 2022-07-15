@@ -1,0 +1,19 @@
+<div class="edit-work">
+  <div class="edit-work__close" (click)="closeModal()"></div>
+
+  <app-input-field class="edit-work__field" [error]="errors?.['name']" [placeholder]="'Название'" [internalValue]="name.value"
+                   (valueChange)="name.patchValue($event)"></app-input-field>
+  <app-input-field class="edit-work__field" [error]="errors?.['tags']" [placeholder]="'Теги'" [internalValue]="tags.value"
+                   (valueChange)="tags.patchValue($event)"></app-input-field>
+  <app-text-area   class="edit-work__field" [error]="errors?.['description']" [placeholder]="'Описание'" [internalValue]="description.value" [rows]="9"
+                   (valueChange)="description.patchValue($event)"></app-text-area>
+
+  <div class="edit-work__grid">
+    <app-input-field class="edit-work__grid__field" [error]="errors?.['github']" [placeholder]="'Гитхаб'" [internalValue]="github.value"
+                     (valueChange)="github.patchValue($event)"></app-input-field>
+    <app-input-field class="edit-work__grid__field" [error]="errors?.['demo']" [placeholder]="'Демо'" [internalValue]="demo.value"
+                     (valueChange)="demo.patchValue($event)"></app-input-field>
+  </div>
+
+  <button class="edit-work__button">Применить</button>
+</div>

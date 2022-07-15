@@ -34,6 +34,12 @@ export type GetInfo = {
   name: Scalars['String'];
 };
 
+export type GetTag = {
+  __typename?: 'GetTag';
+  id: Scalars['Int'];
+  title: Scalars['String'];
+};
+
 export type GetWork = {
   __typename?: 'GetWork';
   demo: Scalars['String'];
@@ -42,7 +48,14 @@ export type GetWork = {
   github?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   name: Scalars['String'];
-  tags: Scalars['String'];
+  tags: Array<Maybe<GetTag>>;
+};
+
+export type GetWorkTag = {
+  __typename?: 'GetWorkTag';
+  id: Scalars['Int'];
+  tagId: Scalars['Int'];
+  workId: Scalars['Int'];
 };
 
 export type Mutation = {
@@ -109,6 +122,7 @@ export type UpdateWork = {
 
 export type User = {
   __typename?: 'User';
+  accessToken: Scalars['String'];
   id: Scalars['Int'];
   login: Scalars['String'];
   password: Scalars['String'];
@@ -131,17 +145,17 @@ export type AuthMutationVariables = Exact<{
 }>;
 
 
-export type AuthMutation = { __typename?: 'Mutation', auth: { __typename: 'NotFoundError', message: string } | { __typename: 'User', login: string, password: string } | { __typename: 'WrongPassword', message: string } };
-
-export type GetWorksQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetWorksQuery = { __typename: 'Query', result: Array<{ __typename: 'GetWork', demo: string, description: string, figma: string, github?: string | null, id: number, name: string, tags: string } | null> };
+export type AuthMutation = { __typename?: 'Mutation', auth: { __typename: 'NotFoundError', message: string } | { __typename: 'User', login: string, password: string, accessToken: string } | { __typename: 'WrongPassword', message: string } };
 
 export type GetInfoQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetInfoQuery = { __typename?: 'Query', result: { __typename: 'GetInfo', desc: string, experience: string, job: string, name: string, contacts: { __typename?: 'Contacts', telegram: string, github: string } } };
+
+export type GetWorksQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetWorksQuery = { __typename: 'Query', result: Array<{ __typename?: 'GetWork', id: number, demo: string, description: string, figma: string, github?: string | null, name: string, tags: Array<{ __typename?: 'GetTag', id: number, title: string } | null> } | null> };
 
 
 export const AuthDocument = `
@@ -151,6 +165,7 @@ export const AuthDocument = `
     ... on User {
       login
       password
+      accessToken
     }
     ... on NotFoundError {
       message
@@ -158,21 +173,6 @@ export const AuthDocument = `
     ... on WrongPassword {
       message
     }
-  }
-}
-    `;
-export const GetWorksDocument = `
-    query getWorks {
-  __typename
-  result: getWorks {
-    __typename
-    demo
-    description
-    figma
-    github
-    id
-    name
-    tags
   }
 }
     `;
@@ -191,6 +191,24 @@ export const GetInfoDocument = `
   }
 }
     `;
+export const GetWorksDocument = `
+    query getWorks {
+  __typename
+  result: getWorks {
+    id
+    demo
+    description
+    figma
+    github
+    id
+    name
+    tags {
+      id
+      title
+    }
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
 
@@ -202,11 +220,11 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     auth(variables: AuthMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<AuthMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<AuthMutation>(AuthDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'auth', 'mutation');
     },
-    getWorks(variables?: GetWorksQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetWorksQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetWorksQuery>(GetWorksDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getWorks', 'query');
-    },
     getInfo(variables?: GetInfoQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetInfoQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetInfoQuery>(GetInfoDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getInfo', 'query');
+    },
+    getWorks(variables?: GetWorksQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetWorksQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetWorksQuery>(GetWorksDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getWorks', 'query');
     }
   };
 }

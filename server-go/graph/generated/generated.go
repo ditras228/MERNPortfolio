@@ -57,6 +57,11 @@ type ComplexityRoot struct {
 		Name       func(childComplexity int) int
 	}
 
+	GetTag struct {
+		ID    func(childComplexity int) int
+		Title func(childComplexity int) int
+	}
+
 	GetWork struct {
 		Demo        func(childComplexity int) int
 		Description func(childComplexity int) int
@@ -65,6 +70,12 @@ type ComplexityRoot struct {
 		ID          func(childComplexity int) int
 		Name        func(childComplexity int) int
 		Tags        func(childComplexity int) int
+	}
+
+	GetWorkTag struct {
+		ID     func(childComplexity int) int
+		TagID  func(childComplexity int) int
+		WorkID func(childComplexity int) int
 	}
 
 	Mutation struct {
@@ -84,9 +95,10 @@ type ComplexityRoot struct {
 	}
 
 	User struct {
-		ID       func(childComplexity int) int
-		Login    func(childComplexity int) int
-		Password func(childComplexity int) int
+		AccessToken func(childComplexity int) int
+		ID          func(childComplexity int) int
+		Login       func(childComplexity int) int
+		Password    func(childComplexity int) int
 	}
 
 	WrongPassword struct {
@@ -169,6 +181,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.GetInfo.Name(childComplexity), true
 
+	case "GetTag.id":
+		if e.complexity.GetTag.ID == nil {
+			break
+		}
+
+		return e.complexity.GetTag.ID(childComplexity), true
+
+	case "GetTag.title":
+		if e.complexity.GetTag.Title == nil {
+			break
+		}
+
+		return e.complexity.GetTag.Title(childComplexity), true
+
 	case "GetWork.demo":
 		if e.complexity.GetWork.Demo == nil {
 			break
@@ -217,6 +243,27 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.GetWork.Tags(childComplexity), true
+
+	case "GetWorkTag.id":
+		if e.complexity.GetWorkTag.ID == nil {
+			break
+		}
+
+		return e.complexity.GetWorkTag.ID(childComplexity), true
+
+	case "GetWorkTag.tagId":
+		if e.complexity.GetWorkTag.TagID == nil {
+			break
+		}
+
+		return e.complexity.GetWorkTag.TagID(childComplexity), true
+
+	case "GetWorkTag.workId":
+		if e.complexity.GetWorkTag.WorkID == nil {
+			break
+		}
+
+		return e.complexity.GetWorkTag.WorkID(childComplexity), true
 
 	case "Mutation.auth":
 		if e.complexity.Mutation.Auth == nil {
@@ -286,6 +333,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.GetWorks(childComplexity), true
+
+	case "User.accessToken":
+		if e.complexity.User.AccessToken == nil {
+			break
+		}
+
+		return e.complexity.User.AccessToken(childComplexity), true
 
 	case "User.id":
 		if e.complexity.User.ID == nil {
@@ -427,7 +481,7 @@ input  DeleteWork{
 	{Name: "../schema/work/query_work.graphqls", Input: `type  GetWork{
   id: Int!
   name: String!
-  tags: String!
+  tags: [GetTag]!
   description: String!
   github: String
   demo: String!
@@ -447,6 +501,7 @@ input  DeleteWork{
   id: Int!
   login: String!
   password: String!
+  accessToken: String!
 }
 
 type NotFoundError implements ServiceErrorInterface{
@@ -459,6 +514,17 @@ union UserOutput =
   User |
   NotFoundError |
   WrongPassword`, BuiltIn: false},
+	{Name: "../schema/tag/query_tag.graphqls", Input: `type  GetTag{
+  id: Int!
+  title: String!
+}
+
+type  GetWorkTag{
+  id: Int!
+  workId: Int!
+  tagId: Int!
+}
+`, BuiltIn: false},
 	{Name: "../schema.graphqls", Input: `type Query {
   # Получить инфу
   getInfo: GetInfo!
@@ -916,6 +982,94 @@ func (ec *executionContext) fieldContext_GetInfo_contacts(ctx context.Context, f
 	return fc, nil
 }
 
+func (ec *executionContext) _GetTag_id(ctx context.Context, field graphql.CollectedField, obj *model.GetTag) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_GetTag_id(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_GetTag_id(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "GetTag",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _GetTag_title(ctx context.Context, field graphql.CollectedField, obj *model.GetTag) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_GetTag_title(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Title, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_GetTag_title(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "GetTag",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _GetWork_id(ctx context.Context, field graphql.CollectedField, obj *model.GetWork) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_GetWork_id(ctx, field)
 	if err != nil {
@@ -1030,9 +1184,9 @@ func (ec *executionContext) _GetWork_tags(ctx context.Context, field graphql.Col
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.([]*model.GetTag)
 	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
+	return ec.marshalNGetTag2ᚕᚖportfolioᚋgraphᚋmodelᚐGetTag(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_GetWork_tags(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1042,7 +1196,13 @@ func (ec *executionContext) fieldContext_GetWork_tags(ctx context.Context, field
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_GetTag_id(ctx, field)
+			case "title":
+				return ec.fieldContext_GetTag_title(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type GetTag", field.Name)
 		},
 	}
 	return fc, nil
@@ -1216,6 +1376,138 @@ func (ec *executionContext) fieldContext_GetWork_figma(ctx context.Context, fiel
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _GetWorkTag_id(ctx context.Context, field graphql.CollectedField, obj *model.GetWorkTag) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_GetWorkTag_id(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_GetWorkTag_id(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "GetWorkTag",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _GetWorkTag_workId(ctx context.Context, field graphql.CollectedField, obj *model.GetWorkTag) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_GetWorkTag_workId(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.WorkID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_GetWorkTag_workId(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "GetWorkTag",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _GetWorkTag_tagId(ctx context.Context, field graphql.CollectedField, obj *model.GetWorkTag) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_GetWorkTag_tagId(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TagID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_GetWorkTag_tagId(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "GetWorkTag",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
 		},
 	}
 	return fc, nil
@@ -1894,6 +2186,50 @@ func (ec *executionContext) _User_password(ctx context.Context, field graphql.Co
 }
 
 func (ec *executionContext) fieldContext_User_password(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "User",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _User_accessToken(ctx context.Context, field graphql.CollectedField, obj *model.User) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_User_accessToken(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.AccessToken, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_User_accessToken(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "User",
 		Field:      field,
@@ -4063,6 +4399,41 @@ func (ec *executionContext) _GetInfo(ctx context.Context, sel ast.SelectionSet, 
 	return out
 }
 
+var getTagImplementors = []string{"GetTag"}
+
+func (ec *executionContext) _GetTag(ctx context.Context, sel ast.SelectionSet, obj *model.GetTag) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, getTagImplementors)
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("GetTag")
+		case "id":
+
+			out.Values[i] = ec._GetTag_id(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "title":
+
+			out.Values[i] = ec._GetTag_title(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
 var getWorkImplementors = []string{"GetWork"}
 
 func (ec *executionContext) _GetWork(ctx context.Context, sel ast.SelectionSet, obj *model.GetWork) graphql.Marshaler {
@@ -4115,6 +4486,48 @@ func (ec *executionContext) _GetWork(ctx context.Context, sel ast.SelectionSet, 
 		case "figma":
 
 			out.Values[i] = ec._GetWork_figma(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var getWorkTagImplementors = []string{"GetWorkTag"}
+
+func (ec *executionContext) _GetWorkTag(ctx context.Context, sel ast.SelectionSet, obj *model.GetWorkTag) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, getWorkTagImplementors)
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("GetWorkTag")
+		case "id":
+
+			out.Values[i] = ec._GetWorkTag_id(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "workId":
+
+			out.Values[i] = ec._GetWorkTag_workId(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "tagId":
+
+			out.Values[i] = ec._GetWorkTag_tagId(ctx, field, obj)
 
 			if out.Values[i] == graphql.Null {
 				invalids++
@@ -4339,6 +4752,13 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 		case "password":
 
 			out.Values[i] = ec._User_password(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "accessToken":
+
+			out.Values[i] = ec._User_accessToken(ctx, field, obj)
 
 			if out.Values[i] == graphql.Null {
 				invalids++
@@ -4744,6 +5164,44 @@ func (ec *executionContext) marshalNGetInfo2ᚖportfolioᚋgraphᚋmodelᚐGetIn
 	return ec._GetInfo(ctx, sel, v)
 }
 
+func (ec *executionContext) marshalNGetTag2ᚕᚖportfolioᚋgraphᚋmodelᚐGetTag(ctx context.Context, sel ast.SelectionSet, v []*model.GetTag) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalOGetTag2ᚖportfolioᚋgraphᚋmodelᚐGetTag(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	return ret
+}
+
 func (ec *executionContext) marshalNGetWork2portfolioᚋgraphᚋmodelᚐGetWork(ctx context.Context, sel ast.SelectionSet, v model.GetWork) graphql.Marshaler {
 	return ec._GetWork(ctx, sel, &v)
 }
@@ -5128,6 +5586,13 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	}
 	res := graphql.MarshalBoolean(*v)
 	return res
+}
+
+func (ec *executionContext) marshalOGetTag2ᚖportfolioᚋgraphᚋmodelᚐGetTag(ctx context.Context, sel ast.SelectionSet, v *model.GetTag) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._GetTag(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalOGetWork2ᚖportfolioᚋgraphᚋmodelᚐGetWork(ctx context.Context, sel ast.SelectionSet, v *model.GetWork) graphql.Marshaler {

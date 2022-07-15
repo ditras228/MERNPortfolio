@@ -27,14 +27,25 @@ type GetInfo struct {
 	Contacts   *Contacts `json:"contacts"`
 }
 
+type GetTag struct {
+	ID    int    `json:"id"`
+	Title string `json:"title"`
+}
+
 type GetWork struct {
-	ID          int     `json:"id"`
-	Name        string  `json:"name"`
-	Tags        string  `json:"tags"`
-	Description string  `json:"description"`
-	Github      *string `json:"github"`
-	Demo        string  `json:"demo"`
-	Figma       string  `json:"figma"`
+	ID          int       `json:"id"`
+	Name        string    `json:"name"`
+	Tags        []*GetTag `json:"tags"`
+	Description string    `json:"description"`
+	Github      *string   `json:"github"`
+	Demo        string    `json:"demo"`
+	Figma       string    `json:"figma"`
+}
+
+type GetWorkTag struct {
+	ID     int `json:"id"`
+	WorkID int `json:"workId"`
+	TagID  int `json:"tagId"`
 }
 
 type NotFoundError struct {
@@ -64,9 +75,10 @@ type UpdateWork struct {
 }
 
 type User struct {
-	ID       int    `json:"id"`
-	Login    string `json:"login"`
-	Password string `json:"password"`
+	ID          int    `json:"id"`
+	Login       string `json:"login"`
+	Password    string `json:"password"`
+	AccessToken string `json:"accessToken"`
 }
 
 func (User) IsUserOutput() {}

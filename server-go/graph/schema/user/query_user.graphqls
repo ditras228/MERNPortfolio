@@ -2,6 +2,7 @@ type User{
   id: Int!
   login: String!
   password: String!
+  accessToken: String!
 }
 
 type NotFoundError implements ServiceErrorInterface{

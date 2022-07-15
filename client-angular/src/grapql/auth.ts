@@ -7,6 +7,7 @@ export const AuthQuery = gql`
     ... on User {
       login
       password
+      accessToken
     }
     ... on NotFoundError {
       message

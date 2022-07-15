@@ -1,8 +1,7 @@
-@import "../../styles/mixins/input";
+@import "../../../styles/mixins/input";
 
 .input{
   position: relative;
-  margin-bottom: 40px;
   $root: &;
 
   &__error{

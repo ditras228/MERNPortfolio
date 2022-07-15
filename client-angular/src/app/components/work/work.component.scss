@@ -5,7 +5,20 @@
 
 .work {
   padding: 0 21px 0 21px;
-
+  position: relative;
+  &__edit{
+    @include button-small();
+    right: -120px;
+    top: 30px;
+    position: absolute;
+    display: grid;
+    justify-content: center;
+    &__icon{
+      @include icon('icon/edit.svg');
+      width: 30px;
+      height: 30px;
+    }
+  }
   &__title {
     @include font(32px, 34px, 700, 2.5px);
     margin-bottom: 27px;

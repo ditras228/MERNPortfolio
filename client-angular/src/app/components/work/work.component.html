@@ -1,10 +1,10 @@
 <div class="work">
+  <div class="work__edit" (click)="editWorkHandler()">
+    <div class="work__edit__icon"></div>
+  </div>
   <div class="work__title">{{work?.name}}</div>
   <div class="work__tags">
-    <div class="work__tags__item">MongoDB</div>
-    <div class="work__tags__item">ExpressJS</div>
-    <div class="work__tags__item">ReactJS</div>
-    <div class="work__tags__item">NodeJS</div>
+    <div class="work__tags__item" *ngFor=" let tag of work?.tags">{{tag?.title}}</div>
   </div>
   <div class="work__functional-list" [innerHTML]="work?.description">
   </div>

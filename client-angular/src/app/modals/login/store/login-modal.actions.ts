@@ -13,7 +13,14 @@ export const submitLoginForm = createAction(
   "[App] SubmitLoginForm"
 );
 export const setLoginVisible = createAction(
-  "[App] isLoginVisible"
+  "[App] SetLoginVisible"
+);
+export const setEditInfoVisible = createAction(
+  "[App] SetEditInfoVisible"
+);
+export const setEditWorkVisible = createAction(
+  "[App] SetEditWorkVisible",
+  (id: number | undefined)=>({id})
 );
 export const setError = createAction(
   "[App] SetError",

@@ -1,10 +1,19 @@
+
 <div class="app" [ngClass]="isLock? 'app--no-scroll' :  ''">
   <app-navbar></app-navbar>
-  <div class="app__container">
+
+  <div class="app__content">
     <app-sidebar-info></app-sidebar-info>
     <app-work-list></app-work-list>
   </div>
-  <app-modal></app-modal>
-  <!--  <ModalAuthItem />-->
-  <!--  <ModalAuth />-->
+
+  <app-modal *ngIf="isLoginVisible">
+    <app-login-modal></app-login-modal>
+  </app-modal>
+  <app-modal *ngIf="isEditInfoVisible">
+    <app-edit-info></app-edit-info>
+  </app-modal>
+  <app-modal *ngIf="isEditWorkVisible">
+    <app-edit-work></app-edit-work>
+  </app-modal>
 </div>

@@ -3,6 +3,7 @@ schema:
   - graph/schema/info/*.graphqls
   - graph/schema/work/*.graphqls
   - graph/schema/user/*.graphqls
+  - graph/schema/tag/*.graphqls
   - graph/*.graphqls
 
 

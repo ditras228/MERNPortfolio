@@ -1,0 +1,52 @@
+@import "../../../styles/mixins/input";
+
+.input{
+  position: relative;
+  $root: &;
+  &__error{
+    color: #C30052;
+    @include font(14px,22px,500, 1.5px);
+    position: absolute;
+    bottom: -28px;
+  }
+  &__field{
+    @include input();
+    color: #14142B;
+    border: 2px solid transparent;
+
+    resize: none;
+
+
+    &:focus{
+      background-color: #FCFCFC;
+      border: 2px solid black;
+      outline: none;
+    }
+
+    &:focus ~ #{$root}__label, &:not(:placeholder-shown) ~  #{$root}__label{
+      top: 13px;
+      @include font(14px,22px,500,0.25px);
+
+    }
+  }
+
+  &__label{
+    position: absolute;
+    left: 24px;
+    @include font(16px,28px,400,0.75px);
+    top: 30px;
+    transform: translateY(-50%);
+    color: #6E7191;
+    transition: top 50ms linear;
+  }
+
+  &--error{
+    #{$root}__field{
+      border: 2px solid #ED2E7E!important;background: #FFF3F8;
+    }
+    #{$root}__label{
+      color: #C30052;
+    }
+  }
+}
+

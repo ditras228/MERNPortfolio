@@ -1,9 +1,10 @@
 @import "../../../styles/mixins/font";
 @import "../../../styles/mixins/button";
 @import '../../../styles/mixins/screen';
+@import '../../../styles/mixins/icon';
 
 .navbar {
-  @include font(32px, 32px, 400, 1px);
+  @include font(22px, 34px, 400, 0.1px);
   color: #14142A;
   box-shadow: 0px 2px 2px rgba(0, 32, 51, 0.02), 0px 2px 8px rgba(0, 32, 51, 0.16);
 
@@ -13,16 +14,28 @@
     align-items: center;
     max-width: 1200px;
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 30px 1fr auto;
     margin: 0 auto 19px auto;
     width: 100%;
-
+    grid-column-gap: 7px;
+    &__logo{
+      height: 30px;background-size: contain;
+      @include icon('icon/logo.svg');
+    }
     &__admin-btn {
       @include button-small();
       display: none;
-
+      &__icon{
+        height: 22px;
+        @include icon('/icon/admin.svg');
+        background-size: contain;
+      }
       @include screen-lg {
-        display: block;
+        display: grid;
+        grid-column-gap: 7px;
+        grid-template-columns: 22px 1fr;
+
+
       }
     }
 

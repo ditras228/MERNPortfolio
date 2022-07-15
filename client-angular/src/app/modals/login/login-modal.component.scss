@@ -1,12 +1,21 @@
 @import "../../../styles/mixins/font";
 @import "../../../styles/mixins/input";
 @import "../../../styles/mixins/button";
+@import "../../../styles/mixins/modal-close";
 
 .login{
   padding: 96px 132px;
+
+  &__close{
+    @include modal-close();
+  }
   &__form{
     display: grid;
     justify-items: center;
+    &__input{
+      margin-bottom: 35px;
+      display: block;
+    }
   }
   &__title{
     @include font(48px,50px,  700, 1px);

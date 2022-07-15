@@ -1,7 +1,5 @@
-<div class="backdrop"  *ngIf="isVisible" (click)="closeModal()" @fadeAnimation></div>
+<div class="backdrop" @fadeAnimation></div>
 
-
-<div class="modal"  *ngIf="isVisible"  @modalAnimation>
-  <div class="modal__close" (click)="closeModal()"></div>
-  <app-login-modal></app-login-modal>
+<div class="modal"  @modalAnimation>
+  <ng-content></ng-content>
 </div>
