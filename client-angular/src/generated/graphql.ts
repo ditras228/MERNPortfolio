@@ -21,7 +21,7 @@ export type Contacts = {
   telegram: Scalars['String'];
 };
 
-export type DeleteWork = {
+export type DeleteWorkInput = {
   id: Scalars['Int'];
 };
 
@@ -73,7 +73,7 @@ export type MutationAuthArgs = {
 
 
 export type MutationDeleteWorkArgs = {
-  input: DeleteWork;
+  input: DeleteWorkInput;
 };
 
 
@@ -83,7 +83,7 @@ export type MutationUpdateInfoArgs = {
 
 
 export type MutationUpdateWorkArgs = {
-  input: UpdateWork;
+  input: UpdateWorkInput;
 };
 
 export type NotFoundError = ServiceErrorInterface & {
@@ -94,6 +94,8 @@ export type NotFoundError = ServiceErrorInterface & {
 export type Query = {
   __typename?: 'Query';
   getInfo: GetInfo;
+  getTags: Array<Maybe<GetTag>>;
+  getTags2: Array<Maybe<GetTag>>;
   getWorks: Array<Maybe<GetWork>>;
 };
 
@@ -110,14 +112,14 @@ export type UpdateInfo = {
   telegram: Scalars['String'];
 };
 
-export type UpdateWork = {
+export type UpdateWorkInput = {
   demo: Scalars['String'];
   description: Scalars['String'];
   figma: Scalars['String'];
   github?: InputMaybe<Scalars['String']>;
   id: Scalars['Int'];
   name: Scalars['String'];
-  tags: Scalars['String'];
+  tags: Array<InputMaybe<Scalars['Int']>>;
 };
 
 export type User = {
@@ -151,6 +153,18 @@ export type GetInfoQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetInfoQuery = { __typename?: 'Query', result: { __typename: 'GetInfo', desc: string, experience: string, job: string, name: string, contacts: { __typename?: 'Contacts', telegram: string, github: string } } };
+
+export type UpdateWorkMutationVariables = Exact<{
+  input: UpdateWorkInput;
+}>;
+
+
+export type UpdateWorkMutation = { __typename: 'Mutation', result: { __typename?: 'GetWork', id: number, demo: string, description: string, figma: string, github?: string | null, name: string, tags: Array<{ __typename?: 'GetTag', id: number, title: string } | null> } };
+
+export type GetTagsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetTagsQuery = { __typename?: 'Query', result: Array<{ __typename: 'GetTag', id: number, title: string } | null> };
 
 export type GetWorksQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -191,6 +205,33 @@ export const GetInfoDocument = `
   }
 }
     `;
+export const UpdateWorkDocument = `
+    mutation updateWork($input: UpdateWorkInput!) {
+  __typename
+  result: updateWork(input: $input) {
+    id
+    demo
+    description
+    figma
+    github
+    id
+    name
+    tags {
+      id
+      title
+    }
+  }
+}
+    `;
+export const GetTagsDocument = `
+    query getTags {
+  result: getTags {
+    __typename
+    id
+    title
+  }
+}
+    `;
 export const GetWorksDocument = `
     query getWorks {
   __typename
@@ -200,7 +241,6 @@ export const GetWorksDocument = `
     description
     figma
     github
-    id
     name
     tags {
       id
@@ -222,6 +262,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getInfo(variables?: GetInfoQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetInfoQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetInfoQuery>(GetInfoDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getInfo', 'query');
+    },
+    updateWork(variables: UpdateWorkMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateWorkMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateWorkMutation>(UpdateWorkDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateWork', 'mutation');
+    },
+    getTags(variables?: GetTagsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetTagsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetTagsQuery>(GetTagsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getTags', 'query');
     },
     getWorks(variables?: GetWorksQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetWorksQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetWorksQuery>(GetWorksDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getWorks', 'query');

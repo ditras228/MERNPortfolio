@@ -77,7 +77,6 @@ export class LoginModalComponent implements OnInit {
       login: this.login,
       password: this.password
     })
-    this.login.registerOnChange(change => console.log(this.login.value))
   }
 
   sendForm(): void {

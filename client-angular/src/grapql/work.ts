@@ -9,7 +9,6 @@ export const getWorksQuery = gql`
       description
       figma
       github
-      id
       name
       tags{
         id

@@ -3,7 +3,7 @@ import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {
   AuthDocument, AuthMutation,
   AuthMutationVariables,
-  GetInfoQuery,
+  GetInfoQuery, GetTagsDocument, GetTagsQuery, GetTagsQueryVariables,
   GetWorksDocument,
   GetWorksQuery
 } from "../../../../generated/graphql";
@@ -11,10 +11,19 @@ import {GrapqlService} from "../../../services/grapql.service";
 import {HttpClient} from '@angular/common/http';
 import {switchMap, withLatestFrom} from "rxjs";
 import {map} from "rxjs/operators";
-import {setAuth, setError, setLoginForm, setLoginVisible, submitLoginForm} from "./login-modal.actions";
+import {
+  getTags,
+  setAuth,
+  setError,
+  setLoginForm,
+  setLoginVisible,
+  setTags,
+  submitLoginForm
+} from "./login-modal.actions";
 import {okay} from "../../../store/app.actions";
 import {Store} from "@ngrx/store";
-import {selectLoginInput} from "./login-modal.selectors";
+import {selectCurrentWorkID, selectLoginInput} from "./login-modal.selectors";
+import {getTagsQuery} from "../../../../grapql/tag";
 
 @Injectable()
 export class LoginEffects extends GrapqlService {
@@ -25,16 +34,28 @@ export class LoginEffects extends GrapqlService {
     super(httpClient);
   }
 
+  getTags$ = createEffect(() =>
+    this.actions$.pipe(ofType(getTags),
+      withLatestFrom(this.store$),
+      switchMap(([_, state]) => {
+          return this.doRequest<GetTagsQuery>(GetTagsDocument, {} as GetTagsQueryVariables)
+            .pipe(map((data) => {
+                this.store$.dispatch(setTags(data.result))
+
+                return okay()
+              }
+            ))
+        }
+      )
+    ))
   setLoginForm$ = createEffect(() =>
     this.actions$.pipe(ofType(submitLoginForm),
       withLatestFrom(this.store$),
       switchMap(([_, state]) => {
         const formValues = selectLoginInput(state)
-        console.log(formValues.login)
         return this.doRequest<AuthMutation>(AuthDocument, {
           input: {
-            login: formValues.login,
-            password: formValues.password
+            ...formValues
           }
         } as AuthMutationVariables)
           .pipe(map(({auth}) => {
@@ -53,7 +74,7 @@ export class LoginEffects extends GrapqlService {
                   this.store$.dispatch(setLoginVisible())
                   break
                 }
-                default:{
+                default: {
                   this.store$.dispatch(setError('Непредвиденная ошибка'))
                   break
                 }

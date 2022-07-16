@@ -13,5 +13,6 @@ export const selectLoginInput= createSelector(loginState, state => state.input);
 export const selectLoginError= createSelector(loginState, state => state.error);
 export const selectLock = createSelector(loginState, state => state.isLock);
 
-export const selectCurrentWorkID = createSelector(loginState, state => state.currentEditWorkId);
+export const selectCurrentWorkID = createSelector(loginState, state => state.currentEditWork);
+export const selectTags = createSelector(loginState, state => state.tags);
 

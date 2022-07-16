@@ -3,8 +3,16 @@
 
   <app-input-field class="edit-work__field" [error]="errors?.['name']" [placeholder]="'Название'" [internalValue]="name.value"
                    (valueChange)="name.patchValue($event)"></app-input-field>
-  <app-input-field class="edit-work__field" [error]="errors?.['tags']" [placeholder]="'Теги'" [internalValue]="tags.value"
-                   (valueChange)="tags.patchValue($event)"></app-input-field>
+  <div class="edit-work__tags">
+    <div class="edit-work__tags__item" *ngFor="let tag of tags" (click)="remove(tag.id)">
+      {{tag.title}}
+    </div>
+  </div>
+  <div class="edit-work__tags">
+    <div class="edit-work__tags__item" *ngFor="let tag of allTags index as i" (click)="add(i)">
+      {{tag.title}}
+    </div>
+  </div>
   <app-text-area   class="edit-work__field" [error]="errors?.['description']" [placeholder]="'Описание'" [internalValue]="description.value" [rows]="9"
                    (valueChange)="description.patchValue($event)"></app-text-area>
 
@@ -15,5 +23,6 @@
                      (valueChange)="demo.patchValue($event)"></app-input-field>
   </div>
 
-  <button class="edit-work__button">Применить</button>
+  <button class="edit-work__button edit-work__button__delete">Удалить</button>
+  <button class="edit-work__button" (click)="submitForm()">Применить</button>
 </div>

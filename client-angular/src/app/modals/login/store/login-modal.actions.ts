@@ -1,4 +1,5 @@
 import {createAction} from "@ngrx/store";
+import {GetTag, GetWork} from "../../../../generated/graphql";
 
 export type loginInputs= {
   login: string,
@@ -20,7 +21,7 @@ export const setEditInfoVisible = createAction(
 );
 export const setEditWorkVisible = createAction(
   "[App] SetEditWorkVisible",
-  (id: number | undefined)=>({id})
+  (work: GetWork | undefined)=>({work})
 );
 export const setError = createAction(
   "[App] SetError",
@@ -29,4 +30,11 @@ export const setError = createAction(
 export const setAuth = createAction(
   "[App] Auth",
   (isAuth:boolean)=>({isAuth})
+);
+export const getTags = createAction(
+  "[App] GetTags"
+);
+export const setTags = createAction(
+  "[App] SetTags",
+  (tags: GetTag[]| any )=>({tags})
 );

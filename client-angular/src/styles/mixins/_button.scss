@@ -10,19 +10,19 @@
   font-family: 'Poppins', sans-serif;
   background-color: #5F2EEA;
   border-radius: 16px;
-  border-color:  transparent;
+  border-color: transparent;
   color: #ffffff;
-  transition: background-color  0.2s ease-in-out,
-              color  0.2s ease-in-out,
-              border 0.2s ease-in-out;
+  transition: background-color 0.2s ease-in-out,
+  color 0.2s ease-in-out,
+  border 0.2s ease-in-out;
 
 
-  &:hover{
+  &:hover {
     cursor: pointer;
-    background-color: #2A00A2 ;
+    background-color: #2A00A2;
   }
 
-  &:disabled{
+  &:disabled {
     opacity: 0.5;
     cursor: default;
     background-color: #5F2EEA;
@@ -31,13 +31,23 @@
 
 }
 
-@mixin button($size: 16px, $height: 28px, $weight: 600, $spacing: .75px) {
- @include button-fill($size, $height, $weight, $spacing);
-  background-color: transparent;
-  color: #5F2EEA;
-  border-color:  #5F2EEA;
+@mixin button-red($size: 16px, $height: 28px, $weight: 600, $spacing: .75px) {
+  @include button-fill($size, $height, $weight, $spacing);
+  background-color: #ED2E7E;
 
   &:hover{
+    background-color: #C30052;
+
+  }
+}
+
+@mixin button($size: 16px, $height: 28px, $weight: 600, $spacing: .75px) {
+  @include button-fill($size, $height, $weight, $spacing);
+  background-color: transparent;
+  color: #5F2EEA;
+  border-color: #5F2EEA;
+
+  &:hover {
     border-color: #2A00A2;
     color: #2A00A2;
     background-color: transparent;
@@ -46,6 +56,6 @@
 
 @mixin button-small($size: 14px, $height: 24px, $weight: 600, $spacing: .75px) {
   @include button-fill($size, $height, $weight, $spacing);
-  padding:  6px 24px;
+  padding: 6px 24px;
   height: auto;
 }

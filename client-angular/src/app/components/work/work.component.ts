@@ -14,7 +14,7 @@ export class WorkComponent implements OnInit {
 
   constructor(public store$: Store) { }
   editWorkHandler():void{
-    this.store$.dispatch(setEditWorkVisible(this.work?.id))
+    this.store$.dispatch(setEditWorkVisible(this.work))
   }
   ngOnInit(): void {
   }

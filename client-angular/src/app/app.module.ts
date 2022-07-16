@@ -28,6 +28,9 @@ import { DescCarouselComponent } from './components/desc-carousel/desc-carousel.
 import { TextAreaComponent } from './components/text-area/text-area.component';
 import { EditInfoComponent } from './modals/edit-info/edit-info.component';
 import { EditWorkComponent } from './modals/edit-work/edit-work.component';
+import { DropdownComponent } from './components/dropdown/dropdown.component';
+import {EditWorkEffects} from "./modals/edit-work/store/edit-work.effects";
+import {editWorkReducer} from "./modals/edit-work/store/edit-work.reducer";
 
 @NgModule({
   declarations: [
@@ -47,14 +50,15 @@ import { EditWorkComponent } from './modals/edit-work/edit-work.component';
     TextAreaComponent,
     EditInfoComponent,
     EditWorkComponent,
+    DropdownComponent,
   ],
     imports: [
       SwiperModule,
 
       BrowserModule.withServerTransition({appId: 'serverApp'}),
-        StoreModule.forRoot({info: appReducer, login: loginModalReducer }, {}),
+        StoreModule.forRoot({info: appReducer, login: loginModalReducer, editWork: editWorkReducer}, {}),
         StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
-        EffectsModule.forRoot([AppEffects, LoginEffects]),
+        EffectsModule.forRoot([AppEffects, LoginEffects,EditWorkEffects]),
         HttpClientModule,
         FormsModule,
         BrowserAnimationsModule,
