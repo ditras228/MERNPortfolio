@@ -1,4 +1,4 @@
-package work
+package tag
 
 import (
 	"context"
@@ -6,5 +6,6 @@ import (
 )
 
 type Repository interface {
-	FindAll(ctx context.Context) ([]*model.GetWork, error)
+	FindAll(ctx context.Context) ([]*model.GetTag, error)
+	Find(ctx context.Context) ([]*model.GetTag, error)
 }

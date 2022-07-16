@@ -2,7 +2,6 @@ package user
 
 import (
 	"context"
-	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/ztrue/tracerr"
 	"os"
@@ -28,9 +27,11 @@ func (r *repository) Auth(ctx context.Context, input model.UserInput) (model.Use
 		SELECT 
 			login, password
 
-		FROM public.user
+		FROM 
+			public.user
 
-		WHERE login = $1
+		WHERE 
+			login = $1
 		`
 
 	var usr model.User
@@ -51,8 +52,6 @@ func (r *repository) Auth(ctx context.Context, input model.UserInput) (model.Use
 	})
 
 	jwtSecret, exists := os.LookupEnv("jwt_secret")
-	fmt.Println(exists)
-	fmt.Println(jwtSecret)
 
 	if exists {
 		signingString, err := token.SignedString([]byte(jwtSecret))

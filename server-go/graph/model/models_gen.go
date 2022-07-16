@@ -15,7 +15,7 @@ type Contacts struct {
 	Github   string `json:"github"`
 }
 
-type DeleteWork struct {
+type DeleteWorkInput struct {
 	ID int `json:"id"`
 }
 
@@ -64,10 +64,10 @@ type UpdateInfo struct {
 	Github     string `json:"github"`
 }
 
-type UpdateWork struct {
+type UpdateWorkInput struct {
 	ID          int     `json:"id"`
 	Name        string  `json:"name"`
-	Tags        string  `json:"tags"`
+	Tags        []*int  `json:"tags"`
 	Description string  `json:"description"`
 	Github      *string `json:"github"`
 	Demo        string  `json:"demo"`

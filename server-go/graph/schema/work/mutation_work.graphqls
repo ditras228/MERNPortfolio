@@ -1,7 +1,7 @@
-input  UpdateWork{
+input  UpdateWorkInput{
   id: Int!
   name: String!
-  tags: String!
+  tags: [Int]!
   description: String!
   github: String
   demo: String!
@@ -9,6 +9,6 @@ input  UpdateWork{
 }
 
 
-input  DeleteWork{
+input  DeleteWorkInput{
   id: Int!
 }

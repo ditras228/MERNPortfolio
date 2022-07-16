@@ -1,95 +1,107 @@
-package work
+package tag
 
 import (
 	"context"
+	"fmt"
 	"portfolio/graph/model"
 	"portfolio/infrastructure/postgresql"
-	"portfolio/internal/work"
-	"portfolio/pkg/utils"
+	"portfolio/internal/tag"
+	"strconv"
 )
 
 type repository struct {
 	client postgres.Client
 }
 
-func (r *repository) FindAll(ctx context.Context) ([]*model.GetWork, error) {
+func (r *repository) FindAll(ctx context.Context) ([]*model.GetTag, error) {
 	q := `
 		SELECT 
-			id, name, description,
-			github, demo
+			id, title
 
-		FROM public.work 
+		FROM public.tag 
 		`
 	rows, err := r.client.Query(ctx, q)
 
 	if err != nil {
 		return nil, err
 	}
-	works := make([]*model.GetWork, 0)
+	tags := make([]*model.GetTag, 0)
 	for rows.Next() {
-		var wrk model.GetWork
+		var wrk model.GetTag
 
-		err = rows.Scan(&wrk.ID, &wrk.Name, &wrk.Description,
-			&wrk.Github, &wrk.Demo)
+		err = rows.Scan(&wrk.ID, &wrk.Title)
 		if err != nil {
 			return nil, err
 		}
 
-		wrk.Description = utils.FormatHTML(wrk.Description)
-
-		qWorkTag := `
-		SELECT 
-			id, workid, tagid
-
-		FROM public.worktag 
-		WHERE workid = $1
-		`
-		rows2, err := r.client.Query(ctx, qWorkTag, &wrk.ID)
-		if err != nil {
-			return nil, err
-		}
-		tags := make([]*model.GetTag, 0)
-		for rows2.Next() {
-			var wrkTg model.GetWorkTag
-			err = rows2.Scan(&wrkTg.ID, &wrkTg.WorkID, &wrkTg.TagID)
-
-			qTag := `
-		SELECT
-			id, title
-		
-		FROM public.tag
-		WHERE id = $1
-		`
-
-			rows3, err := r.client.Query(ctx, qTag, &wrkTg.TagID)
-
-			if err != nil {
-				return nil, err
-			}
-
-			for rows3.Next() {
-				var tg model.GetTag
-				err = rows3.Scan(&tg.ID, &tg.Title)
-				if err != nil {
-					return nil, err
-				}
-				tags = append(tags, &tg)
-
-			}
-			wrk.Tags = tags
-
-		}
-
-		works = append(works, &wrk)
+		tags = append(tags, &wrk)
 
 	}
 	if err = rows.Err(); err != nil {
 		return nil, err
 	}
 
-	return works, nil
+	return tags, nil
 }
-func NewRepository(client postgres.Client) work.Repository {
+func removeByIndex(array []*model.GetTag, index int) []*model.GetTag {
+	return append(array[:index], array[index+1:]...)
+}
+func (r *repository) Find(ctx context.Context) ([]*model.GetTag, error) {
+	qWorkTags := `
+		SELECT
+			id, workid, tagid
+	
+		FROM public.workTag
+		`
+
+	qTags := `
+		SELECT 
+			id
+
+		FROM public.tag 
+		`
+
+	rows, err := r.client.Query(ctx, qWorkTags)
+	tags := make([]*model.GetWorkTag, 0)
+	for rows.Next() {
+		var wrk model.GetWorkTag
+
+		err = rows.Scan(&wrk.ID, &wrk.WorkID, &wrk.TagID)
+		if err != nil {
+			return nil, err
+		}
+		if wrk.WorkID == 0 {
+			tags = append(tags, &wrk)
+		}
+
+	}
+
+	for i := 0; i < len(tags); i++ {
+		if i == 0 {
+			qTags = qTags + " WHERE id != " + strconv.Itoa(tags[i].TagID)
+		}
+		qTags = qTags + " AND id != " + strconv.Itoa(tags[i].TagID)
+	}
+	fmt.Println(qTags)
+
+	rows2, err := r.client.Query(ctx, qTags)
+	tags2 := make([]*model.GetTag, 0)
+	for rows2.Next() {
+		var wrk2 model.GetTag
+
+		err = rows2.Scan(&wrk2.ID)
+		if err != nil {
+			return nil, err
+		}
+
+		tags2 = append(tags2, &wrk2)
+
+	}
+
+	return tags2, nil
+}
+
+func NewRepository(client postgres.Client) tag.Repository {
 	return &repository{
 		client: client,
 	}

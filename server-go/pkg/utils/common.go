@@ -23,9 +23,9 @@ func FormatHTML(html string) string {
 	ulRegex := regexp.MustCompile("</ul>")
 	brRegex := regexp.MustCompile("<br/>")
 
-	html = liRegex.ReplaceAllString(html, "\n<li>")
+	html = liRegex.ReplaceAllString(html, "\n\t<li>")
 	html = ulRegex.ReplaceAllString(html, "\n</ul>")
-	html = brRegex.ReplaceAllString(html, "\n<br/>")
+	html = brRegex.ReplaceAllString(html, "\n\t<br/>")
 
 	return html
 }

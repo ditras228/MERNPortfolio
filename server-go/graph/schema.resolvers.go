@@ -26,11 +26,15 @@ func (r *mutationResolver) UpdateInfo(ctx context.Context, input model.UpdateInf
 	return &one, nil
 }
 
-func (r *mutationResolver) UpdateWork(ctx context.Context, input model.UpdateWork) (*model.GetWork, error) {
-	panic(fmt.Errorf("not implemented"))
+func (r *mutationResolver) UpdateWork(ctx context.Context, input model.UpdateWorkInput) (*model.GetWork, error) {
+	work, err := container.WorkRepository.UpdateWork(ctx, input)
+	if err != nil {
+		return nil, err
+	}
+	return &work, nil
 }
 
-func (r *mutationResolver) DeleteWork(ctx context.Context, input model.DeleteWork) (*model.GetWork, error) {
+func (r *mutationResolver) DeleteWork(ctx context.Context, input model.DeleteWorkInput) (*model.GetWork, error) {
 	panic(fmt.Errorf("not implemented"))
 }
 
@@ -55,10 +59,25 @@ func (r *queryResolver) GetInfo(ctx context.Context) (*model.GetInfo, error) {
 func (r *queryResolver) GetWorks(ctx context.Context) ([]*model.GetWork, error) {
 	works, err := container.WorkRepository.FindAll(context.TODO())
 	if err != nil {
-		fmt.Println(err)
-		return nil, nil
+		return nil, err
 	}
 	return works, nil
+}
+
+func (r *queryResolver) GetTags(ctx context.Context) ([]*model.GetTag, error) {
+	tags, err := container.TagRepository.FindAll(context.TODO())
+	if err != nil {
+		return nil, err
+	}
+	return tags, nil
+}
+
+func (r *queryResolver) GetTags2(ctx context.Context) ([]*model.GetTag, error) {
+	tags, err := container.TagRepository.Find(context.TODO())
+	if err != nil {
+		return nil, err
+	}
+	return tags, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.

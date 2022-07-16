@@ -2,13 +2,14 @@ import {createReducer, on} from "@ngrx/store";
 import {
   loginInputs,
   setAuth,
-  setEditInfoVisible, setEditWorkVisible,
+  setEditInfoVisible,
+  setEditWorkVisible,
   setError,
   setLoginForm,
-  setLoginVisible, setTags,
+  setLoginVisible,
+  setTags,
 } from "./login-modal.actions";
-import {GetTag, GetTagsDocument, GetWork} from "../../../../generated/graphql";
-import {Tags} from "@graphql-codegen/cli/init/types";
+import {GetTag, GetWork} from "../../../../generated/graphql";
 
 export interface State {
   isAuth: boolean,
