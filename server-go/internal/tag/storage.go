@@ -7,5 +7,4 @@ import (
 
 type Repository interface {
 	FindAll(ctx context.Context) ([]*model.GetTag, error)
-	Find(ctx context.Context) ([]*model.GetTag, error)
 }

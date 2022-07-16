@@ -3,18 +3,14 @@
 :host{
   background: #E2E9EE;
 }
+.stop-scrolling{
+  height: 100%;
+  overflow: hidden
+}
 .app{
   overflow: hidden;
+  padding-top: 80px;
   @include screen-lg {
-    &--no-scroll{
-      position: fixed;
-      overflow: hidden;
-      margin-right: 15px;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-    }
     &__content {
       display: grid;
       max-width: 1200px;

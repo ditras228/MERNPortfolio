@@ -7,6 +7,9 @@ type GetInfo{
 }
 
 type Contacts{
-  telegram: String!
-  github: String!
+  telegramTitle: String!
+  telegramLink: String!
+
+  githubTitle: String!
+  githubLink: String!
 }

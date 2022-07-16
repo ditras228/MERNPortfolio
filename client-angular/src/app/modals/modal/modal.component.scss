@@ -8,13 +8,25 @@
   right: 0;
   bottom: 0;
   background: rgb(0,0,0,0.3);
+  z-index: 2;
+
 }
 .modal{
   background: #FFFFFF;
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
   border-radius: 24px;
+  margin:  30px 0;
+  position: relative;
+  &-container{
+    z-index: 3;
+    justify-content: center;
+    display: grid;
+    position: fixed;
+    overflow-y: scroll;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    align-items: center;
+  }
 
 }

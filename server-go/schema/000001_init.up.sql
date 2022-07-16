@@ -1,20 +1,24 @@
 CREATE TABLE public.info
 (
-    id          INT PRIMARY KEY,
-    name        TEXT NOT NULL,
-    job         TEXT NOT NULL,
-    description TEXT NOT NULL,
-    experience  TEXT NOT NULL,
-    telegram    TEXT NOT NULL,
-    github      TEXT NOT NULL
+    id            INT PRIMARY KEY,
+    name          TEXT NOT NULL,
+    job           TEXT NOT NULL,
+    description   TEXT NOT NULL,
+    experience    TEXT NOT NULL,
+    telegramTitle TEXT NOT NULL,
+    telegramLink  TEXT NOT NULL,
+    githubTitle   TEXT NOT NULL,
+    githubLink    TEXT NOT NULL
 );
 
-INSERT INTO public.info(id, name, job, description, experience, telegram, github)
+INSERT INTO public.info(id, name, job, description, experience, telegramTitle, telegramLink, githubTitle, githubLink)
 VALUES (0, 'Дмитрий Дружинин', 'Middle Fullstack',
         '<span>Созданием сайтов занимаюсь более <b>трёх</b> лет</span><img src="https://place-hold.it/76"/>',
         '<ul> <li> коммерческой опыт <br/> разработки в команде </li> <li> исправлял и разрабатывал<br/> функционал на Angular </li> <li> разрабатывал API с <br/>использованием GraphQl </li> <li> разрабатывал серверную<br/> логику на Golang </li> </ul>',
         '+7 (911) 878-03-02',
-        'ditras228');
+        'https://t.me/Ditras',
+        'ditras228',
+        'https://github.com/ditras228');
 
 
 CREATE TABLE public.work

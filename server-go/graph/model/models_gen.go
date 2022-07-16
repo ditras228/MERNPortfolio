@@ -11,8 +11,10 @@ type UserOutput interface {
 }
 
 type Contacts struct {
-	Telegram string `json:"telegram"`
-	Github   string `json:"github"`
+	TelegramTitle string `json:"telegramTitle"`
+	TelegramLink  string `json:"telegramLink"`
+	GithubTitle   string `json:"githubTitle"`
+	GithubLink    string `json:"githubLink"`
 }
 
 type DeleteWorkInput struct {
@@ -55,13 +57,15 @@ type NotFoundError struct {
 func (NotFoundError) IsServiceErrorInterface() {}
 func (NotFoundError) IsUserOutput()            {}
 
-type UpdateInfo struct {
-	Name       string `json:"name"`
-	Job        string `json:"job"`
-	Desc       string `json:"desc"`
-	Experience string `json:"experience"`
-	Telegram   string `json:"telegram"`
-	Github     string `json:"github"`
+type UpdateInfoInput struct {
+	Name          string `json:"name"`
+	Job           string `json:"job"`
+	Desc          string `json:"desc"`
+	Experience    string `json:"experience"`
+	TelegramTitle string `json:"telegramTitle"`
+	TelegramLink  string `json:"telegramLink"`
+	GithubTitle   string `json:"githubTitle"`
+	GithubLink    string `json:"githubLink"`
 }
 
 type UpdateWorkInput struct {

@@ -3,13 +3,11 @@ import {setInfo, setWorks, setLock} from "./app.actions";
 import {GetInfo, GetWork} from "../../generated/graphql";
 
 export interface State {
-  isLock: boolean,
   info: GetInfo,
   works: GetWork[] | null,
 
 }
 const initialState: State = {
-  isLock: false,
   info: {} as unknown as GetInfo,
   works: [] as GetWork[],
 }

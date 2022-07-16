@@ -17,8 +17,10 @@ export type Scalars = {
 
 export type Contacts = {
   __typename?: 'Contacts';
-  github: Scalars['String'];
-  telegram: Scalars['String'];
+  githubLink: Scalars['String'];
+  githubTitle: Scalars['String'];
+  telegramLink: Scalars['String'];
+  telegramTitle: Scalars['String'];
 };
 
 export type DeleteWorkInput = {
@@ -78,7 +80,7 @@ export type MutationDeleteWorkArgs = {
 
 
 export type MutationUpdateInfoArgs = {
-  input: UpdateInfo;
+  input: UpdateInfoInput;
 };
 
 
@@ -95,7 +97,6 @@ export type Query = {
   __typename?: 'Query';
   getInfo: GetInfo;
   getTags: Array<Maybe<GetTag>>;
-  getTags2: Array<Maybe<GetTag>>;
   getWorks: Array<Maybe<GetWork>>;
 };
 
@@ -103,13 +104,15 @@ export type ServiceErrorInterface = {
   message: Scalars['String'];
 };
 
-export type UpdateInfo = {
+export type UpdateInfoInput = {
   desc: Scalars['String'];
   experience: Scalars['String'];
-  github: Scalars['String'];
+  githubLink: Scalars['String'];
+  githubTitle: Scalars['String'];
   job: Scalars['String'];
   name: Scalars['String'];
-  telegram: Scalars['String'];
+  telegramLink: Scalars['String'];
+  telegramTitle: Scalars['String'];
 };
 
 export type UpdateWorkInput = {
@@ -152,7 +155,14 @@ export type AuthMutation = { __typename?: 'Mutation', auth: { __typename: 'NotFo
 export type GetInfoQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetInfoQuery = { __typename?: 'Query', result: { __typename: 'GetInfo', desc: string, experience: string, job: string, name: string, contacts: { __typename?: 'Contacts', telegram: string, github: string } } };
+export type GetInfoQuery = { __typename?: 'Query', result: { __typename: 'GetInfo', desc: string, experience: string, job: string, name: string, contacts: { __typename?: 'Contacts', telegramTitle: string, telegramLink: string, githubTitle: string, githubLink: string } } };
+
+export type UpdateInfoMutationVariables = Exact<{
+  input: UpdateInfoInput;
+}>;
+
+
+export type UpdateInfoMutation = { __typename: 'Mutation', result: { __typename?: 'GetInfo', desc: string, experience: string, job: string, name: string, contacts: { __typename?: 'Contacts', telegramTitle: string, telegramLink: string, githubTitle: string, githubLink: string } } };
 
 export type UpdateWorkMutationVariables = Exact<{
   input: UpdateWorkInput;
@@ -199,8 +209,27 @@ export const GetInfoDocument = `
     job
     name
     contacts {
-      telegram
-      github
+      telegramTitle
+      telegramLink
+      githubTitle
+      githubLink
+    }
+  }
+}
+    `;
+export const UpdateInfoDocument = `
+    mutation updateInfo($input: UpdateInfoInput!) {
+  __typename
+  result: updateInfo(input: $input) {
+    desc
+    experience
+    job
+    name
+    contacts {
+      telegramTitle
+      telegramLink
+      githubTitle
+      githubLink
     }
   }
 }
@@ -262,6 +291,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getInfo(variables?: GetInfoQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetInfoQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetInfoQuery>(GetInfoDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getInfo', 'query');
+    },
+    updateInfo(variables: UpdateInfoMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateInfoMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateInfoMutation>(UpdateInfoDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateInfo', 'mutation');
     },
     updateWork(variables: UpdateWorkMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateWorkMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<UpdateWorkMutation>(UpdateWorkDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateWork', 'mutation');

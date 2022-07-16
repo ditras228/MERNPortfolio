@@ -7,13 +7,11 @@ type Query {
 
   # Получить теги
   getTags: [GetTag]!
-
-  getTags2: [GetTag]!
 }
 
 type Mutation {
   # Обновить инфу
-  updateInfo(input: UpdateInfo!): GetInfo!
+  updateInfo(input: UpdateInfoInput!): GetInfo!
 
   # Обновить работу
   updateWork(input: UpdateWorkInput!): GetWork!

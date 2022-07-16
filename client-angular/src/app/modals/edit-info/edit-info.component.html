@@ -10,18 +10,26 @@
   <app-input-field class="edit-info__field" [error]="errors?.['desc']" [placeholder]="'Описание'"
                    [internalValue]="desc.value"
                    (valueChange)="desc.patchValue($event)"></app-input-field>
-  <app-text-area class="edit-info__field" [error]="errors?.['skills']" [placeholder]="'Навыки'"
+  <app-text-area class="edit-info__field" [error]="errors?.['experience']" [placeholder]="'Навыки'"
                  [internalValue]="experience.value" [rows]="10"
                  (valueChange)="experience.patchValue($event)"></app-text-area>
 
   <div class="edit-info__grid">
-    <app-input-field class="edit-info__grid__field" [error]="errors?.['phone']" [placeholder]="'Телеграм'"
-                     [internalValue]="telegram.value"
-                     (valueChange)="telegram.patchValue($event)"></app-input-field>
-    <app-input-field class="edit-info__grid__field" [error]="errors?.['github']" [placeholder]="'Гитхаб'"
-                     [internalValue]="github.value"
-                     (valueChange)="github.patchValue($event)"></app-input-field>
+    <app-input-field class="edit-info__grid__field" [error]="errors?.['telegramTitle']" [placeholder]="'Телеграм тайтл'"
+                     [internalValue]="telegramTitle.value"
+                     (valueChange)="telegramTitle.patchValue($event)"></app-input-field>
+    <app-input-field class="edit-info__grid__field" [error]="errors?.['telegramLink']" [placeholder]="'Телеграм ссылка'"
+                     [internalValue]="telegramLink.value"
+                     (valueChange)="telegramLink.patchValue($event)"></app-input-field>
   </div>
-  <button class="edit-info__button">Применить</button>
+  <div class="edit-info__grid">
+    <app-input-field class="edit-info__grid__field" [error]="errors?.['githubTitle']" [placeholder]="'Гитхаб тайтл'"
+                     [internalValue]="githubTitle.value"
+                     (valueChange)="githubTitle.patchValue($event)"></app-input-field>
+    <app-input-field class="edit-info__grid__field" [error]="errors?.['githubLink']" [placeholder]="'Гитхаб ссылка'"
+                     [internalValue]="githubLink.value"
+                     (valueChange)="githubLink.patchValue($event)"></app-input-field>
+  </div>
+  <button class="edit-info__button" (click)="submitForm()">Применить</button>
 
 </div>

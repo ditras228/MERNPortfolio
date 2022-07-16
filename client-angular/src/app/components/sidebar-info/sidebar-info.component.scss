@@ -25,6 +25,11 @@
     justify-items: center;
     display: grid;
     grid-row-gap: 20px;
+
+    @include screen-lg{
+      justify-items: right;
+
+    }
     &__container{
       display: grid;
       align-content: center;

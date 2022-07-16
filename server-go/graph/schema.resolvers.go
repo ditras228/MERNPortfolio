@@ -11,19 +11,12 @@ import (
 	"portfolio/graph/model"
 )
 
-func (r *mutationResolver) UpdateInfo(ctx context.Context, input model.UpdateInfo) (*model.GetInfo, error) {
-	one, err := container.InfoRepository.FindOne(context.TODO())
+func (r *mutationResolver) UpdateInfo(ctx context.Context, input model.UpdateInfoInput) (*model.GetInfo, error) {
+	upd, err := container.InfoRepository.UpdateInfo(ctx, input)
 	if err != nil {
-		fmt.Println(err)
-		return nil, nil
+		return nil, err
 	}
-	one = model.GetInfo{
-		Name:       input.Name,
-		Desc:       input.Desc,
-		Experience: input.Experience,
-	}
-
-	return &one, nil
+	return &upd, nil
 }
 
 func (r *mutationResolver) UpdateWork(ctx context.Context, input model.UpdateWorkInput) (*model.GetWork, error) {
@@ -49,10 +42,8 @@ func (r *mutationResolver) Auth(ctx context.Context, input model.UserInput) (mod
 func (r *queryResolver) GetInfo(ctx context.Context) (*model.GetInfo, error) {
 	one, err := container.InfoRepository.FindOne(context.TODO())
 	if err != nil {
-		fmt.Println(err)
 		return nil, nil
 	}
-	fmt.Println(one.Job)
 	return &one, nil
 }
 
@@ -65,15 +56,7 @@ func (r *queryResolver) GetWorks(ctx context.Context) ([]*model.GetWork, error) 
 }
 
 func (r *queryResolver) GetTags(ctx context.Context) ([]*model.GetTag, error) {
-	tags, err := container.TagRepository.FindAll(context.TODO())
-	if err != nil {
-		return nil, err
-	}
-	return tags, nil
-}
-
-func (r *queryResolver) GetTags2(ctx context.Context) ([]*model.GetTag, error) {
-	tags, err := container.TagRepository.Find(context.TODO())
+	tags, err := container.TagRepository.FindAll(ctx)
 	if err != nil {
 		return nil, err
 	}

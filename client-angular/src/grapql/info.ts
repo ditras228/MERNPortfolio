@@ -9,8 +9,10 @@ export const getInfoQuery = gql`
       job
       name
       contacts{
-        telegram
-        github
+        telegramTitle
+        telegramLink
+        githubTitle
+        githubLink
       }
     }
   }`;

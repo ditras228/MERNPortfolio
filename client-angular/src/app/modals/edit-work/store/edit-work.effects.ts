@@ -5,10 +5,11 @@ import {GrapqlService} from "../../../services/grapql.service";
 import {HttpClient} from '@angular/common/http';
 import {switchMap, withLatestFrom} from "rxjs";
 import {map} from "rxjs/operators";
-import {okay} from "../../../store/app.actions";
+import {getWorks, okay} from "../../../store/app.actions";
 import {Store} from "@ngrx/store";
 import {submitEditWorkForm} from "./edit-work.actions";
 import {selectEditFormInput} from "./edit-work.selectors";
+import {setEditWorkVisible} from "../../login/store/login-modal.actions";
 
 @Injectable()
 export class EditWorkEffects extends GrapqlService {
@@ -37,7 +38,9 @@ export class EditWorkEffects extends GrapqlService {
 
             }
           } as MutationUpdateWorkArgs)
-            .pipe(map((data_) => {
+            .pipe(map((data) => {
+              this.store$.dispatch(getWorks())
+              this.store$.dispatch(setEditWorkVisible(undefined))
               return okay()
             }))
 

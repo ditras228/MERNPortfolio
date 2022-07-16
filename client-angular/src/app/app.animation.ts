@@ -2,7 +2,7 @@ import { trigger, transition, style, animate, query, stagger } from '@angular/an
 
 export const modalAnimation = trigger('modalAnimation', [
   transition(':enter', [
-    style({ transform: 'translate(-50%, -50.5%)' }), animate('150ms', style({  transform: 'translate(-50%, -50%)'}))]
+    style({ transform: 'translateY(-10px)' }), animate('150ms', style({  transform: 'translateY(0)'}))]
   ),
 ]);
 

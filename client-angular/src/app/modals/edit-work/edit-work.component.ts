@@ -53,9 +53,10 @@ export class EditWorkComponent implements OnInit {
     if (this.form?.invalid) {
       this.errors = this.validationService.GetValidationMessage(this.form, this.errors)
     } else {
+      this.errors={}
       this.store$.dispatch(setEditWorkForm(
         {
-          id: this.currentWork?.id || -1,
+          id: this.currentWork?.id,
           name: this.name.value,
           description: this.description.value,
           demo: this.demo.value,
@@ -76,7 +77,7 @@ export class EditWorkComponent implements OnInit {
     this.name = new FormControl(null, [Validators.required])
     this.description = new FormControl(null, [Validators.required])
     this.github = new FormControl(null, [Validators.required])
-    this.figma = new FormControl(null, [Validators.required])
+    this.figma = new FormControl(null )
     this.demo = new FormControl(null, [Validators.required])
 
 

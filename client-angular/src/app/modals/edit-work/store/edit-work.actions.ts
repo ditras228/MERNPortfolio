@@ -1,7 +1,7 @@
 import {createAction} from "@ngrx/store";
 
 export type EditWorkInputs= {
-  id: number,
+  id: number | undefined,
   demo: string,
   description: string
   figma: string

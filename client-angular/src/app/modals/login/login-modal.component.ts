@@ -43,6 +43,7 @@ export class LoginModalComponent implements OnInit {
     }
 
     else {
+      this.errors={}
       this.store$.dispatch(setError(''))
       this.store$.dispatch(setLoginForm({login: this.login.value, password: this.password.value}))
       this.store$.dispatch(submitLoginForm())
