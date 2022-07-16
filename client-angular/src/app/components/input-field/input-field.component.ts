@@ -8,6 +8,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 export class InputFieldComponent implements OnInit {
   @Input() error: string | undefined
   @Input() placeholder = '' as string
+  @Input() type = 'text' as string
   @Output() valueChange = new EventEmitter<string>();
 
   @Input()  internalValue = ''

@@ -18,3 +18,6 @@ export const setEditInfoForm = createAction(
 export const submitEditInfoForm = createAction(
   "[App] SubmitEditInfoForm"
 );
+export const deleteWork = createAction(
+  "[App] DeleteWork"
+);

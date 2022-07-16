@@ -2,8 +2,20 @@
 
 package model
 
+type DeleteWorkOutput interface {
+	IsDeleteWorkOutput()
+}
+
+type GetDescOutput interface {
+	IsGetDescOutput()
+}
+
 type ServiceErrorInterface interface {
 	IsServiceErrorInterface()
+}
+
+type UpdateDescOutput interface {
+	IsUpdateDescOutput()
 }
 
 type UserOutput interface {
@@ -20,6 +32,26 @@ type Contacts struct {
 type DeleteWorkInput struct {
 	ID int `json:"id"`
 }
+
+type DeleteWorkResult struct {
+	ID int `json:"id"`
+}
+
+func (DeleteWorkResult) IsDeleteWorkOutput() {}
+
+type GetDesc struct {
+	ID     int    `json:"id"`
+	Text   string `json:"text"`
+	ImgURL string `json:"imgURL"`
+}
+
+func (GetDesc) IsUpdateDescOutput() {}
+
+type GetDescResult struct {
+	Desc []*GetDesc `json:"desc"`
+}
+
+func (GetDescResult) IsGetDescOutput() {}
 
 type GetInfo struct {
 	Name       string    `json:"name"`
@@ -54,8 +86,26 @@ type NotFoundError struct {
 	Message string `json:"message"`
 }
 
+func (NotFoundError) IsDeleteWorkOutput()      {}
 func (NotFoundError) IsServiceErrorInterface() {}
 func (NotFoundError) IsUserOutput()            {}
+func (NotFoundError) IsUpdateDescOutput()      {}
+func (NotFoundError) IsGetDescOutput()         {}
+
+type UnexpectedError struct {
+	Message string `json:"message"`
+}
+
+func (UnexpectedError) IsDeleteWorkOutput()      {}
+func (UnexpectedError) IsServiceErrorInterface() {}
+func (UnexpectedError) IsUpdateDescOutput()      {}
+func (UnexpectedError) IsGetDescOutput()         {}
+
+type UpdateDescInput struct {
+	ID     int    `json:"id"`
+	Text   string `json:"text"`
+	ImgURL string `json:"imgURL"`
+}
 
 type UpdateInfoInput struct {
 	Name          string `json:"name"`

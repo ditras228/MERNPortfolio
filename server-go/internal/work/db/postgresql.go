@@ -2,6 +2,7 @@ package work
 
 import (
 	"context"
+	"fmt"
 	"portfolio/graph/model"
 	"portfolio/infrastructure/postgresql"
 	"portfolio/internal/work"
@@ -92,7 +93,6 @@ func (r *repository) FindAll(ctx context.Context) ([]*model.GetWork, error) {
 
 			}
 			wrk.Tags = tags
-
 		}
 
 		works = append(works, &wrk)
@@ -122,15 +122,60 @@ func (r *repository) UpdateWork(ctx context.Context, input model.UpdateWorkInput
 			id, name, description, github, demo
 
 		`
+
+	qDeleteTags := `
+
+		DELETE FROM public.worktag
+
+		WHERE 
+			workid = $1
+
+		`
+	qAddTags := `
+		INSERT INTO public.worktag (workid, tagid) VALUES ($1, $2)
+		`
+
+	res, err := r.client.Query(ctx, qDeleteTags, input.ID)
+	if err != nil {
+		return model.GetWork{}, err
+	}
+	fmt.Println(res)
+
+	for i := 0; i < len(input.Tags); i++ {
+		res, err := r.client.Query(ctx, qAddTags, input.ID, input.Tags[i])
+		if err != nil {
+			return model.GetWork{}, err
+		}
+		fmt.Println(res)
+	}
+
 	var wrk model.GetWork
 
-	err := r.client.QueryRow(ctx, q, input.ID, input.Name, input.Description, input.Github, input.Demo).Scan(&wrk.ID, &wrk.Name, &wrk.Description, &wrk.Github, &wrk.Demo)
+	err = r.client.QueryRow(ctx, q, input.ID, input.Name, input.Description, input.Github, input.Demo).Scan(&wrk.ID, &wrk.Name, &wrk.Description, &wrk.Github, &wrk.Demo)
 	if err != nil {
 		return model.GetWork{}, err
 	}
 
 	return wrk, nil
 }
+func (r *repository) DeleteWork(ctx context.Context, input model.DeleteWorkInput) (model.DeleteWorkOutput, error) {
+	q := `
+			DELETE FROM public.work
+
+			WHERE id = $1
+
+			RETURNING id
+		`
+
+	var res model.DeleteWorkResult
+	err := r.client.QueryRow(ctx, q, input.ID).Scan(&res.ID)
+	if err != nil {
+		return nil, nil
+	}
+
+	return res, nil
+}
+
 func NewRepository(client postgres.Client) work.Repository {
 	return &repository{
 		client: client,

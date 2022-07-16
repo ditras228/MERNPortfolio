@@ -1,0 +1,9 @@
+type GetDesc{
+    id: Int!
+    text: String!
+    imgURL: String!
+}
+type GetDescResult{
+    desc: [GetDesc]
+}
+union GetDescOutput = GetDescResult |  UnexpectedError | NotFoundError

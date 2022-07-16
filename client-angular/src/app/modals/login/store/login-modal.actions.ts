@@ -31,10 +31,4 @@ export const setAuth = createAction(
   "[App] Auth",
   (isAuth:boolean)=>({isAuth})
 );
-export const getTags = createAction(
-  "[App] GetTags"
-);
-export const setTags = createAction(
-  "[App] SetTags",
-  (tags: GetTag[]| any )=>({tags})
-);
+

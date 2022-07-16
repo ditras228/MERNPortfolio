@@ -1,3 +1,9 @@
 interface ServiceErrorInterface {
     message: String!
 }
+type NotFoundError implements ServiceErrorInterface{
+    message: String!
+}
+type UnexpectedError implements ServiceErrorInterface{
+    message: String!
+}

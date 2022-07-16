@@ -12,3 +12,11 @@ input  UpdateWorkInput{
 input  DeleteWorkInput{
   id: Int!
 }
+
+type  DeleteWorkResult{
+  id: Int!
+}
+union DeleteWorkOutput =
+  DeleteWorkResult |
+  NotFoundError |
+  UnexpectedError

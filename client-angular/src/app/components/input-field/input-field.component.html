@@ -1,5 +1,5 @@
 <div class="input">
-  <input type="text" placeholder=" " class="input__field"
+  <input [type]="type" placeholder=" " class="input__field"
          [(ngModel)]="internalValue"
          (ngModelChange)="internalValueUpdate.next($event)"
   >

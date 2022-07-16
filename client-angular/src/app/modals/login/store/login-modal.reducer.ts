@@ -7,9 +7,8 @@ import {
   setError,
   setLoginForm,
   setLoginVisible,
-  setTags,
 } from "./login-modal.actions";
-import {GetTag, GetWork} from "../../../../generated/graphql";
+import { GetWork} from "../../../../generated/graphql";
 
 export interface State {
   isAuth: boolean,
@@ -20,7 +19,6 @@ export interface State {
   isWorkVisible: boolean
   isInfoVisible: boolean
   currentEditWork: GetWork | undefined
-  tags: GetTag[]
 }
 const initialState: State = {
   isWorkVisible: false,
@@ -29,7 +27,6 @@ const initialState: State = {
   isLock: false,
   isLoginVisible: false,
   currentEditWork: undefined,
-  tags: [] as GetTag[],
 
   error: '',
   input: {
@@ -45,5 +42,4 @@ export const loginModalReducer= createReducer(
   on(setEditWorkVisible, (state, {work}) => ({...state, isWorkVisible: !state.isWorkVisible, currentEditWork: work, isLock: !state.isLock})),
   on(setError, (state, {error}) => ({...state, error: error })),
   on(setAuth, (state, {isAuth}) => ({...state, isAuth: isAuth })),
-  on(setTags, (state, {tags}) => ({...state, tags: tags }))
 )

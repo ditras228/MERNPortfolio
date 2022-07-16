@@ -11,6 +11,14 @@ import (
 	"portfolio/graph/model"
 )
 
+func (r *mutationResolver) Auth(ctx context.Context, input model.UserInput) (model.UserOutput, error) {
+	user, err := container.UserRepository.Auth(context.TODO(), input)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
+}
+
 func (r *mutationResolver) UpdateInfo(ctx context.Context, input model.UpdateInfoInput) (*model.GetInfo, error) {
 	upd, err := container.InfoRepository.UpdateInfo(ctx, input)
 	if err != nil {
@@ -20,23 +28,23 @@ func (r *mutationResolver) UpdateInfo(ctx context.Context, input model.UpdateInf
 }
 
 func (r *mutationResolver) UpdateWork(ctx context.Context, input model.UpdateWorkInput) (*model.GetWork, error) {
-	work, err := container.WorkRepository.UpdateWork(ctx, input)
+	res, err := container.WorkRepository.UpdateWork(ctx, input)
 	if err != nil {
 		return nil, err
 	}
-	return &work, nil
+	return &res, nil
 }
 
-func (r *mutationResolver) DeleteWork(ctx context.Context, input model.DeleteWorkInput) (*model.GetWork, error) {
+func (r *mutationResolver) DeleteWork(ctx context.Context, input model.DeleteWorkInput) (model.DeleteWorkOutput, error) {
+	res, err := container.WorkRepository.DeleteWork(ctx, input)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
+func (r *mutationResolver) UpdateDesc(ctx context.Context, input model.UpdateDescInput) (model.UpdateDescOutput, error) {
 	panic(fmt.Errorf("not implemented"))
-}
-
-func (r *mutationResolver) Auth(ctx context.Context, input model.UserInput) (model.UserOutput, error) {
-	user, err := container.UserRepository.Auth(context.TODO(), input)
-	if err != nil {
-		return nil, err
-	}
-	return user, nil
 }
 
 func (r *queryResolver) GetInfo(ctx context.Context) (*model.GetInfo, error) {
@@ -61,6 +69,14 @@ func (r *queryResolver) GetTags(ctx context.Context) ([]*model.GetTag, error) {
 		return nil, err
 	}
 	return tags, nil
+}
+
+func (r *queryResolver) GetDesc(ctx context.Context) (model.GetDescOutput, error) {
+	res, err := container.DescRepository.FindAll(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.

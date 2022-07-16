@@ -5,9 +5,6 @@ type User{
   accessToken: String!
 }
 
-type NotFoundError implements ServiceErrorInterface{
-  message: String!
-}
 type WrongPassword implements ServiceErrorInterface{
   message: String!
 }

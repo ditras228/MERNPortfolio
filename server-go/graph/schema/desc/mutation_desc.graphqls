@@ -1,0 +1,7 @@
+input UpdateDescInput{
+    id: Int!
+    text: String!
+    imgURL: String!
+}
+
+union UpdateDescOutput = GetDesc |  UnexpectedError | NotFoundError

@@ -1,29 +1,22 @@
 import {Injectable} from "@angular/core";
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {
-  AuthDocument, AuthMutation,
+  AuthDocument,
+  AuthMutation,
   AuthMutationVariables,
-  GetInfoQuery, GetTagsDocument, GetTagsQuery, GetTagsQueryVariables,
-  GetWorksDocument,
-  GetWorksQuery
+  GetTagsDocument,
+  GetTagsQuery,
+  GetTagsQueryVariables
 } from "../../../../generated/graphql";
 import {GrapqlService} from "../../../services/grapql.service";
 import {HttpClient} from '@angular/common/http';
 import {switchMap, withLatestFrom} from "rxjs";
 import {map} from "rxjs/operators";
-import {
-  getTags,
-  setAuth,
-  setError,
-  setLoginForm,
-  setLoginVisible,
-  setTags,
-  submitLoginForm
-} from "./login-modal.actions";
+import {setAuth, setError, setLoginVisible, submitLoginForm} from "./login-modal.actions";
 import {okay} from "../../../store/app.actions";
 import {Store} from "@ngrx/store";
-import {selectCurrentWorkID, selectLoginInput} from "./login-modal.selectors";
-import {getTagsQuery} from "../../../../grapql/tag";
+import {selectLoginInput} from "./login-modal.selectors";
+import {getTags, setFilterTags, setTags} from "../../edit-work/store/edit-work.actions";
 
 @Injectable()
 export class LoginEffects extends GrapqlService {
@@ -40,7 +33,8 @@ export class LoginEffects extends GrapqlService {
       switchMap(([_, state]) => {
           return this.doRequest<GetTagsQuery>(GetTagsDocument, {} as GetTagsQueryVariables)
             .pipe(map((data) => {
-                this.store$.dispatch(setTags(data.result))
+              this.store$.dispatch(setTags(data.result))
+              this.store$.dispatch(setFilterTags())
 
                 return okay()
               }

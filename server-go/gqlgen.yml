@@ -4,6 +4,7 @@ schema:
   - graph/schema/work/*.graphqls
   - graph/schema/user/*.graphqls
   - graph/schema/tag/*.graphqls
+  - graph/schema/desc/*.graphqls
   - graph/*.graphqls
 
 

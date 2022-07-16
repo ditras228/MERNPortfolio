@@ -39,7 +39,6 @@ export class EditInfoComponent implements OnInit {
   submitForm():void{
     if (this.form?.invalid) {
       this.errors = this.validationService.GetValidationMessage(this.form, this.errors)
-      console.log(this.errors)
     } else {
       this.store$.dispatch(setEditInfoForm({
         name: this.name.value, job: this.job.value, desc: this.desc.value,
@@ -71,9 +70,6 @@ export class EditInfoComponent implements OnInit {
       this.githubLink.setValue(info.contacts.githubLink)
       this.experience.setValue(info.experience)
     })
-
-
-
 
     this.form = new FormGroup({
       name: this.name,

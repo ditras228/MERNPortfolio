@@ -7,9 +7,15 @@ type Query {
 
   # Получить теги
   getTags: [GetTag]!
+
+  # Получить описание
+  getDesc: GetDescOutput!
 }
 
 type Mutation {
+  # Логин
+  auth(input: UserInput!): UserOutput!
+
   # Обновить инфу
   updateInfo(input: UpdateInfoInput!): GetInfo!
 
@@ -17,9 +23,10 @@ type Mutation {
   updateWork(input: UpdateWorkInput!): GetWork!
 
   # Удалить работу
-  deleteWork(input: DeleteWorkInput!): GetWork!
+  deleteWork(input: DeleteWorkInput!): DeleteWorkOutput!
 
-  # Логин
-  auth(input: UserInput!): UserOutput!
+  # Обновить описание
+  updateDesc(input: UpdateDescInput!): UpdateDescOutput!
+
 }
 

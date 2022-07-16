@@ -27,6 +27,13 @@ export type DeleteWorkInput = {
   id: Scalars['Int'];
 };
 
+export type DeleteWorkOutput = DeleteWorkResult | NotFoundError | UnexpectedError;
+
+export type DeleteWorkResult = {
+  __typename?: 'DeleteWorkResult';
+  id: Scalars['Int'];
+};
+
 export type GetInfo = {
   __typename?: 'GetInfo';
   contacts: Contacts;
@@ -63,7 +70,7 @@ export type GetWorkTag = {
 export type Mutation = {
   __typename?: 'Mutation';
   auth: UserOutput;
-  deleteWork: GetWork;
+  deleteWork: DeleteWorkOutput;
   updateInfo: GetInfo;
   updateWork: GetWork;
 };
@@ -101,6 +108,11 @@ export type Query = {
 };
 
 export type ServiceErrorInterface = {
+  message: Scalars['String'];
+};
+
+export type UnexpectedError = ServiceErrorInterface & {
+  __typename?: 'UnexpectedError';
   message: Scalars['String'];
 };
 
@@ -152,6 +164,13 @@ export type AuthMutationVariables = Exact<{
 
 export type AuthMutation = { __typename?: 'Mutation', auth: { __typename: 'NotFoundError', message: string } | { __typename: 'User', login: string, password: string, accessToken: string } | { __typename: 'WrongPassword', message: string } };
 
+export type DeleteWorkMutationVariables = Exact<{
+  input: DeleteWorkInput;
+}>;
+
+
+export type DeleteWorkMutation = { __typename: 'Mutation', result: { __typename: 'DeleteWorkResult', id: number } | { __typename: 'NotFoundError' } | { __typename: 'UnexpectedError' } };
+
 export type GetInfoQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -196,6 +215,17 @@ export const AuthDocument = `
     }
     ... on WrongPassword {
       message
+    }
+  }
+}
+    `;
+export const DeleteWorkDocument = `
+    mutation deleteWork($input: DeleteWorkInput!) {
+  __typename
+  result: deleteWork(input: $input) {
+    __typename
+    ... on DeleteWorkResult {
+      id
     }
   }
 }
@@ -288,6 +318,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
   return {
     auth(variables: AuthMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<AuthMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<AuthMutation>(AuthDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'auth', 'mutation');
+    },
+    deleteWork(variables: DeleteWorkMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<DeleteWorkMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<DeleteWorkMutation>(DeleteWorkDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'deleteWork', 'mutation');
     },
     getInfo(variables?: GetInfoQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetInfoQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetInfoQuery>(GetInfoDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getInfo', 'query');

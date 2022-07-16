@@ -15,7 +15,7 @@ VALUES (0, 'Angular'),
 
 CREATE TABLE public.worktag
 (
-    id     INT PRIMARY KEY,
+    id     SERIAL PRIMARY KEY,
     workId INT NOT NULL,
     tagId  INT NOT NULL
 );

@@ -2,6 +2,7 @@ import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {GetWork} from "../../../generated/graphql";
 import {setEditInfoVisible, setEditWorkVisible} from "../../modals/login/store/login-modal.actions";
 import {Store} from "@ngrx/store";
+import {setEditWorkTags} from "../../modals/edit-work/store/edit-work.actions";
 
 @Component({
   selector: 'app-work',
@@ -14,6 +15,8 @@ export class WorkComponent implements OnInit {
 
   constructor(public store$: Store) { }
   editWorkHandler():void{
+    this.store$.dispatch(setEditWorkTags(this.work?.tags))
+
     this.store$.dispatch(setEditWorkVisible(this.work))
   }
   ngOnInit(): void {

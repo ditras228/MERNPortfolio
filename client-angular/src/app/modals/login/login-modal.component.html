@@ -6,7 +6,7 @@
   </div>
   <div class="login__form">
     <app-input-field class="login__form__input" [error]="errors?.['login']" [placeholder]="'Логин'" [internalValue]="login.value" (valueChange)="login.patchValue($event)" ></app-input-field>
-    <app-input-field class="login__form__input" [error]="errors?.['password']"  [placeholder]="'Пароль'" [internalValue]="password.value" (valueChange)="password.patchValue($event)" ></app-input-field>
+    <app-input-field class="login__form__input" [type]="'password'" [error]="errors?.['password']"  [placeholder]="'Пароль'" [internalValue]="password.value" (valueChange)="password.patchValue($event)" ></app-input-field>
     <div>{{serverError}}</div>
     <button class="login__btn" (click)="sendForm()">Войти</button>
   </div>

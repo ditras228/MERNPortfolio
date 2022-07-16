@@ -5,6 +5,7 @@ import (
 	"portfolio/graph/model"
 	"portfolio/infrastructure/postgresql"
 	"portfolio/internal/info"
+	"portfolio/pkg/utils"
 )
 
 type repository struct {
@@ -68,7 +69,7 @@ func (r *repository) FindOne(ctx context.Context) (model.GetInfo, error) {
 	}
 
 	inf.Contacts = &con
-
+	inf.Experience = utils.FormatHTML(inf.Experience)
 	return inf, nil
 }
 func NewRepository(client postgres.Client) info.Repository {

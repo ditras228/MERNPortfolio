@@ -51,6 +51,20 @@ type ComplexityRoot struct {
 		TelegramTitle func(childComplexity int) int
 	}
 
+	DeleteWorkResult struct {
+		ID func(childComplexity int) int
+	}
+
+	GetDesc struct {
+		ID     func(childComplexity int) int
+		ImgURL func(childComplexity int) int
+		Text   func(childComplexity int) int
+	}
+
+	GetDescResult struct {
+		Desc func(childComplexity int) int
+	}
+
 	GetInfo struct {
 		Contacts   func(childComplexity int) int
 		Desc       func(childComplexity int) int
@@ -83,6 +97,7 @@ type ComplexityRoot struct {
 	Mutation struct {
 		Auth       func(childComplexity int, input model.UserInput) int
 		DeleteWork func(childComplexity int, input model.DeleteWorkInput) int
+		UpdateDesc func(childComplexity int, input model.UpdateDescInput) int
 		UpdateInfo func(childComplexity int, input model.UpdateInfoInput) int
 		UpdateWork func(childComplexity int, input model.UpdateWorkInput) int
 	}
@@ -92,9 +107,14 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
+		GetDesc  func(childComplexity int) int
 		GetInfo  func(childComplexity int) int
 		GetTags  func(childComplexity int) int
 		GetWorks func(childComplexity int) int
+	}
+
+	UnexpectedError struct {
+		Message func(childComplexity int) int
 	}
 
 	User struct {
@@ -110,15 +130,17 @@ type ComplexityRoot struct {
 }
 
 type MutationResolver interface {
+	Auth(ctx context.Context, input model.UserInput) (model.UserOutput, error)
 	UpdateInfo(ctx context.Context, input model.UpdateInfoInput) (*model.GetInfo, error)
 	UpdateWork(ctx context.Context, input model.UpdateWorkInput) (*model.GetWork, error)
-	DeleteWork(ctx context.Context, input model.DeleteWorkInput) (*model.GetWork, error)
-	Auth(ctx context.Context, input model.UserInput) (model.UserOutput, error)
+	DeleteWork(ctx context.Context, input model.DeleteWorkInput) (model.DeleteWorkOutput, error)
+	UpdateDesc(ctx context.Context, input model.UpdateDescInput) (model.UpdateDescOutput, error)
 }
 type QueryResolver interface {
 	GetInfo(ctx context.Context) (*model.GetInfo, error)
 	GetWorks(ctx context.Context) ([]*model.GetWork, error)
 	GetTags(ctx context.Context) ([]*model.GetTag, error)
+	GetDesc(ctx context.Context) (model.GetDescOutput, error)
 }
 
 type executableSchema struct {
@@ -163,6 +185,41 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Contacts.TelegramTitle(childComplexity), true
+
+	case "DeleteWorkResult.id":
+		if e.complexity.DeleteWorkResult.ID == nil {
+			break
+		}
+
+		return e.complexity.DeleteWorkResult.ID(childComplexity), true
+
+	case "GetDesc.id":
+		if e.complexity.GetDesc.ID == nil {
+			break
+		}
+
+		return e.complexity.GetDesc.ID(childComplexity), true
+
+	case "GetDesc.imgURL":
+		if e.complexity.GetDesc.ImgURL == nil {
+			break
+		}
+
+		return e.complexity.GetDesc.ImgURL(childComplexity), true
+
+	case "GetDesc.text":
+		if e.complexity.GetDesc.Text == nil {
+			break
+		}
+
+		return e.complexity.GetDesc.Text(childComplexity), true
+
+	case "GetDescResult.desc":
+		if e.complexity.GetDescResult.Desc == nil {
+			break
+		}
+
+		return e.complexity.GetDescResult.Desc(childComplexity), true
 
 	case "GetInfo.contacts":
 		if e.complexity.GetInfo.Contacts == nil {
@@ -307,6 +364,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.DeleteWork(childComplexity, args["input"].(model.DeleteWorkInput)), true
 
+	case "Mutation.updateDesc":
+		if e.complexity.Mutation.UpdateDesc == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateDesc_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateDesc(childComplexity, args["input"].(model.UpdateDescInput)), true
+
 	case "Mutation.updateInfo":
 		if e.complexity.Mutation.UpdateInfo == nil {
 			break
@@ -338,6 +407,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.NotFoundError.Message(childComplexity), true
 
+	case "Query.getDesc":
+		if e.complexity.Query.GetDesc == nil {
+			break
+		}
+
+		return e.complexity.Query.GetDesc(childComplexity), true
+
 	case "Query.getInfo":
 		if e.complexity.Query.GetInfo == nil {
 			break
@@ -358,6 +434,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.GetWorks(childComplexity), true
+
+	case "UnexpectedError.message":
+		if e.complexity.UnexpectedError.Message == nil {
+			break
+		}
+
+		return e.complexity.UnexpectedError.Message(childComplexity), true
 
 	case "User.accessToken":
 		if e.complexity.User.AccessToken == nil {
@@ -403,6 +486,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	ec := executionContext{rc, e}
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
 		ec.unmarshalInputDeleteWorkInput,
+		ec.unmarshalInputUpdateDescInput,
 		ec.unmarshalInputUpdateInfoInput,
 		ec.unmarshalInputUpdateWorkInput,
 		ec.unmarshalInputUserInput,
@@ -507,6 +591,14 @@ type Contacts{
 input  DeleteWorkInput{
   id: Int!
 }
+
+type  DeleteWorkResult{
+  id: Int!
+}
+union DeleteWorkOutput =
+  DeleteWorkResult |
+  NotFoundError |
+  UnexpectedError
 `, BuiltIn: false},
 	{Name: "../schema/work/query_work.graphqls", Input: `type  GetWork{
   id: Int!
@@ -521,6 +613,12 @@ input  DeleteWorkInput{
 `, BuiltIn: false},
 	{Name: "../schema/user/errors.graphqls", Input: `interface ServiceErrorInterface {
     message: String!
+}
+type NotFoundError implements ServiceErrorInterface{
+    message: String!
+}
+type UnexpectedError implements ServiceErrorInterface{
+    message: String!
 }`, BuiltIn: false},
 	{Name: "../schema/user/mutation_user.graphqls", Input: `input UserInput {
   login: String!
@@ -534,9 +632,6 @@ input  DeleteWorkInput{
   accessToken: String!
 }
 
-type NotFoundError implements ServiceErrorInterface{
-  message: String!
-}
 type WrongPassword implements ServiceErrorInterface{
   message: String!
 }
@@ -555,6 +650,22 @@ type  GetWorkTag{
   tagId: Int!
 }
 `, BuiltIn: false},
+	{Name: "../schema/desc/mutation_desc.graphqls", Input: `input UpdateDescInput{
+    id: Int!
+    text: String!
+    imgURL: String!
+}
+
+union UpdateDescOutput = GetDesc |  UnexpectedError | NotFoundError`, BuiltIn: false},
+	{Name: "../schema/desc/query_desc.graphqls", Input: `type GetDesc{
+    id: Int!
+    text: String!
+    imgURL: String!
+}
+type GetDescResult{
+    desc: [GetDesc]
+}
+union GetDescOutput = GetDescResult |  UnexpectedError | NotFoundError`, BuiltIn: false},
 	{Name: "../schema.graphqls", Input: `type Query {
   # Получить инфу
   getInfo: GetInfo!
@@ -564,9 +675,15 @@ type  GetWorkTag{
 
   # Получить теги
   getTags: [GetTag]!
+
+  # Получить описание
+  getDesc: GetDescOutput!
 }
 
 type Mutation {
+  # Логин
+  auth(input: UserInput!): UserOutput!
+
   # Обновить инфу
   updateInfo(input: UpdateInfoInput!): GetInfo!
 
@@ -574,10 +691,11 @@ type Mutation {
   updateWork(input: UpdateWorkInput!): GetWork!
 
   # Удалить работу
-  deleteWork(input: DeleteWorkInput!): GetWork!
+  deleteWork(input: DeleteWorkInput!): DeleteWorkOutput!
 
-  # Логин
-  auth(input: UserInput!): UserOutput!
+  # Обновить описание
+  updateDesc(input: UpdateDescInput!): UpdateDescOutput!
+
 }
 
 `, BuiltIn: false},
@@ -610,6 +728,21 @@ func (ec *executionContext) field_Mutation_deleteWork_args(ctx context.Context, 
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 		arg0, err = ec.unmarshalNDeleteWorkInput2portfolioᚋgraphᚋmodelᚐDeleteWorkInput(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_updateDesc_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.UpdateDescInput
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNUpdateDescInput2portfolioᚋgraphᚋmodelᚐUpdateDescInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -872,6 +1005,231 @@ func (ec *executionContext) fieldContext_Contacts_githubLink(ctx context.Context
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _DeleteWorkResult_id(ctx context.Context, field graphql.CollectedField, obj *model.DeleteWorkResult) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_DeleteWorkResult_id(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_DeleteWorkResult_id(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "DeleteWorkResult",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _GetDesc_id(ctx context.Context, field graphql.CollectedField, obj *model.GetDesc) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_GetDesc_id(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_GetDesc_id(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "GetDesc",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _GetDesc_text(ctx context.Context, field graphql.CollectedField, obj *model.GetDesc) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_GetDesc_text(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Text, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_GetDesc_text(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "GetDesc",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _GetDesc_imgURL(ctx context.Context, field graphql.CollectedField, obj *model.GetDesc) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_GetDesc_imgURL(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ImgURL, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_GetDesc_imgURL(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "GetDesc",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _GetDescResult_desc(ctx context.Context, field graphql.CollectedField, obj *model.GetDescResult) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_GetDescResult_desc(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Desc, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*model.GetDesc)
+	fc.Result = res
+	return ec.marshalOGetDesc2ᚕᚖportfolioᚋgraphᚋmodelᚐGetDesc(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_GetDescResult_desc(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "GetDescResult",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_GetDesc_id(ctx, field)
+			case "text":
+				return ec.fieldContext_GetDesc_text(ctx, field)
+			case "imgURL":
+				return ec.fieldContext_GetDesc_imgURL(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type GetDesc", field.Name)
 		},
 	}
 	return fc, nil
@@ -1638,6 +1996,61 @@ func (ec *executionContext) fieldContext_GetWorkTag_tagId(ctx context.Context, f
 	return fc, nil
 }
 
+func (ec *executionContext) _Mutation_auth(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_auth(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().Auth(rctx, fc.Args["input"].(model.UserInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(model.UserOutput)
+	fc.Result = res
+	return ec.marshalNUserOutput2portfolioᚋgraphᚋmodelᚐUserOutput(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_auth(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type UserOutput does not have child fields")
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_auth_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Mutation_updateInfo(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Mutation_updateInfo(ctx, field)
 	if err != nil {
@@ -1802,9 +2215,9 @@ func (ec *executionContext) _Mutation_deleteWork(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*model.GetWork)
+	res := resTmp.(model.DeleteWorkOutput)
 	fc.Result = res
-	return ec.marshalNGetWork2ᚖportfolioᚋgraphᚋmodelᚐGetWork(ctx, field.Selections, res)
+	return ec.marshalNDeleteWorkOutput2portfolioᚋgraphᚋmodelᚐDeleteWorkOutput(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_deleteWork(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1814,23 +2227,7 @@ func (ec *executionContext) fieldContext_Mutation_deleteWork(ctx context.Context
 		IsMethod:   true,
 		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "id":
-				return ec.fieldContext_GetWork_id(ctx, field)
-			case "name":
-				return ec.fieldContext_GetWork_name(ctx, field)
-			case "tags":
-				return ec.fieldContext_GetWork_tags(ctx, field)
-			case "description":
-				return ec.fieldContext_GetWork_description(ctx, field)
-			case "github":
-				return ec.fieldContext_GetWork_github(ctx, field)
-			case "demo":
-				return ec.fieldContext_GetWork_demo(ctx, field)
-			case "figma":
-				return ec.fieldContext_GetWork_figma(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type GetWork", field.Name)
+			return nil, errors.New("field of type DeleteWorkOutput does not have child fields")
 		},
 	}
 	defer func() {
@@ -1847,8 +2244,8 @@ func (ec *executionContext) fieldContext_Mutation_deleteWork(ctx context.Context
 	return fc, nil
 }
 
-func (ec *executionContext) _Mutation_auth(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Mutation_auth(ctx, field)
+func (ec *executionContext) _Mutation_updateDesc(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_updateDesc(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -1861,7 +2258,7 @@ func (ec *executionContext) _Mutation_auth(ctx context.Context, field graphql.Co
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().Auth(rctx, fc.Args["input"].(model.UserInput))
+		return ec.resolvers.Mutation().UpdateDesc(rctx, fc.Args["input"].(model.UpdateDescInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1873,19 +2270,19 @@ func (ec *executionContext) _Mutation_auth(ctx context.Context, field graphql.Co
 		}
 		return graphql.Null
 	}
-	res := resTmp.(model.UserOutput)
+	res := resTmp.(model.UpdateDescOutput)
 	fc.Result = res
-	return ec.marshalNUserOutput2portfolioᚋgraphᚋmodelᚐUserOutput(ctx, field.Selections, res)
+	return ec.marshalNUpdateDescOutput2portfolioᚋgraphᚋmodelᚐUpdateDescOutput(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Mutation_auth(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Mutation_updateDesc(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Mutation",
 		Field:      field,
 		IsMethod:   true,
 		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type UserOutput does not have child fields")
+			return nil, errors.New("field of type UpdateDescOutput does not have child fields")
 		},
 	}
 	defer func() {
@@ -1895,7 +2292,7 @@ func (ec *executionContext) fieldContext_Mutation_auth(ctx context.Context, fiel
 		}
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Mutation_auth_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+	if fc.Args, err = ec.field_Mutation_updateDesc_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return
 	}
@@ -2112,6 +2509,50 @@ func (ec *executionContext) fieldContext_Query_getTags(ctx context.Context, fiel
 	return fc, nil
 }
 
+func (ec *executionContext) _Query_getDesc(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_getDesc(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().GetDesc(rctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(model.GetDescOutput)
+	fc.Result = res
+	return ec.marshalNGetDescOutput2portfolioᚋgraphᚋmodelᚐGetDescOutput(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_getDesc(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type GetDescOutput does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Query___type(ctx, field)
 	if err != nil {
@@ -2236,6 +2677,50 @@ func (ec *executionContext) fieldContext_Query___schema(ctx context.Context, fie
 				return ec.fieldContext___Schema_directives(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type __Schema", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _UnexpectedError_message(ctx context.Context, field graphql.CollectedField, obj *model.UnexpectedError) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_UnexpectedError_message(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Message, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_UnexpectedError_message(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "UnexpectedError",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
 		},
 	}
 	return fc, nil
@@ -4257,6 +4742,45 @@ func (ec *executionContext) unmarshalInputDeleteWorkInput(ctx context.Context, o
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputUpdateDescInput(ctx context.Context, obj interface{}) (model.UpdateDescInput, error) {
+	var it model.UpdateDescInput
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	for k, v := range asMap {
+		switch k {
+		case "id":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+			it.ID, err = ec.unmarshalNInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "text":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("text"))
+			it.Text, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "imgURL":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("imgURL"))
+			it.ImgURL, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputUpdateInfoInput(ctx context.Context, obj interface{}) (model.UpdateInfoInput, error) {
 	var it model.UpdateInfoInput
 	asMap := map[string]interface{}{}
@@ -4442,6 +4966,66 @@ func (ec *executionContext) unmarshalInputUserInput(ctx context.Context, obj int
 
 // region    ************************** interface.gotpl ***************************
 
+func (ec *executionContext) _DeleteWorkOutput(ctx context.Context, sel ast.SelectionSet, obj model.DeleteWorkOutput) graphql.Marshaler {
+	switch obj := (obj).(type) {
+	case nil:
+		return graphql.Null
+	case model.DeleteWorkResult:
+		return ec._DeleteWorkResult(ctx, sel, &obj)
+	case *model.DeleteWorkResult:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._DeleteWorkResult(ctx, sel, obj)
+	case model.NotFoundError:
+		return ec._NotFoundError(ctx, sel, &obj)
+	case *model.NotFoundError:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._NotFoundError(ctx, sel, obj)
+	case model.UnexpectedError:
+		return ec._UnexpectedError(ctx, sel, &obj)
+	case *model.UnexpectedError:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._UnexpectedError(ctx, sel, obj)
+	default:
+		panic(fmt.Errorf("unexpected type %T", obj))
+	}
+}
+
+func (ec *executionContext) _GetDescOutput(ctx context.Context, sel ast.SelectionSet, obj model.GetDescOutput) graphql.Marshaler {
+	switch obj := (obj).(type) {
+	case nil:
+		return graphql.Null
+	case model.GetDescResult:
+		return ec._GetDescResult(ctx, sel, &obj)
+	case *model.GetDescResult:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._GetDescResult(ctx, sel, obj)
+	case model.UnexpectedError:
+		return ec._UnexpectedError(ctx, sel, &obj)
+	case *model.UnexpectedError:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._UnexpectedError(ctx, sel, obj)
+	case model.NotFoundError:
+		return ec._NotFoundError(ctx, sel, &obj)
+	case *model.NotFoundError:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._NotFoundError(ctx, sel, obj)
+	default:
+		panic(fmt.Errorf("unexpected type %T", obj))
+	}
+}
+
 func (ec *executionContext) _ServiceErrorInterface(ctx context.Context, sel ast.SelectionSet, obj model.ServiceErrorInterface) graphql.Marshaler {
 	switch obj := (obj).(type) {
 	case nil:
@@ -4453,6 +5037,13 @@ func (ec *executionContext) _ServiceErrorInterface(ctx context.Context, sel ast.
 			return graphql.Null
 		}
 		return ec._NotFoundError(ctx, sel, obj)
+	case model.UnexpectedError:
+		return ec._UnexpectedError(ctx, sel, &obj)
+	case *model.UnexpectedError:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._UnexpectedError(ctx, sel, obj)
 	case model.WrongPassword:
 		return ec._WrongPassword(ctx, sel, &obj)
 	case *model.WrongPassword:
@@ -4460,6 +5051,36 @@ func (ec *executionContext) _ServiceErrorInterface(ctx context.Context, sel ast.
 			return graphql.Null
 		}
 		return ec._WrongPassword(ctx, sel, obj)
+	default:
+		panic(fmt.Errorf("unexpected type %T", obj))
+	}
+}
+
+func (ec *executionContext) _UpdateDescOutput(ctx context.Context, sel ast.SelectionSet, obj model.UpdateDescOutput) graphql.Marshaler {
+	switch obj := (obj).(type) {
+	case nil:
+		return graphql.Null
+	case model.GetDesc:
+		return ec._GetDesc(ctx, sel, &obj)
+	case *model.GetDesc:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._GetDesc(ctx, sel, obj)
+	case model.UnexpectedError:
+		return ec._UnexpectedError(ctx, sel, &obj)
+	case *model.UnexpectedError:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._UnexpectedError(ctx, sel, obj)
+	case model.NotFoundError:
+		return ec._NotFoundError(ctx, sel, &obj)
+	case *model.NotFoundError:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._NotFoundError(ctx, sel, obj)
 	default:
 		panic(fmt.Errorf("unexpected type %T", obj))
 	}
@@ -4537,6 +5158,101 @@ func (ec *executionContext) _Contacts(ctx context.Context, sel ast.SelectionSet,
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var deleteWorkResultImplementors = []string{"DeleteWorkResult", "DeleteWorkOutput"}
+
+func (ec *executionContext) _DeleteWorkResult(ctx context.Context, sel ast.SelectionSet, obj *model.DeleteWorkResult) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, deleteWorkResultImplementors)
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("DeleteWorkResult")
+		case "id":
+
+			out.Values[i] = ec._DeleteWorkResult_id(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var getDescImplementors = []string{"GetDesc", "UpdateDescOutput"}
+
+func (ec *executionContext) _GetDesc(ctx context.Context, sel ast.SelectionSet, obj *model.GetDesc) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, getDescImplementors)
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("GetDesc")
+		case "id":
+
+			out.Values[i] = ec._GetDesc_id(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "text":
+
+			out.Values[i] = ec._GetDesc_text(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "imgURL":
+
+			out.Values[i] = ec._GetDesc_imgURL(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var getDescResultImplementors = []string{"GetDescResult", "GetDescOutput"}
+
+func (ec *executionContext) _GetDescResult(ctx context.Context, sel ast.SelectionSet, obj *model.GetDescResult) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, getDescResultImplementors)
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("GetDescResult")
+		case "desc":
+
+			out.Values[i] = ec._GetDescResult_desc(ctx, field, obj)
+
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -4767,6 +5483,15 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Mutation")
+		case "auth":
+
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_auth(ctx, field)
+			})
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "updateInfo":
 
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
@@ -4794,10 +5519,10 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "auth":
+		case "updateDesc":
 
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Mutation_auth(ctx, field)
+				return ec._Mutation_updateDesc(ctx, field)
 			})
 
 			if out.Values[i] == graphql.Null {
@@ -4814,7 +5539,7 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 	return out
 }
 
-var notFoundErrorImplementors = []string{"NotFoundError", "ServiceErrorInterface", "UserOutput"}
+var notFoundErrorImplementors = []string{"NotFoundError", "DeleteWorkOutput", "ServiceErrorInterface", "UserOutput", "UpdateDescOutput", "GetDescOutput"}
 
 func (ec *executionContext) _NotFoundError(ctx context.Context, sel ast.SelectionSet, obj *model.NotFoundError) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, notFoundErrorImplementors)
@@ -4930,6 +5655,29 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 			out.Concurrently(i, func() graphql.Marshaler {
 				return rrm(innerCtx)
 			})
+		case "getDesc":
+			field := field
+
+			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_getDesc(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx, innerFunc)
+			}
+
+			out.Concurrently(i, func() graphql.Marshaler {
+				return rrm(innerCtx)
+			})
 		case "__type":
 
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
@@ -4942,6 +5690,34 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				return ec._Query___schema(ctx, field)
 			})
 
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var unexpectedErrorImplementors = []string{"UnexpectedError", "DeleteWorkOutput", "ServiceErrorInterface", "UpdateDescOutput", "GetDescOutput"}
+
+func (ec *executionContext) _UnexpectedError(ctx context.Context, sel ast.SelectionSet, obj *model.UnexpectedError) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, unexpectedErrorImplementors)
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("UnexpectedError")
+		case "message":
+
+			out.Values[i] = ec._UnexpectedError_message(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -5378,6 +6154,26 @@ func (ec *executionContext) unmarshalNDeleteWorkInput2portfolioᚋgraphᚋmodel�
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
+func (ec *executionContext) marshalNDeleteWorkOutput2portfolioᚋgraphᚋmodelᚐDeleteWorkOutput(ctx context.Context, sel ast.SelectionSet, v model.DeleteWorkOutput) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._DeleteWorkOutput(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNGetDescOutput2portfolioᚋgraphᚋmodelᚐGetDescOutput(ctx context.Context, sel ast.SelectionSet, v model.GetDescOutput) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._GetDescOutput(ctx, sel, v)
+}
+
 func (ec *executionContext) marshalNGetInfo2portfolioᚋgraphᚋmodelᚐGetInfo(ctx context.Context, sel ast.SelectionSet, v model.GetInfo) graphql.Marshaler {
 	return ec._GetInfo(ctx, sel, &v)
 }
@@ -5536,6 +6332,21 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 		}
 	}
 	return res
+}
+
+func (ec *executionContext) unmarshalNUpdateDescInput2portfolioᚋgraphᚋmodelᚐUpdateDescInput(ctx context.Context, v interface{}) (model.UpdateDescInput, error) {
+	res, err := ec.unmarshalInputUpdateDescInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNUpdateDescOutput2portfolioᚋgraphᚋmodelᚐUpdateDescOutput(ctx context.Context, sel ast.SelectionSet, v model.UpdateDescOutput) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._UpdateDescOutput(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNUpdateInfoInput2portfolioᚋgraphᚋmodelᚐUpdateInfoInput(ctx context.Context, v interface{}) (model.UpdateInfoInput, error) {
@@ -5840,6 +6651,54 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	}
 	res := graphql.MarshalBoolean(*v)
 	return res
+}
+
+func (ec *executionContext) marshalOGetDesc2ᚕᚖportfolioᚋgraphᚋmodelᚐGetDesc(ctx context.Context, sel ast.SelectionSet, v []*model.GetDesc) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalOGetDesc2ᚖportfolioᚋgraphᚋmodelᚐGetDesc(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	return ret
+}
+
+func (ec *executionContext) marshalOGetDesc2ᚖportfolioᚋgraphᚋmodelᚐGetDesc(ctx context.Context, sel ast.SelectionSet, v *model.GetDesc) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._GetDesc(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalOGetTag2ᚖportfolioᚋgraphᚋmodelᚐGetTag(ctx context.Context, sel ast.SelectionSet, v *model.GetTag) graphql.Marshaler {
