@@ -8,6 +8,7 @@ input  UpdateWorkInput{
   figma: String!
 }
 
+union UpdateWorkOutput = GetWork | UnexpectedError | NotFoundError
 
 input  DeleteWorkInput{
   id: Int!

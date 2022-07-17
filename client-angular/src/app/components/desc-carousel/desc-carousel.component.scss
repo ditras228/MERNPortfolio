@@ -7,8 +7,8 @@
   padding-top: 45px;
   width: calc(100vw - 40px);
 
-  @include screen-lg{
-      width: 465px;
+  @include screen-lg {
+    width: 465px;
   }
 }
 
@@ -21,26 +21,40 @@
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   -webkit-justify-content: center;
-  justify-content: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   -webkit-align-items: center;
   align-items: center;
+  justify-content: flex-end;
 
   position: relative;
-  &__next{
+
+  &__next {
     position: absolute;;
   }
-  &__item{
-    display: grid;
-    grid-template-columns: 1fr 76px;
-    grid-column-gap: 25px;
+
+  &__item {
+
     padding: 25px 25px 6px 0;
-      b{
-        font-weight: bold;
+
+    b {
+      font-weight: bold;
     }
-    @include screen-lg{
+
+    img {
+      display: none;
+    }
+
+    @include screen-lg {
       padding: 0;
+      display: grid;
+      grid-template-columns: 1fr 76px;
+      grid-column-gap: 25px;
+
+      img{
+        display: block;
+        width: 100%;
+      }
     }
   }
 }

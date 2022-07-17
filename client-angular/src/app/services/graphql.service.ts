@@ -4,7 +4,7 @@ import {Injectable} from "@angular/core";
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: "root" })
-export class GrapqlService {
+export class GraphqlService {
   constructor(protected httpClient: HttpClient) {}
 
    doRequest<T>(query: string, variables: any): Observable<T> {

@@ -7,7 +7,7 @@ import {
   UpdateWorkDocument,
   UpdateWorkMutation
 } from "../../../../generated/graphql";
-import {GrapqlService} from "../../../services/grapql.service";
+import {GraphqlService} from "../../../services/graphql.service";
 import {HttpClient} from '@angular/common/http';
 import {switchMap, withLatestFrom} from "rxjs";
 import {map} from "rxjs/operators";
@@ -20,7 +20,7 @@ import {deleteWork} from "../../edit-info/store/edit-info.actions";
 import {selectCurrentWorkID} from "../../login/store/login-modal.selectors";
 
 @Injectable()
-export class EditWorkEffects extends GrapqlService {
+export class EditWorkEffects extends GraphqlService {
   constructor(
     private actions$: Actions,
     public store$: Store,
@@ -44,7 +44,6 @@ export class EditWorkEffects extends GrapqlService {
                   switch (result.__typename){
                     case "DeleteWorkResult":{
                       this.store$.dispatch(setEditWorkVisible(undefined))
-                      this.store$.dispatch(getWorks())
                       break
                     }
                     case "NotFoundError":{

@@ -96,6 +96,8 @@ type ComplexityRoot struct {
 
 	Mutation struct {
 		Auth       func(childComplexity int, input model.UserInput) int
+		CreateDesc func(childComplexity int, input model.CreateDescInput) int
+		DeleteDesc func(childComplexity int, input model.DeleteDescInput) int
 		DeleteWork func(childComplexity int, input model.DeleteWorkInput) int
 		UpdateDesc func(childComplexity int, input model.UpdateDescInput) int
 		UpdateInfo func(childComplexity int, input model.UpdateInfoInput) int
@@ -135,6 +137,8 @@ type MutationResolver interface {
 	UpdateWork(ctx context.Context, input model.UpdateWorkInput) (*model.GetWork, error)
 	DeleteWork(ctx context.Context, input model.DeleteWorkInput) (model.DeleteWorkOutput, error)
 	UpdateDesc(ctx context.Context, input model.UpdateDescInput) (model.UpdateDescOutput, error)
+	CreateDesc(ctx context.Context, input model.CreateDescInput) (model.CreateDescOutput, error)
+	DeleteDesc(ctx context.Context, input model.DeleteDescInput) (model.DeleteDescOutput, error)
 }
 type QueryResolver interface {
 	GetInfo(ctx context.Context) (*model.GetInfo, error)
@@ -352,6 +356,30 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.Auth(childComplexity, args["input"].(model.UserInput)), true
 
+	case "Mutation.createDesc":
+		if e.complexity.Mutation.CreateDesc == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createDesc_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateDesc(childComplexity, args["input"].(model.CreateDescInput)), true
+
+	case "Mutation.deleteDesc":
+		if e.complexity.Mutation.DeleteDesc == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deleteDesc_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeleteDesc(childComplexity, args["input"].(model.DeleteDescInput)), true
+
 	case "Mutation.deleteWork":
 		if e.complexity.Mutation.DeleteWork == nil {
 			break
@@ -485,6 +513,8 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	rc := graphql.GetOperationContext(ctx)
 	ec := executionContext{rc, e}
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
+		ec.unmarshalInputCreateDescInput,
+		ec.unmarshalInputDeleteDescInput,
 		ec.unmarshalInputDeleteWorkInput,
 		ec.unmarshalInputUpdateDescInput,
 		ec.unmarshalInputUpdateInfoInput,
@@ -564,7 +594,7 @@ var sources = []*ast.Source{
 	{Name: "../schema/info/query_info.graphqls", Input: `type GetInfo{
   name: String!
   job: String!
-  desc: String!
+  desc: [GetDesc]!
   experience: String!
   contacts: Contacts!
 }
@@ -587,6 +617,7 @@ type Contacts{
   figma: String!
 }
 
+union UpdateWorkOutput = GetWork | UnexpectedError | NotFoundError
 
 input  DeleteWorkInput{
   id: Int!
@@ -650,13 +681,23 @@ type  GetWorkTag{
   tagId: Int!
 }
 `, BuiltIn: false},
-	{Name: "../schema/desc/mutation_desc.graphqls", Input: `input UpdateDescInput{
+	{Name: "../schema/desc/mutation_desc.graphqls", Input: `scalar Upload
+
+input UpdateDescInput{
     id: Int!
     text: String!
-    imgURL: String!
+    imgURL: Upload!
 }
-
-union UpdateDescOutput = GetDesc |  UnexpectedError | NotFoundError`, BuiltIn: false},
+input CreateDescInput{
+    text: String!
+    imgURL: Upload!
+}
+input DeleteDescInput{
+    id: Int!
+}
+union DeleteDescOutput = GetDesc | UnexpectedError | NotFoundError
+union UpdateDescOutput = GetDesc |  UnexpectedError | NotFoundError
+union CreateDescOutput = GetDesc |  UnexpectedError`, BuiltIn: false},
 	{Name: "../schema/desc/query_desc.graphqls", Input: `type GetDesc{
     id: Int!
     text: String!
@@ -696,6 +737,12 @@ type Mutation {
   # Обновить описание
   updateDesc(input: UpdateDescInput!): UpdateDescOutput!
 
+  # Создать описание
+ createDesc(input: CreateDescInput!): CreateDescOutput!
+
+  # Удалить описание
+  deleteDesc(input: DeleteDescInput!): DeleteDescOutput!
+
 }
 
 `, BuiltIn: false},
@@ -713,6 +760,36 @@ func (ec *executionContext) field_Mutation_auth_args(ctx context.Context, rawArg
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 		arg0, err = ec.unmarshalNUserInput2portfolioᚋgraphᚋmodelᚐUserInput(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_createDesc_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.CreateDescInput
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNCreateDescInput2portfolioᚋgraphᚋmodelᚐCreateDescInput(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_deleteDesc_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.DeleteDescInput
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNDeleteDescInput2portfolioᚋgraphᚋmodelᚐDeleteDescInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -1349,9 +1426,9 @@ func (ec *executionContext) _GetInfo_desc(ctx context.Context, field graphql.Col
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.([]*model.GetDesc)
 	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
+	return ec.marshalNGetDesc2ᚕᚖportfolioᚋgraphᚋmodelᚐGetDesc(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_GetInfo_desc(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1361,7 +1438,15 @@ func (ec *executionContext) fieldContext_GetInfo_desc(ctx context.Context, field
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_GetDesc_id(ctx, field)
+			case "text":
+				return ec.fieldContext_GetDesc_text(ctx, field)
+			case "imgURL":
+				return ec.fieldContext_GetDesc_imgURL(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type GetDesc", field.Name)
 		},
 	}
 	return fc, nil
@@ -2293,6 +2378,116 @@ func (ec *executionContext) fieldContext_Mutation_updateDesc(ctx context.Context
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Mutation_updateDesc_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_createDesc(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_createDesc(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateDesc(rctx, fc.Args["input"].(model.CreateDescInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(model.CreateDescOutput)
+	fc.Result = res
+	return ec.marshalNCreateDescOutput2portfolioᚋgraphᚋmodelᚐCreateDescOutput(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_createDesc(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type CreateDescOutput does not have child fields")
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_createDesc_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_deleteDesc(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_deleteDesc(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().DeleteDesc(rctx, fc.Args["input"].(model.DeleteDescInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(model.DeleteDescOutput)
+	fc.Result = res
+	return ec.marshalNDeleteDescOutput2portfolioᚋgraphᚋmodelᚐDeleteDescOutput(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_deleteDesc(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type DeleteDescOutput does not have child fields")
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_deleteDesc_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return
 	}
@@ -4719,6 +4914,60 @@ func (ec *executionContext) fieldContext___Type_specifiedByURL(ctx context.Conte
 
 // region    **************************** input.gotpl *****************************
 
+func (ec *executionContext) unmarshalInputCreateDescInput(ctx context.Context, obj interface{}) (model.CreateDescInput, error) {
+	var it model.CreateDescInput
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	for k, v := range asMap {
+		switch k {
+		case "text":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("text"))
+			it.Text, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "imgURL":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("imgURL"))
+			it.ImgURL, err = ec.unmarshalNUpload2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚐUpload(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputDeleteDescInput(ctx context.Context, obj interface{}) (model.DeleteDescInput, error) {
+	var it model.DeleteDescInput
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	for k, v := range asMap {
+		switch k {
+		case "id":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+			it.ID, err = ec.unmarshalNInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputDeleteWorkInput(ctx context.Context, obj interface{}) (model.DeleteWorkInput, error) {
 	var it model.DeleteWorkInput
 	asMap := map[string]interface{}{}
@@ -4771,7 +5020,7 @@ func (ec *executionContext) unmarshalInputUpdateDescInput(ctx context.Context, o
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("imgURL"))
-			it.ImgURL, err = ec.unmarshalNString2string(ctx, v)
+			it.ImgURL, err = ec.unmarshalNUpload2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚐUpload(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -4966,6 +5215,59 @@ func (ec *executionContext) unmarshalInputUserInput(ctx context.Context, obj int
 
 // region    ************************** interface.gotpl ***************************
 
+func (ec *executionContext) _CreateDescOutput(ctx context.Context, sel ast.SelectionSet, obj model.CreateDescOutput) graphql.Marshaler {
+	switch obj := (obj).(type) {
+	case nil:
+		return graphql.Null
+	case model.GetDesc:
+		return ec._GetDesc(ctx, sel, &obj)
+	case *model.GetDesc:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._GetDesc(ctx, sel, obj)
+	case model.UnexpectedError:
+		return ec._UnexpectedError(ctx, sel, &obj)
+	case *model.UnexpectedError:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._UnexpectedError(ctx, sel, obj)
+	default:
+		panic(fmt.Errorf("unexpected type %T", obj))
+	}
+}
+
+func (ec *executionContext) _DeleteDescOutput(ctx context.Context, sel ast.SelectionSet, obj model.DeleteDescOutput) graphql.Marshaler {
+	switch obj := (obj).(type) {
+	case nil:
+		return graphql.Null
+	case model.GetDesc:
+		return ec._GetDesc(ctx, sel, &obj)
+	case *model.GetDesc:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._GetDesc(ctx, sel, obj)
+	case model.UnexpectedError:
+		return ec._UnexpectedError(ctx, sel, &obj)
+	case *model.UnexpectedError:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._UnexpectedError(ctx, sel, obj)
+	case model.NotFoundError:
+		return ec._NotFoundError(ctx, sel, &obj)
+	case *model.NotFoundError:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._NotFoundError(ctx, sel, obj)
+	default:
+		panic(fmt.Errorf("unexpected type %T", obj))
+	}
+}
+
 func (ec *executionContext) _DeleteWorkOutput(ctx context.Context, sel ast.SelectionSet, obj model.DeleteWorkOutput) graphql.Marshaler {
 	switch obj := (obj).(type) {
 	case nil:
@@ -5067,6 +5369,36 @@ func (ec *executionContext) _UpdateDescOutput(ctx context.Context, sel ast.Selec
 			return graphql.Null
 		}
 		return ec._GetDesc(ctx, sel, obj)
+	case model.UnexpectedError:
+		return ec._UnexpectedError(ctx, sel, &obj)
+	case *model.UnexpectedError:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._UnexpectedError(ctx, sel, obj)
+	case model.NotFoundError:
+		return ec._NotFoundError(ctx, sel, &obj)
+	case *model.NotFoundError:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._NotFoundError(ctx, sel, obj)
+	default:
+		panic(fmt.Errorf("unexpected type %T", obj))
+	}
+}
+
+func (ec *executionContext) _UpdateWorkOutput(ctx context.Context, sel ast.SelectionSet, obj model.UpdateWorkOutput) graphql.Marshaler {
+	switch obj := (obj).(type) {
+	case nil:
+		return graphql.Null
+	case model.GetWork:
+		return ec._GetWork(ctx, sel, &obj)
+	case *model.GetWork:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._GetWork(ctx, sel, obj)
 	case model.UnexpectedError:
 		return ec._UnexpectedError(ctx, sel, &obj)
 	case *model.UnexpectedError:
@@ -5197,7 +5529,7 @@ func (ec *executionContext) _DeleteWorkResult(ctx context.Context, sel ast.Selec
 	return out
 }
 
-var getDescImplementors = []string{"GetDesc", "UpdateDescOutput"}
+var getDescImplementors = []string{"GetDesc", "DeleteDescOutput", "UpdateDescOutput", "CreateDescOutput"}
 
 func (ec *executionContext) _GetDesc(ctx context.Context, sel ast.SelectionSet, obj *model.GetDesc) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, getDescImplementors)
@@ -5355,7 +5687,7 @@ func (ec *executionContext) _GetTag(ctx context.Context, sel ast.SelectionSet, o
 	return out
 }
 
-var getWorkImplementors = []string{"GetWork"}
+var getWorkImplementors = []string{"GetWork", "UpdateWorkOutput"}
 
 func (ec *executionContext) _GetWork(ctx context.Context, sel ast.SelectionSet, obj *model.GetWork) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, getWorkImplementors)
@@ -5528,6 +5860,24 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
+		case "createDesc":
+
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_createDesc(ctx, field)
+			})
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "deleteDesc":
+
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_deleteDesc(ctx, field)
+			})
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -5539,7 +5889,7 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 	return out
 }
 
-var notFoundErrorImplementors = []string{"NotFoundError", "DeleteWorkOutput", "ServiceErrorInterface", "UserOutput", "UpdateDescOutput", "GetDescOutput"}
+var notFoundErrorImplementors = []string{"NotFoundError", "UpdateWorkOutput", "DeleteWorkOutput", "ServiceErrorInterface", "UserOutput", "DeleteDescOutput", "UpdateDescOutput", "GetDescOutput"}
 
 func (ec *executionContext) _NotFoundError(ctx context.Context, sel ast.SelectionSet, obj *model.NotFoundError) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, notFoundErrorImplementors)
@@ -5701,7 +6051,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 	return out
 }
 
-var unexpectedErrorImplementors = []string{"UnexpectedError", "DeleteWorkOutput", "ServiceErrorInterface", "UpdateDescOutput", "GetDescOutput"}
+var unexpectedErrorImplementors = []string{"UnexpectedError", "UpdateWorkOutput", "DeleteWorkOutput", "ServiceErrorInterface", "DeleteDescOutput", "UpdateDescOutput", "CreateDescOutput", "GetDescOutput"}
 
 func (ec *executionContext) _UnexpectedError(ctx context.Context, sel ast.SelectionSet, obj *model.UnexpectedError) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, unexpectedErrorImplementors)
@@ -6149,6 +6499,36 @@ func (ec *executionContext) marshalNContacts2ᚖportfolioᚋgraphᚋmodelᚐCont
 	return ec._Contacts(ctx, sel, v)
 }
 
+func (ec *executionContext) unmarshalNCreateDescInput2portfolioᚋgraphᚋmodelᚐCreateDescInput(ctx context.Context, v interface{}) (model.CreateDescInput, error) {
+	res, err := ec.unmarshalInputCreateDescInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNCreateDescOutput2portfolioᚋgraphᚋmodelᚐCreateDescOutput(ctx context.Context, sel ast.SelectionSet, v model.CreateDescOutput) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._CreateDescOutput(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNDeleteDescInput2portfolioᚋgraphᚋmodelᚐDeleteDescInput(ctx context.Context, v interface{}) (model.DeleteDescInput, error) {
+	res, err := ec.unmarshalInputDeleteDescInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNDeleteDescOutput2portfolioᚋgraphᚋmodelᚐDeleteDescOutput(ctx context.Context, sel ast.SelectionSet, v model.DeleteDescOutput) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._DeleteDescOutput(ctx, sel, v)
+}
+
 func (ec *executionContext) unmarshalNDeleteWorkInput2portfolioᚋgraphᚋmodelᚐDeleteWorkInput(ctx context.Context, v interface{}) (model.DeleteWorkInput, error) {
 	res, err := ec.unmarshalInputDeleteWorkInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -6162,6 +6542,44 @@ func (ec *executionContext) marshalNDeleteWorkOutput2portfolioᚋgraphᚋmodel�
 		return graphql.Null
 	}
 	return ec._DeleteWorkOutput(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNGetDesc2ᚕᚖportfolioᚋgraphᚋmodelᚐGetDesc(ctx context.Context, sel ast.SelectionSet, v []*model.GetDesc) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalOGetDesc2ᚖportfolioᚋgraphᚋmodelᚐGetDesc(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	return ret
 }
 
 func (ec *executionContext) marshalNGetDescOutput2portfolioᚋgraphᚋmodelᚐGetDescOutput(ctx context.Context, sel ast.SelectionSet, v model.GetDescOutput) graphql.Marshaler {
@@ -6357,6 +6775,21 @@ func (ec *executionContext) unmarshalNUpdateInfoInput2portfolioᚋgraphᚋmodel�
 func (ec *executionContext) unmarshalNUpdateWorkInput2portfolioᚋgraphᚋmodelᚐUpdateWorkInput(ctx context.Context, v interface{}) (model.UpdateWorkInput, error) {
 	res, err := ec.unmarshalInputUpdateWorkInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNUpload2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚐUpload(ctx context.Context, v interface{}) (graphql.Upload, error) {
+	res, err := graphql.UnmarshalUpload(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNUpload2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚐUpload(ctx context.Context, sel ast.SelectionSet, v graphql.Upload) graphql.Marshaler {
+	res := graphql.MarshalUpload(v)
+	if res == graphql.Null {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+	}
+	return res
 }
 
 func (ec *executionContext) unmarshalNUserInput2portfolioᚋgraphᚋmodelᚐUserInput(ctx context.Context, v interface{}) (model.UserInput, error) {

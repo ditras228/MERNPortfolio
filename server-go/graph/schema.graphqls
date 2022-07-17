@@ -28,5 +28,11 @@ type Mutation {
   # Обновить описание
   updateDesc(input: UpdateDescInput!): UpdateDescOutput!
 
+  # Создать описание
+ createDesc(input: CreateDescInput!): CreateDescOutput!
+
+  # Удалить описание
+  deleteDesc(input: DeleteDescInput!): DeleteDescOutput!
+
 }
 

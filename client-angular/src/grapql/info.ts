@@ -4,7 +4,11 @@ export const getInfoQuery = gql`
   query getInfo {
     result: getInfo {
       __typename
-      desc
+      desc{
+        id
+        text
+        imgURL
+      }
       experience
       job
       name

@@ -1,0 +1,11 @@
+<div class="edit-desc">
+  <app-input-field class="edit-desc__field" [error]="errors?.['id']" [placeholder]="'ID'"
+                   [internalValue]="id.value"
+                   (valueChange)="id.patchValue($event)"></app-input-field>
+  <app-input-field class="edit-desc__field" [error]="errors?.['text']" [placeholder]="'Текст'"
+                   [internalValue]="text.value"
+                   (valueChange)="text.patchValue($event)"></app-input-field>
+
+  <input type="file" (change)="getFile($event)">
+  <button class="edit-desc__button" (click)="submitFormHandler()">Применить</button>
+</div>

@@ -7,7 +7,7 @@ import {
   UpdateInfoDocument,
   UpdateInfoMutation
 } from "../../../../generated/graphql";
-import {GrapqlService} from "../../../services/grapql.service";
+import {GraphqlService} from "../../../services/graphql.service";
 import {HttpClient} from '@angular/common/http';
 import {switchMap, withLatestFrom} from "rxjs";
 import {map} from "rxjs/operators";
@@ -19,7 +19,7 @@ import {setEditInfoVisible} from "../../login/store/login-modal.actions";
 import {selectCurrentWorkID} from "../../login/store/login-modal.selectors";
 
 @Injectable()
-export class EditInfoEffects extends GrapqlService {
+export class EditInfoEffects extends GraphqlService {
   constructor(
     private actions$: Actions,
     public store$: Store,

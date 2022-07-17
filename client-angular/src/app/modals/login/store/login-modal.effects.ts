@@ -8,7 +8,7 @@ import {
   GetTagsQuery,
   GetTagsQueryVariables
 } from "../../../../generated/graphql";
-import {GrapqlService} from "../../../services/grapql.service";
+import {GraphqlService} from "../../../services/graphql.service";
 import {HttpClient} from '@angular/common/http';
 import {switchMap, withLatestFrom} from "rxjs";
 import {map} from "rxjs/operators";
@@ -19,7 +19,7 @@ import {selectLoginInput} from "./login-modal.selectors";
 import {getTags, setFilterTags, setTags} from "../../edit-work/store/edit-work.actions";
 
 @Injectable()
-export class LoginEffects extends GrapqlService {
+export class LoginEffects extends GraphqlService {
   constructor(
     private actions$: Actions,
     public store$: Store,

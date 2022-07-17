@@ -2,6 +2,18 @@
 
 package model
 
+import (
+	"github.com/99designs/gqlgen/graphql"
+)
+
+type CreateDescOutput interface {
+	IsCreateDescOutput()
+}
+
+type DeleteDescOutput interface {
+	IsDeleteDescOutput()
+}
+
 type DeleteWorkOutput interface {
 	IsDeleteWorkOutput()
 }
@@ -18,6 +30,10 @@ type UpdateDescOutput interface {
 	IsUpdateDescOutput()
 }
 
+type UpdateWorkOutput interface {
+	IsUpdateWorkOutput()
+}
+
 type UserOutput interface {
 	IsUserOutput()
 }
@@ -27,6 +43,15 @@ type Contacts struct {
 	TelegramLink  string `json:"telegramLink"`
 	GithubTitle   string `json:"githubTitle"`
 	GithubLink    string `json:"githubLink"`
+}
+
+type CreateDescInput struct {
+	Text   string         `json:"text"`
+	ImgURL graphql.Upload `json:"imgURL"`
+}
+
+type DeleteDescInput struct {
+	ID int `json:"id"`
 }
 
 type DeleteWorkInput struct {
@@ -45,7 +70,9 @@ type GetDesc struct {
 	ImgURL string `json:"imgURL"`
 }
 
+func (GetDesc) IsDeleteDescOutput() {}
 func (GetDesc) IsUpdateDescOutput() {}
+func (GetDesc) IsCreateDescOutput() {}
 
 type GetDescResult struct {
 	Desc []*GetDesc `json:"desc"`
@@ -54,11 +81,11 @@ type GetDescResult struct {
 func (GetDescResult) IsGetDescOutput() {}
 
 type GetInfo struct {
-	Name       string    `json:"name"`
-	Job        string    `json:"job"`
-	Desc       string    `json:"desc"`
-	Experience string    `json:"experience"`
-	Contacts   *Contacts `json:"contacts"`
+	Name       string     `json:"name"`
+	Job        string     `json:"job"`
+	Desc       []*GetDesc `json:"desc"`
+	Experience string     `json:"experience"`
+	Contacts   *Contacts  `json:"contacts"`
 }
 
 type GetTag struct {
@@ -76,6 +103,8 @@ type GetWork struct {
 	Figma       string    `json:"figma"`
 }
 
+func (GetWork) IsUpdateWorkOutput() {}
+
 type GetWorkTag struct {
 	ID     int `json:"id"`
 	WorkID int `json:"workId"`
@@ -86,9 +115,11 @@ type NotFoundError struct {
 	Message string `json:"message"`
 }
 
+func (NotFoundError) IsUpdateWorkOutput()      {}
 func (NotFoundError) IsDeleteWorkOutput()      {}
 func (NotFoundError) IsServiceErrorInterface() {}
 func (NotFoundError) IsUserOutput()            {}
+func (NotFoundError) IsDeleteDescOutput()      {}
 func (NotFoundError) IsUpdateDescOutput()      {}
 func (NotFoundError) IsGetDescOutput()         {}
 
@@ -96,15 +127,18 @@ type UnexpectedError struct {
 	Message string `json:"message"`
 }
 
+func (UnexpectedError) IsUpdateWorkOutput()      {}
 func (UnexpectedError) IsDeleteWorkOutput()      {}
 func (UnexpectedError) IsServiceErrorInterface() {}
+func (UnexpectedError) IsDeleteDescOutput()      {}
 func (UnexpectedError) IsUpdateDescOutput()      {}
+func (UnexpectedError) IsCreateDescOutput()      {}
 func (UnexpectedError) IsGetDescOutput()         {}
 
 type UpdateDescInput struct {
-	ID     int    `json:"id"`
-	Text   string `json:"text"`
-	ImgURL string `json:"imgURL"`
+	ID     int            `json:"id"`
+	Text   string         `json:"text"`
+	ImgURL graphql.Upload `json:"imgURL"`
 }
 
 type UpdateInfoInput struct {

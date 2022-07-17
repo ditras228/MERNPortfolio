@@ -1,7 +1,7 @@
 CREATE TABLE public.tag
 (
-    id    INT PRIMARY KEY,
-    title TEXT NOT NULL
+    id    SERIAL PRIMARY KEY,
+    title VARCHAR(50) NOT NULL UNIQUE
 );
 
 INSERT INTO public.tag(id, title)
@@ -16,8 +16,8 @@ VALUES (0, 'Angular'),
 CREATE TABLE public.worktag
 (
     id     SERIAL PRIMARY KEY,
-    workId INT NOT NULL,
-    tagId  INT NOT NULL
+    workId INT NOT NULL REFERENCES public.work (id),
+    tagId  INT NOT NULL REFERENCES public.tag (id)
 );
 
 INSERT INTO public.worktag(id, workId, tagId)

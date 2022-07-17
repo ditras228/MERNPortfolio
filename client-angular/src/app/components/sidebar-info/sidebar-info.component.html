@@ -17,7 +17,7 @@
 
 
   <div class="info__desc" >
-   <app-desc-carousel [info$]="info$"></app-desc-carousel>
+   <app-desc-carousel *ngIf="info$?.desc?.length" [info$]="info$"></app-desc-carousel>
   </div>
   <app-info-skills [experience]="info$?.experience"></app-info-skills>
   <app-info-contacts [contacts]="info$?.contacts"></app-info-contacts>

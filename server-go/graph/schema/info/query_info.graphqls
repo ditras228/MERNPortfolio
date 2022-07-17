@@ -1,7 +1,7 @@
 type GetInfo{
   name: String!
   job: String!
-  desc: String!
+  desc: [GetDesc]!
   experience: String!
   contacts: Contacts!
 }

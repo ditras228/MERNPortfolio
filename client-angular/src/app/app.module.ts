@@ -33,6 +33,9 @@ import {EditWorkEffects} from "./modals/edit-work/store/edit-work.effects";
 import {editWorkReducer} from "./modals/edit-work/store/edit-work.reducer";
 import {editInfoReducer} from "./modals/edit-info/store/edit-info.reducer";
 import {EditInfoEffects} from "./modals/edit-info/store/edit-info.effects";
+import { EditDescComponent } from './modals/edit-desc/edit-desc.component';
+import {EditDescEffects} from "./modals/edit-desc/store/edit-desc.effects";
+import {editDescReducer} from "./modals/edit-desc/store/edit-desc.reducer";
 
 @NgModule({
   declarations: [
@@ -53,14 +56,15 @@ import {EditInfoEffects} from "./modals/edit-info/store/edit-info.effects";
     EditInfoComponent,
     EditWorkComponent,
     DropdownComponent,
+    EditDescComponent,
   ],
     imports: [
       SwiperModule,
 
       BrowserModule.withServerTransition({appId: 'serverApp'}),
-        StoreModule.forRoot({info: appReducer, login: loginModalReducer, editWork: editWorkReducer, editInfo: editInfoReducer}, {}),
+        StoreModule.forRoot({info: appReducer, login: loginModalReducer, editWork: editWorkReducer, editInfo: editInfoReducer, editDesc: editDescReducer}, {}),
         StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
-        EffectsModule.forRoot([AppEffects, LoginEffects,EditWorkEffects, EditInfoEffects]),
+        EffectsModule.forRoot([AppEffects, LoginEffects,EditWorkEffects, EditInfoEffects,EditDescEffects ]),
         HttpClientModule,
         FormsModule,
         BrowserAnimationsModule,

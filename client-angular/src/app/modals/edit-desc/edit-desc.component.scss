@@ -1,0 +1,25 @@
+@import "../../../styles/mixins/button";
+@import "../../../styles/mixins/modal-close";
+
+.edit-desc {
+  padding: 96px 132px;
+
+  &__close{
+    @include modal-close();
+  }
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 15px;
+  }
+
+  &__field, &__grid__field {
+    display: block;
+    margin-bottom: 35px;
+  }
+
+  &__button {
+    @include button-fill();
+    width: 100%;
+  }
+}

@@ -1,7 +1,17 @@
+scalar Upload
+
 input UpdateDescInput{
     id: Int!
     text: String!
-    imgURL: String!
+    imgURL: Upload!
 }
-
+input CreateDescInput{
+    text: String!
+    imgURL: Upload!
+}
+input DeleteDescInput{
+    id: Int!
+}
+union DeleteDescOutput = GetDesc | UnexpectedError | NotFoundError
 union UpdateDescOutput = GetDesc |  UnexpectedError | NotFoundError
+union CreateDescOutput = GetDesc |  UnexpectedError

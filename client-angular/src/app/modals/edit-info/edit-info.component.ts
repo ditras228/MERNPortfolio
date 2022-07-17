@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {setEditInfoVisible, setLoginVisible} from "../login/store/login-modal.actions";
+import {setEditInfoVisible} from "../login/store/login-modal.actions";
 import {Store} from "@ngrx/store";
 import {selectInfo} from "../../store/app.selectors";
 import {setEditInfoForm, submitEditInfoForm} from "./store/edit-info.actions";
@@ -31,12 +31,15 @@ export class EditInfoComponent implements OnInit {
     experience: FormControl<string>;
     desc: FormControl<string>;
   }> | undefined
-  constructor(public store$: Store, public validationService: ValidationService ) { }
 
-  closeModal():void{
+  constructor(public store$: Store, public validationService: ValidationService) {
+  }
+
+  closeModal(): void {
     this.store$.dispatch(setEditInfoVisible())
   }
-  submitForm():void{
+
+  submitForm(): void {
     if (this.form?.invalid) {
       this.errors = this.validationService.GetValidationMessage(this.form, this.errors)
     } else {
@@ -50,6 +53,7 @@ export class EditInfoComponent implements OnInit {
       this.store$.dispatch(submitEditInfoForm())
     }
   }
+
   ngOnInit(): void {
     this.name = new FormControl(null, [Validators.required])
     this.job = new FormControl(null, [Validators.required])
@@ -60,7 +64,7 @@ export class EditInfoComponent implements OnInit {
     this.githubLink = new FormControl(null, [Validators.required])
     this.experience = new FormControl(null, [Validators.required])
 
-    this.store$.select(selectInfo).subscribe(info=>{
+    this.store$.select(selectInfo).subscribe(info => {
       this.name.setValue(info.name)
       this.job.setValue(info.job)
       this.desc.setValue(info.desc)

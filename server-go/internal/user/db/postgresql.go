@@ -35,9 +35,9 @@ func (r *repository) Auth(ctx context.Context, input model.UserInput) (model.Use
 		`
 
 	var usr model.User
-	row := r.client.QueryRow(ctx, q, input.Login)
+	usrRow := r.client.QueryRow(ctx, q, input.Login)
 
-	err := row.Scan(&usr.Login, &usr.Password)
+	err := usrRow.Scan(&usr.Login, &usr.Password)
 	if err != nil {
 		return model.NotFoundError{Message: "Пользователь не найден"}, nil
 	}

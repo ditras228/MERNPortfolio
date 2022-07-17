@@ -1,28 +1,44 @@
 <div class="edit-work">
   <div class="edit-work__close" (click)="closeModal()"></div>
 
-  <app-input-field class="edit-work__field" [error]="errors?.['name']" [placeholder]="'Название'" [internalValue]="name.value"
+  <app-input-field class="edit-work__field" [error]="errors?.['name']" [placeholder]="'Название'"
+                   [internalValue]="name.value"
                    (valueChange)="name.patchValue($event)"></app-input-field>
-  <div class="edit-work__tags">
-    <div class="edit-work__tags__item" *ngFor="let tag of tags" (click)="remove(tag)">
-      {{tag.title}}
+  <div>
+    <div class="edit-work__grid__title">
+      Теги работы
+    </div>
+    <div class="edit-work__grid__tags">
+      <div class="edit-work__grid__tags__item" *ngFor="let tag of tags" (click)="remove(tag)">
+        {{tag.title}}
+      </div>
+    </div>
+
+  </div>
+  <div >
+    <div class="edit-work__grid__title">
+      Все теги
+    </div>
+    <div class="edit-work__grid__tags">
+
+      <div class="edit-work__grid__tags__item" *ngFor="let tag of allTags index as i" (click)="add(tag)">
+        {{tag.title}}
+      </div>
     </div>
   </div>
-  <div class="edit-work__tags">
-    <div class="edit-work__tags__item" *ngFor="let tag of allTags index as i" (click)="add(tag)">
-      {{tag.title}}
-    </div>
-  </div>
-  <app-text-area   class="edit-work__field" [error]="errors?.['description']" [placeholder]="'Описание'" [internalValue]="description.value" [rows]="9"
-                   (valueChange)="description.patchValue($event)"></app-text-area>
+  <app-text-area class="edit-work__field" [error]="errors?.['description']" [placeholder]="'Описание'"
+                 [internalValue]="description.value" [rows]="9"
+                 (valueChange)="description.patchValue($event)"></app-text-area>
 
   <div class="edit-work__grid">
-    <app-input-field class="edit-work__grid__field" [error]="errors?.['github']" [placeholder]="'Гитхаб'" [internalValue]="github.value"
+    <app-input-field class="edit-work__grid__field" [error]="errors?.['github']" [placeholder]="'Гитхаб'"
+                     [internalValue]="github.value"
                      (valueChange)="github.patchValue($event)"></app-input-field>
-    <app-input-field class="edit-work__grid__field" [error]="errors?.['demo']" [placeholder]="'Демо'" [internalValue]="demo.value"
+    <app-input-field class="edit-work__grid__field" [error]="errors?.['demo']" [placeholder]="'Демо'"
+                     [internalValue]="demo.value"
                      (valueChange)="demo.patchValue($event)"></app-input-field>
   </div>
 
-  <button class="edit-work__button edit-work__button__delete" (click)="deleteWorkHandler()" >Удалить</button>
+  <button class="edit-work__button edit-work__button__delete" (click)="deleteWorkHandler()">Удалить</button>
   <button class="edit-work__button" (click)="submitForm()">Применить</button>
 </div>

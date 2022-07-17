@@ -5,14 +5,13 @@ package graph
 
 import (
 	"context"
-	"fmt"
 	"portfolio/container"
 	"portfolio/graph/generated"
 	"portfolio/graph/model"
 )
 
 func (r *mutationResolver) Auth(ctx context.Context, input model.UserInput) (model.UserOutput, error) {
-	user, err := container.UserRepository.Auth(context.TODO(), input)
+	user, err := container.UserRepository.Auth(ctx, input)
 	if err != nil {
 		return nil, err
 	}
@@ -44,11 +43,31 @@ func (r *mutationResolver) DeleteWork(ctx context.Context, input model.DeleteWor
 }
 
 func (r *mutationResolver) UpdateDesc(ctx context.Context, input model.UpdateDescInput) (model.UpdateDescOutput, error) {
-	panic(fmt.Errorf("not implemented"))
+	desc, err := container.DescRepository.Update(ctx, input)
+	if err != nil {
+		return nil, err
+	}
+	return desc, nil
+}
+
+func (r *mutationResolver) CreateDesc(ctx context.Context, input model.CreateDescInput) (model.CreateDescOutput, error) {
+	desc, err := container.DescRepository.Create(ctx, input)
+	if err != nil {
+		return nil, err
+	}
+	return desc, nil
+}
+
+func (r *mutationResolver) DeleteDesc(ctx context.Context, input model.DeleteDescInput) (model.DeleteDescOutput, error) {
+	desc, err := container.DescRepository.Delete(ctx, input)
+	if err != nil {
+		return nil, err
+	}
+	return desc, nil
 }
 
 func (r *queryResolver) GetInfo(ctx context.Context) (*model.GetInfo, error) {
-	one, err := container.InfoRepository.FindOne(context.TODO())
+	one, err := container.InfoRepository.FindOne(ctx)
 	if err != nil {
 		return nil, nil
 	}
@@ -56,7 +75,7 @@ func (r *queryResolver) GetInfo(ctx context.Context) (*model.GetInfo, error) {
 }
 
 func (r *queryResolver) GetWorks(ctx context.Context) ([]*model.GetWork, error) {
-	works, err := container.WorkRepository.FindAll(context.TODO())
+	works, err := container.WorkRepository.FindAll(ctx)
 	if err != nil {
 		return nil, err
 	}

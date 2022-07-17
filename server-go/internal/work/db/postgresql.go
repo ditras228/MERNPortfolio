@@ -2,11 +2,11 @@ package work
 
 import (
 	"context"
-	"fmt"
 	"portfolio/graph/model"
 	"portfolio/infrastructure/postgresql"
 	"portfolio/internal/work"
 	"portfolio/pkg/utils"
+	"strconv"
 )
 
 type repository struct {
@@ -14,7 +14,7 @@ type repository struct {
 }
 
 func (r *repository) FindAll(ctx context.Context) ([]*model.GetWork, error) {
-	q := `
+	qWork := `
 
 		SELECT 
 			id, name, description,
@@ -22,17 +22,20 @@ func (r *repository) FindAll(ctx context.Context) ([]*model.GetWork, error) {
 
 		FROM public.work 
 
+		ORDER
+			BY id  	
+
 		`
-	rows, err := r.client.Query(ctx, q)
+	workRows, err := r.client.Query(ctx, qWork)
 	if err != nil {
 		return nil, err
 	}
 
 	works := make([]*model.GetWork, 0)
-	for rows.Next() {
+	for workRows.Next() {
 		var wrk model.GetWork
 
-		err = rows.Scan(&wrk.ID, &wrk.Name, &wrk.Description,
+		err = workRows.Scan(&wrk.ID, &wrk.Name, &wrk.Description,
 			&wrk.Github, &wrk.Demo)
 		if err != nil {
 			return nil, err
@@ -52,15 +55,15 @@ func (r *repository) FindAll(ctx context.Context) ([]*model.GetWork, error) {
 						workid = $1
 
 					`
-		rows2, err := r.client.Query(ctx, qWorkTag, &wrk.ID)
+		workTagRows, err := r.client.Query(ctx, qWorkTag, &wrk.ID)
 		if err != nil {
 			return nil, err
 		}
 
 		tags := make([]*model.GetTag, 0)
-		for rows2.Next() {
+		for workTagRows.Next() {
 			var wrkTg model.GetWorkTag
-			err = rows2.Scan(&wrkTg.ID, &wrkTg.WorkID, &wrkTg.TagID)
+			err = workTagRows.Scan(&wrkTg.ID, &wrkTg.WorkID, &wrkTg.TagID)
 			if err != nil {
 				return nil, err
 			}
@@ -78,27 +81,26 @@ func (r *repository) FindAll(ctx context.Context) ([]*model.GetWork, error) {
 
 					`
 
-			rows3, err := r.client.Query(ctx, qTag, &wrkTg.TagID)
+			tagRows, err := r.client.Query(ctx, qTag, &wrkTg.TagID)
 			if err != nil {
 				return nil, err
 			}
 
-			for rows3.Next() {
+			for tagRows.Next() {
 				var tg model.GetTag
-				err = rows3.Scan(&tg.ID, &tg.Title)
+				err = tagRows.Scan(&tg.ID, &tg.Title)
+
 				if err != nil {
 					return nil, err
 				}
-				tags = append(tags, &tg)
 
+				tags = append(tags, &tg)
 			}
 			wrk.Tags = tags
 		}
-
 		works = append(works, &wrk)
-
 	}
-	if err = rows.Err(); err != nil {
+	if err != nil {
 		return nil, err
 	}
 
@@ -106,7 +108,47 @@ func (r *repository) FindAll(ctx context.Context) ([]*model.GetWork, error) {
 }
 
 func (r *repository) UpdateWork(ctx context.Context, input model.UpdateWorkInput) (model.GetWork, error) {
-	q := `
+	qDeleteTags := `
+
+					DELETE 
+						FROM public.worktag
+			
+					WHERE 
+						workid = $1
+
+					`
+
+	res, err := r.client.Query(ctx, qDeleteTags, input.ID)
+	if err != nil {
+		return model.GetWork{}, err
+	}
+	defer res.Close()
+
+	qAddTags := `
+
+				INSERT INTO 
+					public.worktag (workid, tagid) 
+				
+				VALUES 
+
+				`
+
+	for i := 0; i < len(input.Tags); i++ {
+		var qAddTagsItem = "(" + strconv.Itoa(input.ID) + "," + strconv.Itoa(*input.Tags[i]) + ") "
+
+		if i != len(input.Tags)-1 {
+			qAddTagsItem = qAddTagsItem + ","
+		}
+		qAddTags = qAddTags + qAddTagsItem
+	}
+
+	res, err = r.client.Query(ctx, qAddTags)
+	if err != nil {
+		return model.GetWork{}, err
+	}
+	defer res.Close()
+
+	qUpdWork := `
 
 		UPDATE
 			public.work
@@ -123,48 +165,30 @@ func (r *repository) UpdateWork(ctx context.Context, input model.UpdateWorkInput
 
 		`
 
-	qDeleteTags := `
-
-		DELETE FROM public.worktag
-
-		WHERE 
-			workid = $1
-
-		`
-	qAddTags := `
-		INSERT INTO public.worktag (workid, tagid) VALUES ($1, $2)
-		`
-
-	res, err := r.client.Query(ctx, qDeleteTags, input.ID)
-	if err != nil {
-		return model.GetWork{}, err
-	}
-	fmt.Println(res)
-
-	for i := 0; i < len(input.Tags); i++ {
-		res, err := r.client.Query(ctx, qAddTags, input.ID, input.Tags[i])
-		if err != nil {
-			return model.GetWork{}, err
-		}
-		fmt.Println(res)
-	}
-
 	var wrk model.GetWork
 
-	err = r.client.QueryRow(ctx, q, input.ID, input.Name, input.Description, input.Github, input.Demo).Scan(&wrk.ID, &wrk.Name, &wrk.Description, &wrk.Github, &wrk.Demo)
+	err = r.client.
+		QueryRow(ctx, qUpdWork, input.ID, input.Name, input.Description, input.Github, input.Demo).
+		Scan(&wrk.ID, &wrk.Name, &wrk.Description, &wrk.Github, &wrk.Demo)
 	if err != nil {
 		return model.GetWork{}, err
 	}
 
 	return wrk, nil
 }
+
 func (r *repository) DeleteWork(ctx context.Context, input model.DeleteWorkInput) (model.DeleteWorkOutput, error) {
 	q := `
-			DELETE FROM public.work
 
-			WHERE id = $1
+			DELETE FROM 
+				public.work
 
-			RETURNING id
+			WHERE 
+				id = $1
+
+			RETURNING 
+				id
+
 		`
 
 	var res model.DeleteWorkResult

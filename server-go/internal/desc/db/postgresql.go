@@ -2,6 +2,7 @@ package desc
 
 import (
 	"context"
+	"os"
 	"portfolio/graph/model"
 	postgres "portfolio/infrastructure/postgresql"
 	"portfolio/internal/desc"
@@ -18,7 +19,6 @@ func (r *repository) FindAll(ctx context.Context) (model.GetDescOutput, error) {
 				id, text, imgUrl
 
 			FROM public.desc
-
 		 `
 	rows, err := r.client.Query(ctx, q)
 	if err != nil {
@@ -36,6 +36,86 @@ func (r *repository) FindAll(ctx context.Context) (model.GetDescOutput, error) {
 	}
 	res.Desc = descs
 	return res, nil
+}
+func (r *repository) Update(ctx context.Context, input model.UpdateDescInput) (model.UpdateDescOutput, error) {
+	qDesc := `
+
+				UPDATE
+					public.desc
+				
+				SET 
+					text = $2, imgUrl = $3
+
+				WHERE 
+					id = $1
+
+				RETURNING
+					id, text, imgUrl
+			 `
+	var dsc model.GetDesc
+	dst, err := os.Create(input.ImgURL.Filename)
+	if err != nil {
+		return nil, err
+	}
+
+	defer dst.Close()
+
+	err = r.client.
+		QueryRow(ctx, qDesc, input.ID, input.Text, input.ImgURL).
+		Scan(&dsc.ID, &dsc.Text, &dsc.ImgURL)
+	if err != nil {
+		return nil, err
+	}
+
+	return dsc, nil
+}
+
+func (r *repository) Create(ctx context.Context, input model.CreateDescInput) (model.CreateDescOutput, error) {
+	qDesc := `
+
+				INSERT INTO 
+					public.desc (text, imgurl)
+
+				VALUES ($1, $2)
+
+				RETURNING id, text, imgurl
+
+			 `
+	var dsc model.GetDesc
+
+	err := r.client.
+		QueryRow(ctx, qDesc, input.Text, input.ImgURL).
+		Scan(&dsc.ID, &dsc.Text, &dsc.ImgURL)
+
+	if err != nil {
+		return nil, err
+	}
+	return dsc, nil
+}
+
+func (r *repository) Delete(ctx context.Context, input model.DeleteDescInput) (model.DeleteDescOutput, error) {
+	qDesc := `
+
+			DELETE FROM 
+				public.desc
+	
+			WHERE 
+				id = $1
+
+			RETURNING 
+				id, text, imgUrl
+
+			`
+
+	var dsc model.GetDesc
+
+	err := r.client.
+		QueryRow(ctx, qDesc, input.ID).
+		Scan(&dsc.ID, &dsc.Text, &dsc.ImgURL)
+	if err != nil {
+		return nil, err
+	}
+	return nil, nil
 }
 func NewRepository(client postgres.Client) desc.Repository {
 	return &repository{

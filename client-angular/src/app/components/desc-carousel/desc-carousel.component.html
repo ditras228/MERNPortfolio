@@ -3,22 +3,11 @@
     }"
         class="mySwiper"
 >
-  <ng-template swiperSlide>
-    <div class="swiper-slide__item" [innerHTML]="info$?.desc"></div>
-  </ng-template>
-  <ng-template swiperSlide>
-    <div class="swiper-slide__item" [innerHTML]="info$?.desc"></div>
-  </ng-template>
-  <ng-template swiperSlide>
-    <div class="swiper-slide__item" [innerHTML]="info$?.desc"></div>
-  </ng-template>
-  <ng-template swiperSlide>
-    <div class="swiper-slide__item" [innerHTML]="info$?.desc"></div>
-  </ng-template>
-  <ng-template swiperSlide>
-    <div class="swiper-slide__item" [innerHTML]="info$?.desc"></div>
-  </ng-template>
-  <ng-template swiperSlide>
-    <div class="swiper-slide__item" [innerHTML]="info$?.desc"></div>
+  <ng-template swiperSlide *ngFor="let desc of info$?.desc">
+    <div class="swiper-slide__item">
+      <span [innerHTML]="desc?.text"></span>
+
+      <img [src]="desc?.imgURL" alt="">
+    </div>
   </ng-template>
 </swiper>

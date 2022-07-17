@@ -3,6 +3,7 @@ import { SwiperComponent } from "swiper/angular";
 
 // import Swiper core and required modules
 import SwiperCore, {Autoplay, Navigation, Pagination} from "swiper";
+import {GetInfo} from "../../../generated/graphql";
 
 // install Swiper modules
 SwiperCore.use([Pagination, Navigation, Autoplay]);
@@ -15,7 +16,7 @@ SwiperCore.use([Pagination, Navigation, Autoplay]);
 
 })
 export class DescCarouselComponent implements OnInit {
-  @Input() info$
+  @Input() info$: GetInfo | undefined
   constructor() { }
 
   ngOnInit(): void {
