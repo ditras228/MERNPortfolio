@@ -8,6 +8,7 @@ const loginState = createFeatureSelector<State>(featureName);
 export const selectIsLoginVisible = createSelector(loginState, state => state.isLoginVisible);
 export const selectEditInfoVisible = createSelector(loginState, state => state.isInfoVisible);
 export const selectEditWorkVisible = createSelector(loginState, state => state.isWorkVisible);
+export const selectEditDescVisible = createSelector(loginState, state => state.isDescVisible);
 export const selectIsAuth = createSelector(loginState, state => state.isAuth);
 export const selectLoginInput= createSelector(loginState, state => state.input);
 export const selectLoginError= createSelector(loginState, state => state.error);

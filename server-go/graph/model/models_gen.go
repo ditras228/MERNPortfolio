@@ -2,10 +2,6 @@
 
 package model
 
-import (
-	"github.com/99designs/gqlgen/graphql"
-)
-
 type CreateDescOutput interface {
 	IsCreateDescOutput()
 }
@@ -46,8 +42,8 @@ type Contacts struct {
 }
 
 type CreateDescInput struct {
-	Text   string         `json:"text"`
-	ImgURL graphql.Upload `json:"imgURL"`
+	Text   string `json:"text"`
+	ImgURL string `json:"imgURL"`
 }
 
 type DeleteDescInput struct {
@@ -136,9 +132,9 @@ func (UnexpectedError) IsCreateDescOutput()      {}
 func (UnexpectedError) IsGetDescOutput()         {}
 
 type UpdateDescInput struct {
-	ID     int            `json:"id"`
-	Text   string         `json:"text"`
-	ImgURL graphql.Upload `json:"imgURL"`
+	ID     int    `json:"id"`
+	Text   string `json:"text"`
+	ImgURL string `json:"imgURL"`
 }
 
 type UpdateInfoInput struct {

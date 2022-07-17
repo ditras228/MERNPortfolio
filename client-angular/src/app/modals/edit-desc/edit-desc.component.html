@@ -1,4 +1,6 @@
 <div class="edit-desc">
+  <div class="edit-desc__close" (click)="closeModal()"></div>
+
   <app-input-field class="edit-desc__field" [error]="errors?.['id']" [placeholder]="'ID'"
                    [internalValue]="id.value"
                    (valueChange)="id.patchValue($event)"></app-input-field>

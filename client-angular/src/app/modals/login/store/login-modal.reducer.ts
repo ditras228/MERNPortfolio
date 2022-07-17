@@ -1,7 +1,7 @@
 import {createReducer, on} from "@ngrx/store";
 import {
   loginInputs,
-  setAuth,
+  setAuth, setEditDescVisible,
   setEditInfoVisible,
   setEditWorkVisible,
   setError,
@@ -18,11 +18,13 @@ export interface State {
   isLoginVisible: boolean
   isWorkVisible: boolean
   isInfoVisible: boolean
+  isDescVisible: boolean
   currentEditWork: GetWork | undefined
 }
 const initialState: State = {
   isWorkVisible: false,
   isInfoVisible: false,
+  isDescVisible: false,
   isAuth: false,
   isLock: false,
   isLoginVisible: false,
@@ -40,6 +42,7 @@ export const loginModalReducer= createReducer(
   on(setLoginVisible, (state) => ({...state, isLoginVisible: !state.isLoginVisible, isLock: !state.isLock})),
   on(setEditInfoVisible, (state) => ({...state, isInfoVisible: !state.isInfoVisible, isLock: !state.isLock})),
   on(setEditWorkVisible, (state, {work}) => ({...state, isWorkVisible: !state.isWorkVisible, currentEditWork: work, isLock: !state.isLock})),
+  on(setEditDescVisible, (state) => ({...state, isDescVisible: !state.isDescVisible, isLock: !state.isLock})),
   on(setError, (state, {error}) => ({...state, error: error })),
   on(setAuth, (state, {isAuth}) => ({...state, isAuth: isAuth })),
 )

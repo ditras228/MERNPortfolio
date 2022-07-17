@@ -1,13 +1,11 @@
-scalar Upload
-
 input UpdateDescInput{
     id: Int!
     text: String!
-    imgURL: Upload!
+    imgURL: String!
 }
 input CreateDescInput{
     text: String!
-    imgURL: Upload!
+    imgURL: String!
 }
 input DeleteDescInput{
     id: Int!

@@ -681,16 +681,14 @@ type  GetWorkTag{
   tagId: Int!
 }
 `, BuiltIn: false},
-	{Name: "../schema/desc/mutation_desc.graphqls", Input: `scalar Upload
-
-input UpdateDescInput{
+	{Name: "../schema/desc/mutation_desc.graphqls", Input: `input UpdateDescInput{
     id: Int!
     text: String!
-    imgURL: Upload!
+    imgURL: String!
 }
 input CreateDescInput{
     text: String!
-    imgURL: Upload!
+    imgURL: String!
 }
 input DeleteDescInput{
     id: Int!
@@ -4935,7 +4933,7 @@ func (ec *executionContext) unmarshalInputCreateDescInput(ctx context.Context, o
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("imgURL"))
-			it.ImgURL, err = ec.unmarshalNUpload2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚐUpload(ctx, v)
+			it.ImgURL, err = ec.unmarshalNString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -5020,7 +5018,7 @@ func (ec *executionContext) unmarshalInputUpdateDescInput(ctx context.Context, o
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("imgURL"))
-			it.ImgURL, err = ec.unmarshalNUpload2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚐUpload(ctx, v)
+			it.ImgURL, err = ec.unmarshalNString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -6775,21 +6773,6 @@ func (ec *executionContext) unmarshalNUpdateInfoInput2portfolioᚋgraphᚋmodel�
 func (ec *executionContext) unmarshalNUpdateWorkInput2portfolioᚋgraphᚋmodelᚐUpdateWorkInput(ctx context.Context, v interface{}) (model.UpdateWorkInput, error) {
 	res, err := ec.unmarshalInputUpdateWorkInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) unmarshalNUpload2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚐUpload(ctx context.Context, v interface{}) (graphql.Upload, error) {
-	res, err := graphql.UnmarshalUpload(v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalNUpload2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚐUpload(ctx context.Context, sel ast.SelectionSet, v graphql.Upload) graphql.Marshaler {
-	res := graphql.MarshalUpload(v)
-	if res == graphql.Null {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
-		}
-	}
-	return res
 }
 
 func (ec *executionContext) unmarshalNUserInput2portfolioᚋgraphᚋmodelᚐUserInput(ctx context.Context, v interface{}) (model.UserInput, error) {

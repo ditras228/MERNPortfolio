@@ -3,7 +3,7 @@ import {createAction} from "@ngrx/store";
 export type EditDescInputs= {
   id: number,
   text: string,
-  imgUrl: any
+  imgUrl: string
 }
 
 export const setEditDescForm = createAction(

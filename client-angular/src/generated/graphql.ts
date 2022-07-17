@@ -13,7 +13,6 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  Upload: any;
 };
 
 export type Contacts = {
@@ -25,7 +24,7 @@ export type Contacts = {
 };
 
 export type CreateDescInput = {
-  imgURL: Scalars['Upload'];
+  imgURL: Scalars['String'];
   text: Scalars['String'];
 };
 
@@ -165,7 +164,7 @@ export type UnexpectedError = ServiceErrorInterface & {
 
 export type UpdateDescInput = {
   id: Scalars['Int'];
-  imgURL: Scalars['Upload'];
+  imgURL: Scalars['String'];
   text: Scalars['String'];
 };
 

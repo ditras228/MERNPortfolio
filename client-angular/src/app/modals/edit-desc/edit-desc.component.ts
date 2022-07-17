@@ -2,9 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {Store} from "@ngrx/store";
 import {setEditDescForm, submitEditDescForm} from "./store/edit-desc.actions";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {selectInfo} from "../../store/app.selectors";
 import {selectEditInfoFormInput} from "./store/edit-desc.selectors";
 import {ValidationService} from "../../services/validation.service";
+import {setEditDescVisible, setEditInfoVisible} from "../login/store/login-modal.actions";
 
 @Component({
   selector: 'app-edit-desc',
@@ -15,19 +15,27 @@ export class EditDescComponent implements OnInit {
   public errors: { [key: string]: string } = {};
   public id = new FormControl
   public text = new FormControl
-  public imgUrl
+  public imgUrl = new FormControl
 
   public form: FormGroup<{
     id: FormControl<number>;
     text: FormControl<string>;
-    imgUrl: FormControl<File>;
+    imgUrl: FormControl<string>;
   }> | undefined
- public file
   constructor(public store$: Store, public validationService: ValidationService) {
   }
+
+  closeModal(): void {
+    this.store$.dispatch(setEditDescVisible())
+  }
+
   getFile (event: any){
-    this.form?.patchValue({imgUrl: event.target.files[0]})
-    )
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend =() =>{
+      this.imgUrl.setValue(reader.result)
+    }
+    reader.readAsDataURL(file);
   }
   submitFormHandler(): void {
     if(this.form?.invalid){
@@ -37,7 +45,7 @@ export class EditDescComponent implements OnInit {
       this.store$.dispatch(setEditDescForm({
         id: this.id.value,
         text: this.text.value,
-        imgUrl: this.imgUrl
+        imgUrl: this.imgUrl.value
       }))
       this.store$.dispatch(submitEditDescForm())
     }
