@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { selectWorks} from "../../store/app.selectors";
 import {GetWork} from "../../../generated/graphql";
 import {Store} from "@ngrx/store";
@@ -12,6 +12,7 @@ import {listAnimation} from "../../app.animation";
 })
 export class WorkListComponent implements OnInit {
   works$: GetWork[] | any
+  @Input() isAuth = false
 
   constructor(public store$: Store) { }
 

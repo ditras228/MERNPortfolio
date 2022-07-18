@@ -6,11 +6,13 @@ require (
 	github.com/99designs/gqlgen v0.17.10
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-chi/chi v1.5.4
+	github.com/gofrs/uuid v4.0.0+incompatible
 	github.com/gorilla/websocket v1.5.0
 	github.com/ilyakaznacheev/cleanenv v1.3.0
 	github.com/jackc/pgconn v1.8.0
 	github.com/jackc/pgx/v4 v4.10.1
 	github.com/joho/godotenv v1.4.0
+	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
 	github.com/rs/cors v1.8.2
 	github.com/vektah/gqlparser/v2 v2.4.5
 	github.com/ztrue/tracerr v0.3.0
@@ -20,7 +22,6 @@ require (
 	github.com/BurntSushi/toml v1.1.0 // indirect
 	github.com/agnivade/levenshtein v1.1.1 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.1 // indirect
-	github.com/gofrs/uuid v4.0.0+incompatible // indirect
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect

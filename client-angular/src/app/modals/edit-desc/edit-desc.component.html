@@ -1,13 +1,16 @@
 <div class="edit-desc">
   <div class="edit-desc__close" (click)="closeModal()"></div>
-
-  <app-input-field class="edit-desc__field" [error]="errors?.['id']" [placeholder]="'ID'"
-                   [internalValue]="id.value"
-                   (valueChange)="id.patchValue($event)"></app-input-field>
+  <label class="edit-desc__label" for="input-img">
+    <div class="edit-desc__label__img"
+         [ngStyle]="isDirty
+                    ?{backgroundImage: 'url('+ imgUrl.value+')'}
+                    :{backgroundImage: 'url('+ 'http://localhost:4000/'+ imgUrl.value + ')'}
+"></div>
+    <input class="edit-desc__label__input" id="input-img" type="file" (change)="getFile($event)">
+  </label>
   <app-input-field class="edit-desc__field" [error]="errors?.['text']" [placeholder]="'Текст'"
                    [internalValue]="text.value"
                    (valueChange)="text.patchValue($event)"></app-input-field>
 
-  <input type="file" (change)="getFile($event)">
   <button class="edit-desc__button" (click)="submitFormHandler()">Применить</button>
 </div>

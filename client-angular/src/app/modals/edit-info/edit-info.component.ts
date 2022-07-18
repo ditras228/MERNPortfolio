@@ -15,7 +15,6 @@ export class EditInfoComponent implements OnInit {
   public errors: { [key: string]: string } = {};
   public name = new FormControl
   public job = new FormControl
-  public desc = new FormControl
   public telegramTitle = new FormControl
   public telegramLink = new FormControl
   public githubTitle = new FormControl
@@ -29,7 +28,6 @@ export class EditInfoComponent implements OnInit {
     telegramLink: FormControl<string>;
     job: FormControl<string>;
     experience: FormControl<string>;
-    desc: FormControl<string>;
   }> | undefined
 
   constructor(public store$: Store, public validationService: ValidationService) {
@@ -44,7 +42,7 @@ export class EditInfoComponent implements OnInit {
       this.errors = this.validationService.GetValidationMessage(this.form, this.errors)
     } else {
       this.store$.dispatch(setEditInfoForm({
-        name: this.name.value, job: this.job.value, desc: this.desc.value,
+        name: this.name.value, job: this.job.value,
         telegramTitle: this.telegramTitle.value, telegramLink: this.telegramLink.value,
         githubTitle: this.githubTitle.value,
         githubLink: this.githubLink.value, experience: this.experience.value
@@ -57,7 +55,6 @@ export class EditInfoComponent implements OnInit {
   ngOnInit(): void {
     this.name = new FormControl(null, [Validators.required])
     this.job = new FormControl(null, [Validators.required])
-    this.desc = new FormControl(null, [Validators.required])
     this.telegramTitle = new FormControl(null, [Validators.required])
     this.telegramLink = new FormControl(null, [Validators.required])
     this.githubTitle = new FormControl(null, [Validators.required])
@@ -67,7 +64,6 @@ export class EditInfoComponent implements OnInit {
     this.store$.select(selectInfo).subscribe(info => {
       this.name.setValue(info.name)
       this.job.setValue(info.job)
-      this.desc.setValue(info.desc)
       this.telegramTitle.setValue(info.contacts.telegramTitle)
       this.telegramLink.setValue(info.contacts.telegramLink)
       this.githubTitle.setValue(info.contacts.githubTitle)
@@ -78,7 +74,6 @@ export class EditInfoComponent implements OnInit {
     this.form = new FormGroup({
       name: this.name,
       job: this.job,
-      desc: this.desc,
       telegramTitle: this.telegramTitle,
       telegramLink: this.telegramLink,
       githubTitle: this.githubTitle,

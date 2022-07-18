@@ -1,7 +1,6 @@
 input UpdateInfoInput {
   name: String!
   job: String!
-  desc: String!
   experience: String!
   telegramTitle: String!
   telegramLink: String!

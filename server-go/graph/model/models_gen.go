@@ -140,7 +140,6 @@ type UpdateDescInput struct {
 type UpdateInfoInput struct {
 	Name          string `json:"name"`
 	Job           string `json:"job"`
-	Desc          string `json:"desc"`
 	Experience    string `json:"experience"`
 	TelegramTitle string `json:"telegramTitle"`
 	TelegramLink  string `json:"telegramLink"`

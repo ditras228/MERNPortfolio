@@ -41,8 +41,7 @@
       background-size: cover;
       border-radius: 50%;
       border: solid 3px #fff;
-      outline: solid 3px #5F2EEA
-
+      outline: solid 3px #5F2EEA;
     }
 
     @include screen-lg{
@@ -55,7 +54,17 @@
     @include font(32px, 36px, 700, 1px);
     margin-bottom: 8px;
     position: relative;
+    display: grid;
 
+    &__icon{
+      @include icon('icon/check.svg');
+      width: 32px;
+      height: 32px;
+      position: absolute;
+      right: -36px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
     @include screen-lg {
       margin-bottom: 10px;
 
@@ -63,12 +72,47 @@
   }
 
   &__job{
-    @include font(24px, 32px, 400, 1.5px);
     margin-bottom: 10px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    column-gap: 15px;
+
+    &__icon{
+      display: none;
+      @include icon('icon/briefcase.svg');
+      width: 30px;
+      height: 30px;
+      position: relative;
+      background-size: contain;
+
+      @include screen-lg{
+        display: block;
+
+        &:after{
+          animation: blinker 3s linear infinite;
+
+          display: block;
+          position: absolute;
+          bottom: 4px;
+          right: -7px;
+          content: '';
+          width: 15px;
+          height: 2px;
+          background: #000000;
+          border-radius: 2px;
+        }
+      }
+    }
+    &__text{
+      @include font(24px, 32px, 400, 1.5px);
+    }
     @include screen-lg{
       margin: 0;
+      justify-content: flex-end;
 
     }
+
   }
 
   &__desc{
@@ -88,5 +132,17 @@
     padding: 0;
     height: calc(100vh - 60px);
     grid-template-rows:20% 20% 45% 15%;
+  }
+}
+
+@keyframes blinker {
+  40%{
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  60%{
+    opacity: 1;
   }
 }

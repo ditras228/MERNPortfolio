@@ -1,7 +1,6 @@
 import {createAction} from "@ngrx/store";
 
 export type EditInfoInputs= {
-  desc: string
   experience: string
   githubTitle: string
   githubLink: string

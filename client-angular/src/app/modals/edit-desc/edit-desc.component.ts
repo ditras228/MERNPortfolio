@@ -5,6 +5,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {selectEditInfoFormInput} from "./store/edit-desc.selectors";
 import {ValidationService} from "../../services/validation.service";
 import {setEditDescVisible, setEditInfoVisible} from "../login/store/login-modal.actions";
+import {selectCurrentDesc} from "../login/store/login-modal.selectors";
 
 @Component({
   selector: 'app-edit-desc',
@@ -13,37 +14,40 @@ import {setEditDescVisible, setEditInfoVisible} from "../login/store/login-modal
 })
 export class EditDescComponent implements OnInit {
   public errors: { [key: string]: string } = {};
-  public id = new FormControl
   public text = new FormControl
   public imgUrl = new FormControl
-
+  public isDirty = false
+  public id
   public form: FormGroup<{
     id: FormControl<number>;
     text: FormControl<string>;
     imgUrl: FormControl<string>;
   }> | undefined
+
   constructor(public store$: Store, public validationService: ValidationService) {
   }
 
   closeModal(): void {
-    this.store$.dispatch(setEditDescVisible())
+    this.store$.dispatch(setEditDescVisible(undefined))
   }
 
-  getFile (event: any){
+  getFile(event: any) {
     const file = event.target.files[0];
     const reader = new FileReader();
-    reader.onloadend =() =>{
+    reader.onloadend = () => {
+      this.isDirty=true
       this.imgUrl.setValue(reader.result)
     }
     reader.readAsDataURL(file);
   }
+
   submitFormHandler(): void {
-    if(this.form?.invalid){
+    if (this.form?.invalid) {
       this.errors = this.validationService.GetValidationMessage(this.form, this.errors)
-    }else{
+    } else {
       this.errors = {}
       this.store$.dispatch(setEditDescForm({
-        id: this.id.value,
+        id: this.id,
         text: this.text.value,
         imgUrl: this.imgUrl.value
       }))
@@ -56,10 +60,10 @@ export class EditDescComponent implements OnInit {
     this.text = new FormControl(null, [Validators.required])
     this.imgUrl = new FormControl(null, [Validators.required])
 
-    this.store$.select(selectEditInfoFormInput).subscribe(info => {
-      this.id.setValue(info.id)
-      this.text.setValue(info.text)
-      this.imgUrl.setValue(info.imgUrl)
+    this.store$.select(selectCurrentDesc).subscribe(info => {
+      this.id = info?.id
+      this.text.setValue(info?.text)
+      this.imgUrl.setValue(info?.imgURL)
     })
 
     this.form = new FormGroup({

@@ -6,7 +6,7 @@ import {isPlatformBrowser} from '@angular/common';
 import {
   selectEditDescVisible,
   selectEditInfoVisible,
-  selectEditWorkVisible,
+  selectEditWorkVisible, selectIsAuth,
   selectIsLoginVisible,
   selectLock
 } from "./modals/login/store/login-modal.selectors";
@@ -21,7 +21,9 @@ import {
 })
 export class AppComponent implements OnInit{
   title = 'client-angular';
-  public isLock = false as boolean
+  public isLock = false
+  public isAuth
+
   constructor(private store$: Store,
               private renderer: Renderer2,
               @Inject(PLATFORM_ID) private platformId
@@ -33,6 +35,7 @@ export class AppComponent implements OnInit{
 
   ngOnInit(): void{
     if(isPlatformBrowser(this.platformId)){
+      this.store$.select(selectIsAuth).subscribe(value=> this.isAuth = value)
       this.store$.select(selectIsLoginVisible).subscribe(value => this.isLoginVisible= value)
       this.store$.select(selectEditInfoVisible).subscribe(value => this.isEditInfoVisible= value)
       this.store$.select(selectEditWorkVisible).subscribe(value => this.isEditWorkVisible= value)

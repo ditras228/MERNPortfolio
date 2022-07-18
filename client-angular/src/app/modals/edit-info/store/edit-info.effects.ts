@@ -39,7 +39,6 @@ export class EditInfoEffects extends GraphqlService {
 
             input: {
               name: editInfoInputs.name,
-              desc: editInfoInputs.desc,
               experience: editInfoInputs.experience.replace(/\r?\n/g, ""),
               telegramTitle: editInfoInputs.telegramTitle,
               telegramLink: editInfoInputs.telegramLink,

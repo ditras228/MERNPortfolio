@@ -583,7 +583,6 @@ var sources = []*ast.Source{
 	{Name: "../schema/info/mutation_info.graphqls", Input: `input UpdateInfoInput {
   name: String!
   job: String!
-  desc: String!
   experience: String!
   telegramTitle: String!
   telegramLink: String!
@@ -5050,14 +5049,6 @@ func (ec *executionContext) unmarshalInputUpdateInfoInput(ctx context.Context, o
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("job"))
 			it.Job, err = ec.unmarshalNString2string(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "desc":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("desc"))
-			it.Desc, err = ec.unmarshalNString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}

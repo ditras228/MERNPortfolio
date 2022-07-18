@@ -15,4 +15,5 @@ export const selectLoginError= createSelector(loginState, state => state.error);
 export const selectLock = createSelector(loginState, state => state.isLock);
 
 export const selectCurrentWorkID = createSelector(loginState, state => state.currentEditWork);
+export const selectCurrentDesc = createSelector(loginState, state => state.currentEditDesc);
 

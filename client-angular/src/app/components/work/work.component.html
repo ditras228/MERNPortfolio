@@ -1,5 +1,5 @@
 <div class="work">
-  <div class="work__edit" (click)="editWorkHandler()">
+  <div *ngIf="isAuth" class="work__edit" (click)="editWorkHandler()">
     <div class="work__edit__icon"></div>
   </div>
   <div class="work__title">{{work?.name}}</div>

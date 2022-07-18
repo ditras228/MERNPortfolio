@@ -1,5 +1,5 @@
 import {createAction} from "@ngrx/store";
-import {GetTag, GetWork} from "../../../../generated/graphql";
+import {GetDesc, GetTag, GetWork} from "../../../../generated/graphql";
 
 export type loginInputs= {
   login: string,
@@ -20,7 +20,8 @@ export const setEditInfoVisible = createAction(
   "[App] SetEditInfoVisible"
 );
 export const setEditDescVisible = createAction(
-  "[App] SetEditDescVisible"
+  "[App] SetEditDescVisible",
+  (desc:GetDesc | undefined)=>({desc})
 );
 export const setEditWorkVisible = createAction(
   "[App] SetEditWorkVisible",

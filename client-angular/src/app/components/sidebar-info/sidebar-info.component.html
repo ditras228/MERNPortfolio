@@ -1,5 +1,5 @@
-<div class="info" >
-  <button class="info__edit" (click)="editInfoHandler()">
+<div class="info">
+  <button *ngIf="isAuth" class="info__edit" (click)="editInfoHandler()">
     <div class="info__edit__icon"></div>
   </button>
   <div class="info__test">
@@ -7,8 +7,14 @@
 
     </div>
     <div class="info__test__container">
-      <div class="info__who">{{info$?.name}}</div>
-      <div class="info__job">{{info$?.job}}</div>
+      <div class="info__who">{{info$?.name}} <div class="info__who__icon"></div></div>
+      <div class="info__job">
+        <div class="info__job__icon">
+        </div>
+        <div class="info__job__text">
+          {{info$?.job}}
+        </div>
+      </div>
 
     </div>
   </div>
@@ -16,8 +22,8 @@
   <app-info-tools *ngIf="false"></app-info-tools>
 
 
-  <div class="info__desc" >
-   <app-desc-carousel *ngIf="info$?.desc?.length" [info$]="info$"></app-desc-carousel>
+  <div class="info__desc">
+    <app-desc-carousel *ngIf="info$?.desc?.length" [info$]="info$" [isAuth]="isAuth"></app-desc-carousel>
   </div>
   <app-info-skills [experience]="info$?.experience"></app-info-skills>
   <app-info-contacts [contacts]="info$?.contacts"></app-info-contacts>

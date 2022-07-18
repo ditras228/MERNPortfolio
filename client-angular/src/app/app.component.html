@@ -2,8 +2,8 @@
   <app-navbar></app-navbar>
 
   <div class="app__content">
-    <app-sidebar-info></app-sidebar-info>
-    <app-work-list></app-work-list>
+    <app-sidebar-info [isAuth]="isAuth"></app-sidebar-info>
+    <app-work-list [isAuth]="isAuth"></app-work-list>
   </div>
 
   <app-modal *ngIf="isLoginVisible">

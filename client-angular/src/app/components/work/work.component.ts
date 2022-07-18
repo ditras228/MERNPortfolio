@@ -12,6 +12,7 @@ import {setEditWorkTags} from "../../modals/edit-work/store/edit-work.actions";
 })
 export class WorkComponent implements OnInit {
   @Input() work: GetWork | undefined
+  @Input() isAuth = false
 
   constructor(public store$: Store) { }
   editWorkHandler():void{

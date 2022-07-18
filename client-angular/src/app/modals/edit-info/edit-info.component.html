@@ -7,9 +7,6 @@
   <app-input-field class="edit-info__field" [error]="errors?.['job']" [placeholder]="'Грейд'"
                    [internalValue]="job.value"
                    (valueChange)="job.patchValue($event)"></app-input-field>
-  <app-input-field class="edit-info__field" [error]="errors?.['desc']" [placeholder]="'Описание'"
-                   [internalValue]="desc.value"
-                   (valueChange)="desc.patchValue($event)"></app-input-field>
   <app-text-area class="edit-info__field" [error]="errors?.['experience']" [placeholder]="'Навыки'"
                  [internalValue]="experience.value" [rows]="10"
                  (valueChange)="experience.patchValue($event)"></app-text-area>

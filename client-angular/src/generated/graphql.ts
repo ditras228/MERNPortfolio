@@ -251,7 +251,7 @@ export type UpdateInfoMutationVariables = Exact<{
 }>;
 
 
-export type UpdateInfoMutation = { __typename: 'Mutation', result: { __typename?: 'GetInfo', experience: string, job: string, name: string, desc: Array<{ __typename?: 'GetDesc', id: number, text: string, imgURL: string } | null>, contacts: { __typename?: 'Contacts', telegramTitle: string, telegramLink: string, githubTitle: string, githubLink: string } } };
+export type UpdateInfoMutation = { __typename: 'Mutation', result: { __typename?: 'GetInfo', experience: string, job: string, name: string, contacts: { __typename?: 'Contacts', telegramTitle: string, telegramLink: string, githubTitle: string, githubLink: string } } };
 
 export type UpdateWorkMutationVariables = Exact<{
   input: UpdateWorkInput;
@@ -354,11 +354,6 @@ export const UpdateInfoDocument = `
     mutation updateInfo($input: UpdateInfoInput!) {
   __typename
   result: updateInfo(input: $input) {
-    desc {
-      id
-      text
-      imgURL
-    }
     experience
     job
     name

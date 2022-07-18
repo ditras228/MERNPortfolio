@@ -2,6 +2,7 @@
 @import "../../../../node_modules/swiper/swiper-bundle.min.css";
 @import "../../../styles/mixins/icon";
 @import "../../../styles/mixins/screen";
+@import "../../../styles/mixins/button";
 
 .swiper {
   padding-top: 45px;
@@ -36,7 +37,19 @@
   &__item {
 
     padding: 25px 25px 6px 0;
-
+    &__edit{
+      @include button-small();
+      left: 20px;
+      top: 0;
+      position: absolute;
+      display: grid;
+      justify-content: center;
+      &__icon{
+        @include icon('icon/edit.svg');
+        width: 30px;
+        height: 30px;
+      }
+    }
     b {
       font-weight: bold;
     }
