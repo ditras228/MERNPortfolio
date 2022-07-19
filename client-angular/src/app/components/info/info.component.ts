@@ -10,12 +10,12 @@ import {selectIsAuth} from "../../modals/login/store/login-modal.selectors";
 
 @Component({
   selector: 'app-sidebar-info',
-  templateUrl: './sidebar-info.component.html',
-  styleUrls: ['./sidebar-info.component.scss'] ,
+  templateUrl: './info.component.html',
+  styleUrls: ['./info.component.scss'] ,
   encapsulation: ViewEncapsulation.None,
   animations: [fadeAnimation]
 })
-export class SidebarInfoComponent implements OnInit {
+export class InfoComponent implements OnInit {
   info$: GetInfo | undefined
   @Input() isAuth = false
 

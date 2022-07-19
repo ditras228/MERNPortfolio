@@ -6,13 +6,15 @@
 .work {
   padding: 0 21px 0 21px;
   position: relative;
+
   &__edit{
-    @include button-small();
+    @include button-edit();
     right: -120px;
     top: 30px;
     position: absolute;
     display: grid;
     justify-content: center;
+
     &__icon{
       @include icon('icon/edit.svg');
       width: 30px;
@@ -22,10 +24,10 @@
   &__title {
     @include font(32px, 34px, 700, 2.5px);
     margin-bottom: 27px;
+
     @include screen-lg {
       margin-bottom: 17px;
       padding: 32px  32px 0 32px;
-
     }
   }
 
@@ -35,6 +37,7 @@
     margin-bottom: 26px;
     grid-row-gap: 8px;
     grid-column-gap: 8px;
+
     &__item {
       @include font(12px, 24px, 400, 1px);
       color: #2A00A2;
@@ -102,6 +105,7 @@
   &__buttons {
     display: grid;
     grid-row-gap: 15px;
+
     &__group {
       display: flex;
       column-gap: 5px;
@@ -115,6 +119,7 @@
     &__item-fill {
       @include button-fill();
     }
+
     @include screen-lg{
       padding: 0 32px 32px 32px;
 
@@ -123,7 +128,7 @@
 
   @include screen-lg {
     background: #FFFFFF;
-    box-shadow: 0px 2px 2px rgb(0 32 51 / 2%), 0px 2px 8px rgb(0 32 51 / 16%);
+    box-shadow: 0 2px 2px rgb(0 32 51 / 2%), 0 2px 8px rgb(0 32 51 / 16%);
     border-radius: 4px;
     padding: 0;
   }

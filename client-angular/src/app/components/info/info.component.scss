@@ -1,0 +1,46 @@
+@import "../../../styles/mixins/font";
+@import "../../../styles/mixins/screen";
+@import "../../../styles/mixins/icon";
+@import "../../../styles/mixins/button";
+
+.info {
+  margin-bottom: 32px;
+  padding: 0 21px 0 21px;
+
+  &__edit {
+    @include button-edit();
+    left: -120px;
+    top: 50px;
+    position: absolute;
+    display: grid;
+    justify-content: center;
+
+    &__icon {
+      @include icon('icon/edit.svg');
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  @include screen-lg {
+    display: grid;
+    width: 465px;
+    position: fixed;
+    margin: 0;
+    padding: 0;
+    height: calc(100vh - 60px);
+    grid-template-rows:20% 20% 45% 15%;
+  }
+}
+
+@keyframes blinker {
+  40% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+}

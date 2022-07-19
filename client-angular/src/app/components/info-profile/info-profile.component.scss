@@ -1,0 +1,107 @@
+@import "../../../styles/mixins/font";
+@import "../../../styles/mixins/screen";
+@import "../../../styles/mixins/icon";
+
+.profile {
+  align-content: center;
+  text-align: center;
+  justify-items: center;
+  display: grid;
+  grid-row-gap: 20px;
+  height: 100%;
+
+  @include screen-lg {
+    justify-items: right;
+
+  }
+
+  &__content {
+    display: grid;
+    align-content: center;
+
+
+    &__who {
+      @include font(32px, 36px, 700, 1px);
+      margin-bottom: 8px;
+      position: relative;
+      display: grid;
+
+      &__icon {
+        display: none;
+        @include icon('icon/check.svg');
+        width: 32px;
+        height: 32px;
+        position: absolute;
+        right: -36px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      @include screen-lg {
+        margin-bottom: 10px;
+
+      }
+    }
+
+    &__job {
+      margin-bottom: 10px;
+      display: flex;
+      align-content: center;
+      justify-content: center;
+      column-gap: 15px;
+
+      &__icon {
+        display: none;
+        @include icon('icon/briefcase.svg');
+        width: 30px;
+        height: 30px;
+        position: relative;
+        background-size: contain;
+
+        @include screen-lg {
+          display: block;
+
+          &:after {
+            animation: blinker 3s linear infinite;
+
+            display: block;
+            position: absolute;
+            bottom: 4px;
+            right: -7px;
+            content: '';
+            width: 15px;
+            height: 2px;
+            background: #000000;
+            border-radius: 2px;
+          }
+        }
+      }
+
+      &__text {
+        @include font(24px, 32px, 400, 1.5px);
+      }
+
+      @include screen-lg {
+        margin: 0;
+        justify-content: flex-end;
+
+      }
+
+    }
+
+  }
+
+  &__photo {
+    width: 75px;
+    height: 75px;
+    @include icon("/Photos.png");
+    background-size: cover;
+    border-radius: 50%;
+  }
+
+  @include screen-lg {
+    grid-template-columns: auto 1fr;
+    grid-row-gap: 0;
+    text-align: right;
+  }
+}

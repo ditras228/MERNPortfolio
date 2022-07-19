@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SidebarInfoComponent } from './sidebar-info.component';
+import { InfoProfileComponent } from './info-profile.component';
 
-describe('SidebarInfoComponent', () => {
-  let component: SidebarInfoComponent;
-  let fixture: ComponentFixture<SidebarInfoComponent>;
+describe('InfoProfileComponent', () => {
+  let component: InfoProfileComponent;
+  let fixture: ComponentFixture<InfoProfileComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SidebarInfoComponent ]
+      declarations: [ InfoProfileComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SidebarInfoComponent);
+    fixture = TestBed.createComponent(InfoProfileComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

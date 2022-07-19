@@ -59,3 +59,10 @@
   padding: 6px 24px;
   height: auto;
 }
+
+@mixin button-edit($size: 14px, $height: 24px, $weight: 600, $spacing: .75px) {
+  @include button-fill($size, $height, $weight, $spacing);
+  width: 50px;
+  height: 50px;
+}
+

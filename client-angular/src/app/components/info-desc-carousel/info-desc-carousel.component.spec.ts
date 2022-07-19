@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DescCarouselComponent } from './desc-carousel.component';
+import { InfoDescCarouselComponent } from './info-desc-carousel.component';
 
 describe('DescCarouselComponent', () => {
-  let component: DescCarouselComponent;
-  let fixture: ComponentFixture<DescCarouselComponent>;
+  let component: InfoDescCarouselComponent;
+  let fixture: ComponentFixture<InfoDescCarouselComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DescCarouselComponent ]
+      declarations: [ InfoDescCarouselComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DescCarouselComponent);
+    fixture = TestBed.createComponent(InfoDescCarouselComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

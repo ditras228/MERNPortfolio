@@ -17,12 +17,15 @@ import {okay} from "../../../store/app.actions";
 import {Store} from "@ngrx/store";
 import {selectLoginInput} from "./login-modal.selectors";
 import {getTags, setFilterTags, setTags} from "../../edit-work/store/edit-work.actions";
+import {CookieService} from "ngx-cookie-service";
+import {AuthService} from "../../../services/auth.service";
 
 @Injectable()
 export class LoginEffects extends GraphqlService {
   constructor(
     private actions$: Actions,
     public store$: Store,
+    public authService: AuthService,
     override httpClient: HttpClient) {
     super(httpClient);
   }
@@ -63,9 +66,7 @@ export class LoginEffects extends GraphqlService {
                   break
                 }
                 case "User": {
-                  this.store$.dispatch(setAuth(true))
-                  localStorage.setItem("token", auth.accessToken);
-                  this.store$.dispatch(setLoginVisible())
+                  this.authService.login(auth.accessToken)
                   break
                 }
                 default: {

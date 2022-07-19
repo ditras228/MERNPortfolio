@@ -1,0 +1,9 @@
+<div class="info">
+  <button *ngIf="isAuth" class="info__edit" (click)="editInfoHandler()">
+    <div class="info__edit__icon"></div>
+  </button>
+  <app-info-profile [info]="info$"></app-info-profile>
+  <app-desc-carousel *ngIf="info$?.desc?.length" [info$]="info$" [isAuth]="isAuth"></app-desc-carousel>
+  <app-info-skills [experience]="info$?.experience"></app-info-skills>
+  <app-info-contacts [contacts]="info$?.contacts"></app-info-contacts>
+</div>

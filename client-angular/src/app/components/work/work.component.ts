@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {GetWork} from "../../../generated/graphql";
-import {setEditInfoVisible, setEditWorkVisible} from "../../modals/login/store/login-modal.actions";
+import {setAuth, setEditInfoVisible, setEditWorkVisible} from "../../modals/login/store/login-modal.actions";
 import {Store} from "@ngrx/store";
 import {setEditWorkTags} from "../../modals/edit-work/store/edit-work.actions";
 
@@ -22,7 +22,8 @@ export class WorkComponent implements OnInit {
   }
   ngOnInit(): void {
   }
-  public isPortfolio(url: any):boolean{
+
+  isPortfolio(url: any):boolean{
     return window.location.origin==url
   }
   public openLink(url: any): void{

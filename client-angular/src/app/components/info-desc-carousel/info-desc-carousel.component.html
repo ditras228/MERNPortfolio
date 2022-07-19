@@ -1,0 +1,20 @@
+<div class="desc">
+  <button *ngIf="isAuth" class="desc__edit" (click)="editDescHandler()">
+    <div class="desc__edit__icon"></div>
+  </button>
+
+  <swiper [autoplay]="{delay: 10000}" [loop]="true" [pagination]="{
+      type: 'progressbar'
+    }"
+  >
+
+    <ng-template swiperSlide *ngFor="let desc of info$?.desc">
+      <div class="swiper-slide__item">
+
+
+        <span [innerHTML]="desc?.text"></span>
+        <img class="swiper-slide__item__img" [src]="'http://localhost:4000/'+ desc?.imgURL" alt="">
+      </div>
+    </ng-template>
+  </swiper>
+</div>

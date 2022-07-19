@@ -25,7 +25,10 @@ export class LoginModalComponent implements OnInit {
   ngOnInit(): void {
     this.store$.select(selectLoginError).subscribe(value => this.serverError = value)
     this.login = new FormControl(null, [Validators.required])
-    this.password = new FormControl(null, [Validators.required, Validators.minLength(5), Validators.maxLength(12)])
+    this.password = new FormControl(null,
+      [Validators.required,
+                    Validators.minLength(5),
+                    Validators.maxLength(12)])
 
     this.form = new FormGroup({
       login: this.login,

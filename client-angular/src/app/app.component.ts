@@ -10,6 +10,8 @@ import {
   selectIsLoginVisible,
   selectLock
 } from "./modals/login/store/login-modal.selectors";
+import {CookieService} from "ngx-cookie-service";
+import {setAuth} from "./modals/login/store/login-modal.actions";
 
 
 @Component({
@@ -26,6 +28,7 @@ export class AppComponent implements OnInit{
 
   constructor(private store$: Store,
               private renderer: Renderer2,
+              public cookieService: CookieService,
               @Inject(PLATFORM_ID) private platformId
   ) { }
   public isLoginVisible: boolean | undefined;
@@ -35,6 +38,10 @@ export class AppComponent implements OnInit{
 
   ngOnInit(): void{
     if(isPlatformBrowser(this.platformId)){
+      if(this.cookieService.get("token")){
+        console.log(this.cookieService.get("token"))
+        this.store$.dispatch(setAuth(true))
+      }
       this.store$.select(selectIsAuth).subscribe(value=> this.isAuth = value)
       this.store$.select(selectIsLoginVisible).subscribe(value => this.isLoginVisible= value)
       this.store$.select(selectEditInfoVisible).subscribe(value => this.isEditInfoVisible= value)

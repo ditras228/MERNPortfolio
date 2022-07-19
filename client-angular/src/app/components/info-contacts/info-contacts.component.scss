@@ -10,7 +10,21 @@
     $root: &;
     display: grid;
     grid-template-columns: 40px 1fr;
-
+    transition: all 0.1s linear;
+    position: relative;
+    &:after{
+      transition: all 0.3s ease-in-out;
+      content: '';
+      position: absolute;
+      display: block;
+      height: 100%;
+      background: #EFF0F7;
+      bottom: 0;
+      left: 0;
+      z-index: -1;
+      width: 100%;
+      opacity: 0;
+    }
     &__icon{
       height: 40px;
       background-color: #27A6E5;
@@ -20,6 +34,7 @@
       background-size: 20px;
       transition: background-size 0.1s linear;
       border-radius: 0;
+
       &--github{
         @include icon('social/github.svg');
         background-color: #231E1B;
@@ -35,10 +50,19 @@
         @include font(24px, 32px, 700, 1.5px);
       }
     }
+
     &:hover{
       cursor: pointer;
+      color: #FFFFFF;
+      text-shadow: 1px 0 1px #000,
+      0 1px 1px #000,
+      -1px 0 1px #000,
+      0 -1px 1px #000;
       #{$root}__icon{
         background-size: 25px;
+      }
+      &:after{
+        opacity: 1;
       }
     }
 

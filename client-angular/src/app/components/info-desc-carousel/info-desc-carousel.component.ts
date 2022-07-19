@@ -13,19 +13,19 @@ SwiperCore.use([Pagination, Navigation, Autoplay]);
 
 @Component({
   selector: 'app-desc-carousel',
-  templateUrl: './desc-carousel.component.html',
-  styleUrls: ['./desc-carousel.component.scss'],
+  templateUrl: './info-desc-carousel.component.html',
+  styleUrls: ['./info-desc-carousel.component.scss'],
   encapsulation: ViewEncapsulation.None,
 
 })
-export class DescCarouselComponent implements OnInit {
+export class InfoDescCarouselComponent implements OnInit {
   @Input() info$: GetInfo | undefined
   @Input() isAuth = false
 
   constructor(public store$: Store) { }
 
-  editDescHandler(desc: GetDesc | null):void{
-    this.store$.dispatch(setEditDescVisible( desc || undefined))
+  editDescHandler():void{
+    this.store$.dispatch(setEditDescVisible( this.info$?.desc[0] || undefined))
   }
   ngOnInit(): void {
   }

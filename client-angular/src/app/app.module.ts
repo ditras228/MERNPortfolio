@@ -5,8 +5,7 @@ import {AppComponent} from './app.component';
 import {WorkListComponent} from './components/work-list/work-list.component';
 import {WorkComponent} from './components/work/work.component';
 import {NavbarComponent} from './components/navbar/navbar.component';
-import {SidebarInfoComponent} from './components/sidebar-info/sidebar-info.component';
-import {InfoToolsComponent} from './components/info-tools/info-tools.component';
+import {InfoComponent} from './components/info/info.component';
 import {InfoSkillsComponent} from './components/info-skills/info-skills.component';
 import {InfoContactsComponent} from './components/info-contacts/info-contacts.component';
 import {StoreModule} from '@ngrx/store';
@@ -18,17 +17,16 @@ import {AppEffects} from "./store/app.effects";
 import {HttpClientModule} from "@angular/common/http";
 import {LoginModalComponent} from "./modals/login/login-modal.component";
 import {ModalComponent} from "./modals/modal/modal.component";
-import { InputFieldComponent } from './components/input-field/input-field.component';
+import { InputFieldComponent } from './ui/input-field/input-field.component';
 import {FormsModule} from "@angular/forms";
 import {loginModalReducer} from "./modals/login/store/login-modal.reducer";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {LoginEffects} from "./modals/login/store/login-modal.effects";
 import { SwiperModule } from 'swiper/angular';
-import { DescCarouselComponent } from './components/desc-carousel/desc-carousel.component';
-import { TextAreaComponent } from './components/text-area/text-area.component';
+import { InfoDescCarouselComponent } from './components/info-desc-carousel/info-desc-carousel.component';
+import { TextAreaComponent } from './ui/text-area/text-area.component';
 import { EditInfoComponent } from './modals/edit-info/edit-info.component';
 import { EditWorkComponent } from './modals/edit-work/edit-work.component';
-import { DropdownComponent } from './components/dropdown/dropdown.component';
 import {EditWorkEffects} from "./modals/edit-work/store/edit-work.effects";
 import {editWorkReducer} from "./modals/edit-work/store/edit-work.reducer";
 import {editInfoReducer} from "./modals/edit-info/store/edit-info.reducer";
@@ -36,6 +34,7 @@ import {EditInfoEffects} from "./modals/edit-info/store/edit-info.effects";
 import { EditDescComponent } from './modals/edit-desc/edit-desc.component';
 import {EditDescEffects} from "./modals/edit-desc/store/edit-desc.effects";
 import {editDescReducer} from "./modals/edit-desc/store/edit-desc.reducer";
+import { InfoProfileComponent } from './components/info-profile/info-profile.component';
 
 @NgModule({
   declarations: [
@@ -43,20 +42,19 @@ import {editDescReducer} from "./modals/edit-desc/store/edit-desc.reducer";
     WorkListComponent,
     WorkComponent,
     NavbarComponent,
-    SidebarInfoComponent,
-    InfoToolsComponent,
+    InfoComponent,
     InfoSkillsComponent,
     InfoContactsComponent,
     ModalComponent,
 
     LoginModalComponent,
     InputFieldComponent,
-    DescCarouselComponent,
+    InfoDescCarouselComponent,
     TextAreaComponent,
     EditInfoComponent,
     EditWorkComponent,
-    DropdownComponent,
     EditDescComponent,
+    InfoProfileComponent,
   ],
     imports: [
       SwiperModule,
