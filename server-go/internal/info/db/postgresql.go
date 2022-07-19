@@ -2,7 +2,7 @@ package info
 
 import (
 	"context"
-	"fmt"
+	"os"
 	"portfolio/graph/model"
 	"portfolio/infrastructure/postgresql"
 	"portfolio/internal/info"
@@ -14,6 +14,15 @@ type repository struct {
 }
 
 func (r *repository) UpdateInfo(ctx context.Context, input model.UpdateInfoInput) (model.GetInfo, error) {
+	qImgUrl := `
+				SELECT 
+					img
+				
+				FROM 
+					public.info
+
+				WHERE id = 0
+`
 	q := `
 
 		UPDATE
@@ -21,7 +30,7 @@ func (r *repository) UpdateInfo(ctx context.Context, input model.UpdateInfoInput
 
 		SET
 			name = $1, job = $2,  experience = $3,
-			telegramtitle = $4, telegramlink = $5, githubtitle = $6, githublink = $7
+			telegramtitle = $4, telegramlink = $5, githubtitle = $6, githublink = $7, img = $8
 
 		WHERE 
 			id = 0
@@ -43,7 +52,16 @@ func (r *repository) UpdateInfo(ctx context.Context, input model.UpdateInfoInput
 	var inf model.GetInfo
 	var con model.Contacts
 
-	err := r.client.QueryRow(ctx, q, input.Name, input.Job, input.Experience, input.TelegramTitle, input.TelegramLink, input.GithubTitle, input.GithubLink).
+	var oldLink string
+
+	err := r.client.
+		QueryRow(ctx, qImgUrl).
+		Scan(&oldLink)
+
+	err = os.Remove(oldLink)
+	imgLink, err := utils.SaveImage(input.Img)
+
+	err = r.client.QueryRow(ctx, q, input.Name, input.Job, input.Experience, input.TelegramTitle, input.TelegramLink, input.GithubTitle, input.GithubLink, imgLink).
 		Scan(&inf.Name, &inf.Job, &inf.Experience, &con.TelegramTitle, &con.TelegramLink, &con.GithubTitle, &con.GithubLink)
 
 	rows, err := r.client.Query(ctx, qDesc)
@@ -64,6 +82,7 @@ func (r *repository) UpdateInfo(ctx context.Context, input model.UpdateInfoInput
 	if err != nil {
 		return model.GetInfo{}, err
 	}
+
 	return inf, nil
 }
 func (r *repository) FindOne(ctx context.Context) (model.GetInfo, error) {
@@ -71,7 +90,7 @@ func (r *repository) FindOne(ctx context.Context) (model.GetInfo, error) {
 
 		SELECT 
 			name, job,  experience,
-			telegramTitle, telegramLink, githubTitle, githubLink
+			telegramTitle, telegramLink, githubTitle, githubLink, img
 
 		FROM public.info 
 
@@ -85,12 +104,11 @@ func (r *repository) FindOne(ctx context.Context) (model.GetInfo, error) {
 
 	err := r.client.QueryRow(ctx, q).Scan(
 		&inf.Name, &inf.Job, &inf.Experience,
-		&con.TelegramTitle, &con.TelegramLink, &con.GithubTitle, &con.GithubLink,
+		&con.TelegramTitle, &con.TelegramLink, &con.GithubTitle, &con.GithubLink, &inf.Img,
 	)
 	if err != nil {
 		return model.GetInfo{}, err
 	}
-	fmt.Println("йцу")
 
 	qDesc := `
 

@@ -6,6 +6,7 @@ export type EditInfoInputs= {
   githubLink: string
   job: string
   name: string
+  img: string
   telegramTitle: string
   telegramLink: string
 }

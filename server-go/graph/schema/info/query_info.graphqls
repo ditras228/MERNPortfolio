@@ -1,5 +1,6 @@
 type GetInfo{
   name: String!
+  img: String!
   job: String!
   desc: [GetDesc]!
   experience: String!

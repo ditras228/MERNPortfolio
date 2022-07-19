@@ -1,4 +1,5 @@
 input UpdateInfoInput {
+  img: String!
   name: String!
   job: String!
   experience: String!

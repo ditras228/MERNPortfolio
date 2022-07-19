@@ -1,5 +1,6 @@
 import {createAction} from "@ngrx/store";
 import {GetDesc, GetTag, GetWork} from "../../../../generated/graphql";
+import {errorInputs} from "./login-modal.reducer";
 
 export type loginInputs= {
   login: string,
@@ -29,7 +30,7 @@ export const setEditWorkVisible = createAction(
 );
 export const setError = createAction(
   "[App] SetError",
-  (error: string) => ({ error })
+  (error: errorInputs) => ({ error })
 );
 export const setAuth = createAction(
   "[App] Auth",

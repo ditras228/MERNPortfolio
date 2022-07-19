@@ -15,19 +15,19 @@ VALUES (0, 'Angular'),
 
 CREATE TABLE public.worktag
 (
-    id     SERIAL PRIMARY KEY,
+    id     INT GENERATED ALWAYS AS IDENTITY,
     workId INT NOT NULL REFERENCES public.work (id),
     tagId  INT NOT NULL REFERENCES public.tag (id)
 );
 
-INSERT INTO public.worktag(id, workId, tagId)
-VALUES (0, 0, 0),
-       (1, 0, 1),
+INSERT INTO public.worktag(workId, tagId)
+VALUES (0, 0),
+       (0, 1),
 
-       (2, 1, 3),
-       (3, 1, 5),
-       (4, 1, 6),
+       (1, 3),
+       (1, 5),
+       (1, 6),
 
-       (5, 2, 2),
-       (6, 2, 4),
-       (7, 2, 6);
+       (2, 2),
+       (2, 4),
+       (2, 6);

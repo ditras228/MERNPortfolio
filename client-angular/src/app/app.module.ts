@@ -35,6 +35,8 @@ import { EditDescComponent } from './modals/edit-desc/edit-desc.component';
 import {EditDescEffects} from "./modals/edit-desc/store/edit-desc.effects";
 import {editDescReducer} from "./modals/edit-desc/store/edit-desc.reducer";
 import { InfoProfileComponent } from './components/info-profile/info-profile.component';
+import { NotificationComponent } from './ui/notification/notification.component';
+import { ImageInputComponent } from './image-input/image-input.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +57,8 @@ import { InfoProfileComponent } from './components/info-profile/info-profile.com
     EditWorkComponent,
     EditDescComponent,
     InfoProfileComponent,
+    NotificationComponent,
+    ImageInputComponent,
   ],
     imports: [
       SwiperModule,

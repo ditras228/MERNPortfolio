@@ -4,15 +4,17 @@ CREATE TABLE public.info
     name          TEXT NOT NULL,
     job           TEXT NOT NULL,
     experience    TEXT NOT NULL,
+    img           TEXT NOT NULL,
     telegramTitle TEXT NOT NULL,
     telegramLink  TEXT NOT NULL,
     githubTitle   TEXT NOT NULL,
     githubLink    TEXT NOT NULL
 );
 
-INSERT INTO public.info(id, name, job, experience, telegramTitle, telegramLink, githubTitle, githubLink)
+INSERT INTO public.info(id, name, job, experience, img, telegramTitle, telegramLink, githubTitle, githubLink)
 VALUES (0, 'Дмитрий Дружинин', 'Middle Fullstack',
         '<ul> <li> коммерческой опыт <br/> разработки в команде </li> <li> исправлял и разрабатывал<br/> функционал на Angular </li> <li> разрабатывал API с <br/>использованием GraphQl </li> <li> разрабатывал серверную<br/> логику на Golang </li> </ul>',
+        '',
         '+7 (911) 878-03-02',
         'https://t.me/Ditras',
         'ditras228',

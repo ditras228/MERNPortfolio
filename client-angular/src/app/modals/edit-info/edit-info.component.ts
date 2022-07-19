@@ -13,6 +13,7 @@ import {ValidationService} from "../../services/validation.service";
 })
 export class EditInfoComponent implements OnInit {
   public errors: { [key: string]: string } = {};
+  public img = new FormControl
   public name = new FormControl
   public job = new FormControl
   public telegramTitle = new FormControl
@@ -37,11 +38,15 @@ export class EditInfoComponent implements OnInit {
     this.store$.dispatch(setEditInfoVisible())
   }
 
+  setImgUrlValue(e: string | ArrayBuffer | null):void{
+    this.img.setValue(e)
+  }
   submitForm(): void {
     if (this.form?.invalid) {
       this.errors = this.validationService.GetValidationMessage(this.form, this.errors)
     } else {
       this.store$.dispatch(setEditInfoForm({
+        img:this.img.value,
         name: this.name.value, job: this.job.value,
         telegramTitle: this.telegramTitle.value, telegramLink: this.telegramLink.value,
         githubTitle: this.githubTitle.value,
@@ -69,6 +74,7 @@ export class EditInfoComponent implements OnInit {
       this.githubTitle.setValue(info.contacts.githubTitle)
       this.githubLink.setValue(info.contacts.githubLink)
       this.experience.setValue(info.experience)
+      this.img.setValue(info.img)
     })
 
     this.form = new FormGroup({

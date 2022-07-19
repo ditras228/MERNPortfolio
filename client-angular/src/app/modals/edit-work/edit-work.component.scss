@@ -32,6 +32,10 @@
         background-color: #E4DAFF;
         position: relative;
         text-transform: uppercase;
+
+        &:hover{
+          cursor: pointer;
+        }
       }
     }
 

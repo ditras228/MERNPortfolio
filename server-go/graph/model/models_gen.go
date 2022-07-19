@@ -78,6 +78,7 @@ func (GetDescResult) IsGetDescOutput() {}
 
 type GetInfo struct {
 	Name       string     `json:"name"`
+	Img        string     `json:"img"`
 	Job        string     `json:"job"`
 	Desc       []*GetDesc `json:"desc"`
 	Experience string     `json:"experience"`
@@ -138,6 +139,7 @@ type UpdateDescInput struct {
 }
 
 type UpdateInfoInput struct {
+	Img           string `json:"img"`
 	Name          string `json:"name"`
 	Job           string `json:"job"`
 	Experience    string `json:"experience"`

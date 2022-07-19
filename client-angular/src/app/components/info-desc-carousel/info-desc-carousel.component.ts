@@ -1,12 +1,13 @@
 import {Component, ViewEncapsulation, ViewChild, OnInit, Input} from "@angular/core";
-import { SwiperComponent } from "swiper/angular";
+import {SwiperComponent} from "swiper/angular";
 
 // import Swiper core and required modules
-import SwiperCore, {Autoplay, Navigation, Pagination} from "swiper";
+import SwiperCore, {Autoplay, Navigation, Pagination, SwiperOptions} from "swiper";
 import {GetDesc, GetInfo} from "../../../generated/graphql";
 import {Store} from "@ngrx/store";
 import {setEditDescVisible} from "../../modals/login/store/login-modal.actions";
 import {selectIsAuth} from "../../modals/login/store/login-modal.selectors";
+import Swiper from "swiper";
 
 // install Swiper modules
 SwiperCore.use([Pagination, Navigation, Autoplay]);
@@ -18,16 +19,17 @@ SwiperCore.use([Pagination, Navigation, Autoplay]);
   encapsulation: ViewEncapsulation.None,
 
 })
-export class InfoDescCarouselComponent implements OnInit {
+export class InfoDescCarouselComponent {
   @Input() info$: GetInfo | undefined
   @Input() isAuth = false
+  @ViewChild('swiper', {static: false}) swiper?: SwiperComponent;
 
-  constructor(public store$: Store) { }
 
-  editDescHandler():void{
-    this.store$.dispatch(setEditDescVisible( this.info$?.desc[0] || undefined))
+  constructor(public store$: Store) {
   }
-  ngOnInit(): void {
+
+  editDescHandler(): void {
+    this.store$.dispatch(setEditDescVisible(this.info$?.desc[this.swiper?.swiperRef.realIndex || 0] || undefined))
   }
 
 }

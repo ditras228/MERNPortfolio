@@ -12,7 +12,6 @@ require (
 	github.com/jackc/pgconn v1.8.0
 	github.com/jackc/pgx/v4 v4.10.1
 	github.com/joho/godotenv v1.4.0
-	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
 	github.com/rs/cors v1.8.2
 	github.com/vektah/gqlparser/v2 v2.4.5
 	github.com/ztrue/tracerr v0.3.0

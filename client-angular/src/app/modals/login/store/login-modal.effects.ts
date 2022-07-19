@@ -58,11 +58,11 @@ export class LoginEffects extends GraphqlService {
           .pipe(map(({auth}) => {
               switch (auth.__typename) {
                 case "NotFoundError": {
-                  this.store$.dispatch(setError(auth.message))
+                  this.store$.dispatch(setError({id: 0, message: auth.message}))
                   break
                 }
                 case "WrongPassword": {
-                  this.store$.dispatch(setError(auth.message))
+                  this.store$.dispatch(setError({id: 1, message: auth.message}))
                   break
                 }
                 case "User": {
@@ -70,7 +70,7 @@ export class LoginEffects extends GraphqlService {
                   break
                 }
                 default: {
-                  this.store$.dispatch(setError('Непредвиденная ошибка'))
+                  this.store$.dispatch(setError({id: 2, message: 'Непредвиденная ошибка'}))
                   break
                 }
               }

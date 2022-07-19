@@ -4,6 +4,7 @@ import {Store} from "@ngrx/store";
 import {setError, setLoginForm, setLoginVisible, submitLoginForm} from "./store/login-modal.actions";
 import {selectLoginError} from "./store/login-modal.selectors";
 import {ValidationService} from "../../services/validation.service";
+import {errorInputs} from "./store/login-modal.reducer";
 
 
 @Component({
@@ -16,7 +17,7 @@ export class LoginModalComponent implements OnInit {
   public login = new FormControl
   public password = new FormControl
   public form: FormGroup<{ password: FormControl<string>; login: FormControl<string>; }> | undefined
-  public serverError: string | undefined
+  public serverError: errorInputs | undefined
   public errors: { [key: string]: string } = {};
 
   constructor(public store$: Store, public validationService: ValidationService) {
@@ -47,7 +48,6 @@ export class LoginModalComponent implements OnInit {
 
     else {
       this.errors={}
-      this.store$.dispatch(setError(''))
       this.store$.dispatch(setLoginForm({login: this.login.value, password: this.password.value}))
       this.store$.dispatch(submitLoginForm())
     }

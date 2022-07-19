@@ -9,12 +9,15 @@ import {
   setLoginVisible,
 } from "./login-modal.actions";
 import {GetDesc, GetWork} from "../../../../generated/graphql";
-
+export type errorInputs = {
+  id: number,
+  message: string
+}
 export interface State {
   isAuth: boolean,
   isLock: boolean,
   input: loginInputs,
-  error: string,
+  error: errorInputs | undefined,
   isLoginVisible: boolean
   isWorkVisible: boolean
   isInfoVisible: boolean
@@ -32,7 +35,7 @@ const initialState: State = {
   currentEditWork: undefined,
   currentEditDesc: undefined,
 
-  error: '',
+  error: undefined,
   input: {
     login: '',
     password: ''
@@ -45,6 +48,6 @@ export const loginModalReducer= createReducer(
   on(setEditInfoVisible, (state) => ({...state, isInfoVisible: !state.isInfoVisible, isLock: !state.isLock})),
   on(setEditWorkVisible, (state, {work}) => ({...state, isWorkVisible: !state.isWorkVisible, currentEditWork: work, isLock: !state.isLock})),
   on(setEditDescVisible, (state, {desc}) => ({...state, isDescVisible: !state.isDescVisible, currentEditDesc: desc, isLock: !state.isLock})),
-  on(setError, (state, {error}) => ({...state, error: error })),
+  on(setError, (state, { error}) => ({...state, error: error})),
   on(setAuth, (state, {isAuth}) => ({...state, isAuth: isAuth })),
 )

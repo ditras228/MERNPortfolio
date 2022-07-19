@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit} from '@angular/core';
 import {Store} from "@ngrx/store";
 import {setEditDescForm, submitEditDescForm} from "./store/edit-desc.actions";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
@@ -16,7 +16,6 @@ export class EditDescComponent implements OnInit {
   public errors: { [key: string]: string } = {};
   public text = new FormControl
   public imgUrl = new FormControl
-  public isDirty = false
   public id
   public form: FormGroup<{
     id: FormControl<number>;
@@ -31,16 +30,9 @@ export class EditDescComponent implements OnInit {
     this.store$.dispatch(setEditDescVisible(undefined))
   }
 
-  getFile(event: any) {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      this.isDirty=true
-      this.imgUrl.setValue(reader.result)
-    }
-    reader.readAsDataURL(file);
+  setImgUrlValue(e: string | ArrayBuffer | null):void{
+    this.imgUrl.setValue(e)
   }
-
   submitFormHandler(): void {
     if (this.form?.invalid) {
       this.errors = this.validationService.GetValidationMessage(this.form, this.errors)

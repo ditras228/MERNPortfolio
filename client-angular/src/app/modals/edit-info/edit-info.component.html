@@ -1,7 +1,8 @@
 <div class="edit-info">
   <div class="edit-info__close" (click)="closeModal()"></div>
+  <app-image-input class="edit-info__img" [imgUrlValue]="img?.value" (setFormImageUrl)="setImgUrlValue($event)"></app-image-input>
 
-  <app-input-field class="edit-info__field" [error]="errors?.['name']" [placeholder]="'Логин'"
+  <app-input-field class="edit-info__field" [error]="errors?.['name']" [placeholder]="'Имя'"
                    [internalValue]="name.value"
                    (valueChange)="name.patchValue($event)"></app-input-field>
   <app-input-field class="edit-info__field" [error]="errors?.['job']" [placeholder]="'Грейд'"

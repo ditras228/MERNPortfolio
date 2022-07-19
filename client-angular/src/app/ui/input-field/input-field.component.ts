@@ -6,7 +6,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
   styleUrls: ['./input-field.component.scss']
 })
 export class InputFieldComponent implements OnInit {
-  @Input() error: string | undefined
+  @Input() error: string | false| undefined
   @Input() placeholder = '' as string
   @Input() type = 'text' as string
   @Output() valueChange = new EventEmitter<string>();

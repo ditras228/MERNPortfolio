@@ -69,6 +69,7 @@ type ComplexityRoot struct {
 		Contacts   func(childComplexity int) int
 		Desc       func(childComplexity int) int
 		Experience func(childComplexity int) int
+		Img        func(childComplexity int) int
 		Job        func(childComplexity int) int
 		Name       func(childComplexity int) int
 	}
@@ -245,6 +246,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.GetInfo.Experience(childComplexity), true
+
+	case "GetInfo.img":
+		if e.complexity.GetInfo.Img == nil {
+			break
+		}
+
+		return e.complexity.GetInfo.Img(childComplexity), true
 
 	case "GetInfo.job":
 		if e.complexity.GetInfo.Job == nil {
@@ -581,6 +589,7 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 
 var sources = []*ast.Source{
 	{Name: "../schema/info/mutation_info.graphqls", Input: `input UpdateInfoInput {
+  img: String!
   name: String!
   job: String!
   experience: String!
@@ -592,6 +601,7 @@ var sources = []*ast.Source{
 `, BuiltIn: false},
 	{Name: "../schema/info/query_info.graphqls", Input: `type GetInfo{
   name: String!
+  img: String!
   job: String!
   desc: [GetDesc]!
   experience: String!
@@ -1341,6 +1351,50 @@ func (ec *executionContext) _GetInfo_name(ctx context.Context, field graphql.Col
 }
 
 func (ec *executionContext) fieldContext_GetInfo_name(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "GetInfo",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _GetInfo_img(ctx context.Context, field graphql.CollectedField, obj *model.GetInfo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_GetInfo_img(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Img, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_GetInfo_img(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "GetInfo",
 		Field:      field,
@@ -2174,6 +2228,8 @@ func (ec *executionContext) fieldContext_Mutation_updateInfo(ctx context.Context
 			switch field.Name {
 			case "name":
 				return ec.fieldContext_GetInfo_name(ctx, field)
+			case "img":
+				return ec.fieldContext_GetInfo_img(ctx, field)
 			case "job":
 				return ec.fieldContext_GetInfo_job(ctx, field)
 			case "desc":
@@ -2576,6 +2632,8 @@ func (ec *executionContext) fieldContext_Query_getInfo(ctx context.Context, fiel
 			switch field.Name {
 			case "name":
 				return ec.fieldContext_GetInfo_name(ctx, field)
+			case "img":
+				return ec.fieldContext_GetInfo_img(ctx, field)
 			case "job":
 				return ec.fieldContext_GetInfo_job(ctx, field)
 			case "desc":
@@ -5036,6 +5094,14 @@ func (ec *executionContext) unmarshalInputUpdateInfoInput(ctx context.Context, o
 
 	for k, v := range asMap {
 		switch k {
+		case "img":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("img"))
+			it.Img, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		case "name":
 			var err error
 
@@ -5598,6 +5664,13 @@ func (ec *executionContext) _GetInfo(ctx context.Context, sel ast.SelectionSet, 
 		case "name":
 
 			out.Values[i] = ec._GetInfo_name(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "img":
+
+			out.Values[i] = ec._GetInfo_img(ctx, field, obj)
 
 			if out.Values[i] == graphql.Null {
 				invalids++

@@ -7,6 +7,10 @@
   &__close{
     @include modal-close();
   }
+  &__img{
+    margin-bottom: 35px;
+    display: block;
+  }
   &__grid {
     display: grid;
     grid-template-columns: 1fr 1fr;

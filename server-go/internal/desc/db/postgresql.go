@@ -2,14 +2,11 @@ package desc
 
 import (
 	"context"
-	"encoding/base64"
-	"errors"
-	uuid2 "github.com/gofrs/uuid"
 	"os"
 	"portfolio/graph/model"
 	postgres "portfolio/infrastructure/postgresql"
 	"portfolio/internal/desc"
-	"strings"
+	"portfolio/pkg/utils"
 )
 
 type repository struct {
@@ -42,14 +39,6 @@ func (r *repository) FindAll(ctx context.Context) (model.GetDescOutput, error) {
 	return res, nil
 }
 func (r *repository) Update(ctx context.Context, input model.UpdateDescInput) (model.UpdateDescOutput, error) {
-	path := "uploaded"
-
-	uuid, err := uuid2.NewV1()
-	if err != nil {
-		return nil, err
-	}
-	link := path + "/" + uuid.String() + ".png"
-
 	qImgUrl := `
 				SELECT 
 					imgUrl
@@ -60,7 +49,7 @@ func (r *repository) Update(ctx context.Context, input model.UpdateDescInput) (m
 				WHERE id = $1
 `
 	var oldLink string
-	err = r.client.
+	err := r.client.
 		QueryRow(ctx, qImgUrl, input.ID).
 		Scan(&oldLink)
 
@@ -84,40 +73,15 @@ func (r *repository) Update(ctx context.Context, input model.UpdateDescInput) (m
 
 	var dsc model.GetDesc
 
+	link, err := utils.SaveImage(input.ImgURL)
+	if err != nil {
+		return nil, err
+	}
 	err = r.client.
 		QueryRow(ctx, qDesc, input.ID, input.Text, link).
 		Scan(&dsc.ID, &dsc.Text, &dsc.ImgURL)
 	if err != nil {
 		return nil, err
-	}
-	b64data := input.ImgURL[strings.IndexByte(input.ImgURL, ',')+1:]
-	dec, err := base64.StdEncoding.DecodeString(b64data)
-	if err != nil {
-		return nil, err
-	}
-
-	if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
-		err = os.Mkdir("uploaded", 0750)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	f, err := os.Create(link)
-
-	if err != nil {
-		return nil, err
-
-	}
-	defer f.Close()
-
-	if _, err := f.Write(dec); err != nil {
-		return nil, err
-
-	}
-	if err := f.Sync(); err != nil {
-		return nil, err
-
 	}
 
 	return dsc, nil

@@ -7,6 +7,7 @@ export const getInfoQuery = gql`
     experience
     job
     name
+    img
     contacts{
       telegramTitle
       telegramLink

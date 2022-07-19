@@ -66,6 +66,7 @@ export type GetInfo = {
   contacts: Contacts;
   desc: Array<Maybe<GetDesc>>;
   experience: Scalars['String'];
+  img: Scalars['String'];
   job: Scalars['String'];
   name: Scalars['String'];
 };
@@ -171,10 +172,10 @@ export type UpdateDescInput = {
 export type UpdateDescOutput = GetDesc | NotFoundError | UnexpectedError;
 
 export type UpdateInfoInput = {
-  desc: Scalars['String'];
   experience: Scalars['String'];
   githubLink: Scalars['String'];
   githubTitle: Scalars['String'];
+  img: Scalars['String'];
   job: Scalars['String'];
   name: Scalars['String'];
   telegramLink: Scalars['String'];
@@ -230,7 +231,7 @@ export type DeleteWorkMutation = { __typename: 'Mutation', result: { __typename:
 export type GetInfoQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetInfoQuery = { __typename?: 'Query', result: { __typename: 'GetInfo', experience: string, job: string, name: string, desc: Array<{ __typename?: 'GetDesc', id: number, text: string, imgURL: string } | null>, contacts: { __typename?: 'Contacts', telegramTitle: string, telegramLink: string, githubTitle: string, githubLink: string } } };
+export type GetInfoQuery = { __typename?: 'Query', result: { __typename: 'GetInfo', experience: string, job: string, name: string, img: string, desc: Array<{ __typename?: 'GetDesc', id: number, text: string, imgURL: string } | null>, contacts: { __typename?: 'Contacts', telegramTitle: string, telegramLink: string, githubTitle: string, githubLink: string } } };
 
 export type CreateDescMutationVariables = Exact<{
   input: CreateDescInput;
@@ -251,7 +252,7 @@ export type UpdateInfoMutationVariables = Exact<{
 }>;
 
 
-export type UpdateInfoMutation = { __typename: 'Mutation', result: { __typename?: 'GetInfo', experience: string, job: string, name: string, contacts: { __typename?: 'Contacts', telegramTitle: string, telegramLink: string, githubTitle: string, githubLink: string } } };
+export type UpdateInfoMutation = { __typename: 'Mutation', result: { __typename?: 'GetInfo', experience: string, job: string, name: string, img: string, contacts: { __typename?: 'Contacts', telegramTitle: string, telegramLink: string, githubTitle: string, githubLink: string } } };
 
 export type UpdateWorkMutationVariables = Exact<{
   input: UpdateWorkInput;
@@ -317,6 +318,7 @@ export const GetInfoDocument = `
     experience
     job
     name
+    img
     contacts {
       telegramTitle
       telegramLink
@@ -357,6 +359,7 @@ export const UpdateInfoDocument = `
     experience
     job
     name
+    img
     contacts {
       telegramTitle
       telegramLink

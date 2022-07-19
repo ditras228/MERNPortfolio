@@ -7,9 +7,9 @@ import {switchMap, withLatestFrom} from "rxjs";
 import {map} from "rxjs/operators";
 import {getInfo, okay} from "../../../store/app.actions";
 import {Store} from "@ngrx/store";
-import {submitEditDescForm} from "./edit-desc.actions";
+import {setEditDescForm, submitEditDescForm} from "./edit-desc.actions";
 import {selectEditInfoFormInput} from "./edit-desc.selectors";
-import {setEditInfoVisible} from "../../login/store/login-modal.actions";
+import {setEditDescVisible, setEditInfoVisible} from "../../login/store/login-modal.actions";
 
 @Injectable()
 export class EditDescEffects extends GraphqlService {
@@ -41,6 +41,8 @@ export class EditDescEffects extends GraphqlService {
                 ({result}) => {
                   switch (result.__typename) {
                     case "GetDesc":{
+                      this.store$.dispatch(setEditDescVisible(undefined))
+                      this.store$.dispatch(getInfo())
                       break
                     }
                   }

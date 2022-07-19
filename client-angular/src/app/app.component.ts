@@ -39,7 +39,6 @@ export class AppComponent implements OnInit{
   ngOnInit(): void{
     if(isPlatformBrowser(this.platformId)){
       if(this.cookieService.get("token")){
-        console.log(this.cookieService.get("token"))
         this.store$.dispatch(setAuth(true))
       }
       this.store$.select(selectIsAuth).subscribe(value=> this.isAuth = value)
