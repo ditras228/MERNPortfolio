@@ -13,6 +13,3 @@ export const setEditDescForm = createAction(
 export const submitEditDescForm = createAction(
   "[App] SubmitEditDescForm"
 );
-export const deleteDesc = createAction(
-  "[App] DeleteDesc"
-);

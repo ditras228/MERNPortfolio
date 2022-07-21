@@ -46,6 +46,15 @@ type CreateDescInput struct {
 	ImgURL string `json:"imgURL"`
 }
 
+type CreateWorkInput struct {
+	Name        string  `json:"name"`
+	Tags        []*int  `json:"tags"`
+	Description string  `json:"description"`
+	Github      *string `json:"github"`
+	Demo        string  `json:"demo"`
+	Figma       *string `json:"figma"`
+}
+
 type DeleteDescInput struct {
 	ID int `json:"id"`
 }

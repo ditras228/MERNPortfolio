@@ -23,3 +23,8 @@ export const setLock = createAction(
   (value: boolean) => ({ value })
 
 );
+export const addNotification = createAction(
+  "[App] AddNotification",
+  (value: boolean) => ({ value })
+
+);

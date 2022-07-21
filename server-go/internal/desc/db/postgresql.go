@@ -99,9 +99,12 @@ func (r *repository) Create(ctx context.Context, input model.CreateDescInput) (m
 
 			 `
 	var dsc model.GetDesc
-
-	err := r.client.
-		QueryRow(ctx, qDesc, input.Text, input.ImgURL).
+	link, err := utils.SaveImage(input.ImgURL)
+	if err != nil {
+		return nil, err
+	}
+	err = r.client.
+		QueryRow(ctx, qDesc, input.Text, link).
 		Scan(&dsc.ID, &dsc.Text, &dsc.ImgURL)
 
 	if err != nil {

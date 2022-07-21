@@ -1,7 +1,7 @@
 import {createReducer, on} from "@ngrx/store";
 import {
   loginInputs,
-  setAuth, setEditDescVisible,
+  setAuth, setCreateDescVisible, setCreateWorkVisible, setEditDescVisible,
   setEditInfoVisible,
   setEditWorkVisible,
   setError,
@@ -9,6 +9,7 @@ import {
   setLoginVisible,
 } from "./login-modal.actions";
 import {GetDesc, GetWork} from "../../../../generated/graphql";
+import {setCreateWorkForm} from "../../create-work/store/create-work.actions";
 export type errorInputs = {
   id: number,
   message: string
@@ -20,6 +21,8 @@ export interface State {
   error: errorInputs | undefined,
   isLoginVisible: boolean
   isWorkVisible: boolean
+  isCreateDescVisible: boolean
+  isCreateWorkVisible: boolean
   isInfoVisible: boolean
   isDescVisible: boolean
   currentEditWork: GetWork | undefined
@@ -27,6 +30,8 @@ export interface State {
 }
 const initialState: State = {
   isWorkVisible: false,
+  isCreateDescVisible: false,
+  isCreateWorkVisible: false,
   isInfoVisible: false,
   isDescVisible: false,
   isAuth: false,
@@ -47,7 +52,9 @@ export const loginModalReducer= createReducer(
   on(setLoginVisible, (state) => ({...state, isLoginVisible: !state.isLoginVisible, isLock: !state.isLock})),
   on(setEditInfoVisible, (state) => ({...state, isInfoVisible: !state.isInfoVisible, isLock: !state.isLock})),
   on(setEditWorkVisible, (state, {work}) => ({...state, isWorkVisible: !state.isWorkVisible, currentEditWork: work, isLock: !state.isLock})),
+  on(setCreateWorkVisible, (state) => ({...state, isCreateWorkVisible: !state.isCreateWorkVisible, isLock: !state.isLock})),
   on(setEditDescVisible, (state, {desc}) => ({...state, isDescVisible: !state.isDescVisible, currentEditDesc: desc, isLock: !state.isLock})),
+  on(setCreateDescVisible, (state) => ({...state, isCreateDescVisible: !state.isCreateDescVisible,  isLock: !state.isLock})),
   on(setError, (state, { error}) => ({...state, error: error})),
   on(setAuth, (state, {isAuth}) => ({...state, isAuth: isAuth })),
 )

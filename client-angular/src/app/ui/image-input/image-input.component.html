@@ -1,8 +1,9 @@
 <label class="image" for="input-img">
   <div class="image__img"
+       [ngClass]="imgUrlValue ? '':'image__img--none'"
        [ngStyle]="isDirty
                     ?{backgroundImage: 'url('+ imgUrlValue+')'}
-                    :{backgroundImage: 'url('+ 'http://localhost:4000/'+ imgUrlValue+ ')'}
+                    :{backgroundImage: urlService.formBgImgUrl(imgUrlValue)}
 "></div>
   <input class="image__input" id="input-img" type="file"   accept="image/png, image/jpg, image/jpeg" (change)="getFile($event)">
 </label>

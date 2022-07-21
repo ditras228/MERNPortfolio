@@ -9,6 +9,8 @@ export const selectIsLoginVisible = createSelector(loginState, state => state.is
 export const selectEditInfoVisible = createSelector(loginState, state => state.isInfoVisible);
 export const selectEditWorkVisible = createSelector(loginState, state => state.isWorkVisible);
 export const selectEditDescVisible = createSelector(loginState, state => state.isDescVisible);
+export const selectCreateWorkVisible = createSelector(loginState, state => state.isCreateWorkVisible);
+export const selectCreateDescVisible = createSelector(loginState, state => state.isCreateDescVisible);
 export const selectLoginInput= createSelector(loginState, state => state.input);
 export const selectLoginError= createSelector(loginState, state => state.error);
 export const selectLock = createSelector(loginState, state => state.isLock);

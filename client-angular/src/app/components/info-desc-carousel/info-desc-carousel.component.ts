@@ -5,9 +5,10 @@ import {SwiperComponent} from "swiper/angular";
 import SwiperCore, {Autoplay, Navigation, Pagination, SwiperOptions} from "swiper";
 import {GetDesc, GetInfo} from "../../../generated/graphql";
 import {Store} from "@ngrx/store";
-import {setEditDescVisible} from "../../modals/login/store/login-modal.actions";
+import {setCreateDescVisible, setEditDescVisible} from "../../modals/login/store/login-modal.actions";
 import {selectIsAuth} from "../../modals/login/store/login-modal.selectors";
 import Swiper from "swiper";
+import {UrlService} from "../../services/url.service";
 
 // install Swiper modules
 SwiperCore.use([Pagination, Navigation, Autoplay]);
@@ -25,9 +26,11 @@ export class InfoDescCarouselComponent {
   @ViewChild('swiper', {static: false}) swiper?: SwiperComponent;
 
 
-  constructor(public store$: Store) {
+  constructor(public store$: Store, public urlService: UrlService) {
   }
-
+  createDescHandler(): void {
+    this.store$.dispatch(setCreateDescVisible())
+  }
   editDescHandler(): void {
     this.store$.dispatch(setEditDescVisible(this.info$?.desc[this.swiper?.swiperRef.realIndex || 0] || undefined))
   }

@@ -98,6 +98,7 @@ type ComplexityRoot struct {
 	Mutation struct {
 		Auth       func(childComplexity int, input model.UserInput) int
 		CreateDesc func(childComplexity int, input model.CreateDescInput) int
+		CreateWork func(childComplexity int, input model.CreateWorkInput) int
 		DeleteDesc func(childComplexity int, input model.DeleteDescInput) int
 		DeleteWork func(childComplexity int, input model.DeleteWorkInput) int
 		UpdateDesc func(childComplexity int, input model.UpdateDescInput) int
@@ -135,6 +136,7 @@ type ComplexityRoot struct {
 type MutationResolver interface {
 	Auth(ctx context.Context, input model.UserInput) (model.UserOutput, error)
 	UpdateInfo(ctx context.Context, input model.UpdateInfoInput) (*model.GetInfo, error)
+	CreateWork(ctx context.Context, input model.CreateWorkInput) (*model.GetWork, error)
 	UpdateWork(ctx context.Context, input model.UpdateWorkInput) (*model.GetWork, error)
 	DeleteWork(ctx context.Context, input model.DeleteWorkInput) (model.DeleteWorkOutput, error)
 	UpdateDesc(ctx context.Context, input model.UpdateDescInput) (model.UpdateDescOutput, error)
@@ -376,6 +378,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.CreateDesc(childComplexity, args["input"].(model.CreateDescInput)), true
 
+	case "Mutation.createWork":
+		if e.complexity.Mutation.CreateWork == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createWork_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateWork(childComplexity, args["input"].(model.CreateWorkInput)), true
+
 	case "Mutation.deleteDesc":
 		if e.complexity.Mutation.DeleteDesc == nil {
 			break
@@ -522,6 +536,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	ec := executionContext{rc, e}
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
 		ec.unmarshalInputCreateDescInput,
+		ec.unmarshalInputCreateWorkInput,
 		ec.unmarshalInputDeleteDescInput,
 		ec.unmarshalInputDeleteWorkInput,
 		ec.unmarshalInputUpdateDescInput,
@@ -616,7 +631,16 @@ type Contacts{
   githubLink: String!
 }
 `, BuiltIn: false},
-	{Name: "../schema/work/mutation_work.graphqls", Input: `input  UpdateWorkInput{
+	{Name: "../schema/work/mutation_work.graphqls", Input: `input  CreateWorkInput{
+  name: String!
+  tags: [Int]!
+  description: String!
+  github: String
+  demo: String!
+  figma: String
+}
+
+input  UpdateWorkInput{
   id: Int!
   name: String!
   tags: [Int]!
@@ -735,6 +759,9 @@ type Mutation {
   # Обновить инфу
   updateInfo(input: UpdateInfoInput!): GetInfo!
 
+  # Создать работу
+  createWork(input: CreateWorkInput!): GetWork!
+
   # Обновить работу
   updateWork(input: UpdateWorkInput!): GetWork!
 
@@ -782,6 +809,21 @@ func (ec *executionContext) field_Mutation_createDesc_args(ctx context.Context, 
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 		arg0, err = ec.unmarshalNCreateDescInput2portfolioᚋgraphᚋmodelᚐCreateDescInput(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_createWork_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.CreateWorkInput
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNCreateWorkInput2portfolioᚋgraphᚋmodelᚐCreateWorkInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -2250,6 +2292,77 @@ func (ec *executionContext) fieldContext_Mutation_updateInfo(ctx context.Context
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Mutation_updateInfo_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_createWork(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_createWork(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateWork(rctx, fc.Args["input"].(model.CreateWorkInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.GetWork)
+	fc.Result = res
+	return ec.marshalNGetWork2ᚖportfolioᚋgraphᚋmodelᚐGetWork(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_createWork(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_GetWork_id(ctx, field)
+			case "name":
+				return ec.fieldContext_GetWork_name(ctx, field)
+			case "tags":
+				return ec.fieldContext_GetWork_tags(ctx, field)
+			case "description":
+				return ec.fieldContext_GetWork_description(ctx, field)
+			case "github":
+				return ec.fieldContext_GetWork_github(ctx, field)
+			case "demo":
+				return ec.fieldContext_GetWork_demo(ctx, field)
+			case "figma":
+				return ec.fieldContext_GetWork_figma(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type GetWork", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_createWork_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return
 	}
@@ -5000,6 +5113,69 @@ func (ec *executionContext) unmarshalInputCreateDescInput(ctx context.Context, o
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputCreateWorkInput(ctx context.Context, obj interface{}) (model.CreateWorkInput, error) {
+	var it model.CreateWorkInput
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	for k, v := range asMap {
+		switch k {
+		case "name":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+			it.Name, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "tags":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tags"))
+			it.Tags, err = ec.unmarshalNInt2ᚕᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "description":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
+			it.Description, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "github":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("github"))
+			it.Github, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "demo":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("demo"))
+			it.Demo, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "figma":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("figma"))
+			it.Figma, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputDeleteDescInput(ctx context.Context, obj interface{}) (model.DeleteDescInput, error) {
 	var it model.DeleteDescInput
 	asMap := map[string]interface{}{}
@@ -5895,6 +6071,15 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
+		case "createWork":
+
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_createWork(ctx, field)
+			})
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "updateWork":
 
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
@@ -6574,6 +6759,11 @@ func (ec *executionContext) marshalNCreateDescOutput2portfolioᚋgraphᚋmodel�
 		return graphql.Null
 	}
 	return ec._CreateDescOutput(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNCreateWorkInput2portfolioᚋgraphᚋmodelᚐCreateWorkInput(ctx context.Context, v interface{}) (model.CreateWorkInput, error) {
+	res, err := ec.unmarshalInputCreateWorkInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalNDeleteDescInput2portfolioᚋgraphᚋmodelᚐDeleteDescInput(ctx context.Context, v interface{}) (model.DeleteDescInput, error) {

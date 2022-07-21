@@ -1,0 +1,58 @@
+@import "../../../styles/mixins/button";
+@import "../../../styles/mixins/modal-close";
+@import "../../../styles/mixins/font";
+.create-work {
+  padding: 96px 132px;
+
+  &__close{
+    @include modal-close()
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 15px;
+    &__title{
+      @include font(12px, 24px, 400, 1px);
+
+    }
+    &__tags {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 26px;
+      grid-row-gap: 8px;
+      grid-column-gap: 8px;
+      height: 24px;
+
+      &__item {
+        @include font(12px, 24px, 400, 1px);
+        color: #2A00A2;
+        padding: 0 8px;
+        border-radius: 4px;
+        background-color: #E4DAFF;
+        position: relative;
+        text-transform: uppercase;
+
+        &:hover{
+          cursor: pointer;
+        }
+      }
+    }
+
+  }
+
+  &__field, &__grid__field {
+    display: block;
+    margin-bottom: 35px;
+  }
+
+  &__button {
+    @include button-fill();
+    width: 100%;
+
+    &__delete{
+      @include button-red();
+      margin-bottom: 15px;
+    }
+  }
+}

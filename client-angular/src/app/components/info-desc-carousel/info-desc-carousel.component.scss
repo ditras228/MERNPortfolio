@@ -55,7 +55,13 @@
 
 .desc{
   position: relative;
-
+  &__add{
+    top: 90px;
+    left: -120px;
+    position: absolute;
+    display: grid;
+    justify-content: center;
+  }
   &__edit{
     @include button-edit();
     top: 0;

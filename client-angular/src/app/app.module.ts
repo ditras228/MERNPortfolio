@@ -36,37 +36,60 @@ import {EditDescEffects} from "./modals/edit-desc/store/edit-desc.effects";
 import {editDescReducer} from "./modals/edit-desc/store/edit-desc.reducer";
 import { InfoProfileComponent } from './components/info-profile/info-profile.component';
 import { NotificationComponent } from './ui/notification/notification.component';
-import { ImageInputComponent } from './image-input/image-input.component';
+import { ImageInputComponent } from './ui/image-input/image-input.component';
+import {CreateWorkComponent} from "./modals/create-work/create-work.component";
+import {createWorkReducer} from "./modals/create-work/store/create-work.reducer";
+import {CreateWorkEffects} from "./modals/create-work/store/create-work.effects";
+import {CreateDescComponent} from "./modals/create-desc/create-desc.component";
+import {createDescReducer} from "./modals/create-desc/store/create-desc.reducer";
+import {CreateDescEffects} from "./modals/create-desc/store/create-desc.effects";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    WorkListComponent,
-    WorkComponent,
-    NavbarComponent,
-    InfoComponent,
-    InfoSkillsComponent,
-    InfoContactsComponent,
-    ModalComponent,
-
-    LoginModalComponent,
-    InputFieldComponent,
-    InfoDescCarouselComponent,
-    TextAreaComponent,
-    EditInfoComponent,
-    EditWorkComponent,
-    EditDescComponent,
-    InfoProfileComponent,
-    NotificationComponent,
-    ImageInputComponent,
-  ],
+    declarations: [
+        AppComponent,
+        WorkListComponent,
+        WorkComponent,
+        NavbarComponent,
+        InfoComponent,
+        InfoSkillsComponent,
+        InfoContactsComponent,
+        ModalComponent,
+        LoginModalComponent,
+        InputFieldComponent,
+        InfoDescCarouselComponent,
+        TextAreaComponent,
+        EditInfoComponent,
+        EditWorkComponent,
+        EditDescComponent,
+        InfoProfileComponent,
+        NotificationComponent,
+        ImageInputComponent,
+        CreateWorkComponent,
+        CreateDescComponent,
+    ],
     imports: [
       SwiperModule,
 
       BrowserModule.withServerTransition({appId: 'serverApp'}),
-        StoreModule.forRoot({info: appReducer, login: loginModalReducer, editWork: editWorkReducer, editInfo: editInfoReducer, editDesc: editDescReducer}, {}),
+        StoreModule.forRoot({
+          info: appReducer, login: loginModalReducer,
+          editWork: editWorkReducer, editInfo: editInfoReducer,
+          editDesc: editDescReducer, createWork: createWorkReducer,
+          createDesc: createDescReducer
+
+        }, {}),
         StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
-        EffectsModule.forRoot([AppEffects, LoginEffects,EditWorkEffects, EditInfoEffects,EditDescEffects ]),
+        EffectsModule.forRoot([
+          AppEffects,
+          LoginEffects,
+          EditWorkEffects,
+          EditInfoEffects,
+          EditDescEffects,
+          CreateWorkEffects,
+          CreateDescEffects
+
+
+        ]),
         HttpClientModule,
         FormsModule,
         BrowserAnimationsModule,

@@ -92,11 +92,11 @@
   }
 
   &__photo {
-    width: 75px;
-    height: 75px;
+    width: 100px;
+    height: 100px;
     @include icon("/Photos.png");
-    background-size: cover;
-    border-radius: 50%;
+    background-position: center;
+    background-size: 125%;
   }
 
   @include screen-lg {

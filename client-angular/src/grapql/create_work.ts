@@ -1,8 +1,9 @@
 import {gql} from "apollo-angular";
 
-export const updateWorkMutation = gql`
-  mutation updateWork($input: UpdateWorkInput!) {
-  result: updateWork(input: $input) {
+
+export const createWorkMutation = gql`
+  mutation createWork($input: CreateWorkInput!) {
+  result: createWork(input: $input) {
     __typename
     id
     demo

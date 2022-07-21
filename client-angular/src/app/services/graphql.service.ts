@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import {Injectable} from "@angular/core";
 import { Observable } from 'rxjs';
+import appConfig from "../config/appConfig";
 
 @Injectable({ providedIn: "root" })
 export class GraphqlService {
@@ -9,7 +10,7 @@ export class GraphqlService {
 
    doRequest<T>(query: string, variables: any): Observable<T> {
     return this.httpClient
-      .post<{ data: T }>('http://localhost:8080/grapql', { query, variables })
+      .post<{ data: T }>(appConfig.baseUrl, { query, variables })
       .pipe(map(response => response.data));
   }
 }

@@ -30,6 +30,15 @@ export type CreateDescInput = {
 
 export type CreateDescOutput = GetDesc | UnexpectedError;
 
+export type CreateWorkInput = {
+  demo: Scalars['String'];
+  description: Scalars['String'];
+  figma?: InputMaybe<Scalars['String']>;
+  github?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+  tags: Array<InputMaybe<Scalars['Int']>>;
+};
+
 export type DeleteDescInput = {
   id: Scalars['Int'];
 };
@@ -99,6 +108,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   auth: UserOutput;
   createDesc: CreateDescOutput;
+  createWork: GetWork;
   deleteDesc: DeleteDescOutput;
   deleteWork: DeleteWorkOutput;
   updateDesc: UpdateDescOutput;
@@ -114,6 +124,11 @@ export type MutationAuthArgs = {
 
 export type MutationCreateDescArgs = {
   input: CreateDescInput;
+};
+
+
+export type MutationCreateWorkArgs = {
+  input: CreateWorkInput;
 };
 
 
@@ -221,6 +236,13 @@ export type AuthMutationVariables = Exact<{
 
 export type AuthMutation = { __typename?: 'Mutation', auth: { __typename: 'NotFoundError', message: string } | { __typename: 'User', login: string, password: string, accessToken: string } | { __typename: 'WrongPassword', message: string } };
 
+export type CreateWorkMutationVariables = Exact<{
+  input: CreateWorkInput;
+}>;
+
+
+export type CreateWorkMutation = { __typename?: 'Mutation', result: { __typename: 'GetWork', id: number, demo: string, description: string, figma: string, github?: string | null, name: string, tags: Array<{ __typename?: 'GetTag', id: number, title: string } | null> } };
+
 export type DeleteWorkMutationVariables = Exact<{
   input: DeleteWorkInput;
 }>;
@@ -259,7 +281,7 @@ export type UpdateWorkMutationVariables = Exact<{
 }>;
 
 
-export type UpdateWorkMutation = { __typename: 'Mutation', result: { __typename?: 'GetWork', id: number, demo: string, description: string, figma: string, github?: string | null, name: string, tags: Array<{ __typename?: 'GetTag', id: number, title: string } | null> } };
+export type UpdateWorkMutation = { __typename?: 'Mutation', result: { __typename: 'GetWork', id: number, demo: string, description: string, figma: string, github?: string | null, name: string, tags: Array<{ __typename?: 'GetTag', id: number, title: string } | null> } };
 
 export type GetDescQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -291,6 +313,23 @@ export const AuthDocument = `
     }
     ... on WrongPassword {
       message
+    }
+  }
+}
+    `;
+export const CreateWorkDocument = `
+    mutation createWork($input: CreateWorkInput!) {
+  result: createWork(input: $input) {
+    __typename
+    id
+    demo
+    description
+    figma
+    github
+    name
+    tags {
+      id
+      title
     }
   }
 }
@@ -371,14 +410,13 @@ export const UpdateInfoDocument = `
     `;
 export const UpdateWorkDocument = `
     mutation updateWork($input: UpdateWorkInput!) {
-  __typename
   result: updateWork(input: $input) {
+    __typename
     id
     demo
     description
     figma
     github
-    id
     name
     tags {
       id
@@ -438,6 +476,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
   return {
     auth(variables: AuthMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<AuthMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<AuthMutation>(AuthDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'auth', 'mutation');
+    },
+    createWork(variables: CreateWorkMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateWorkMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateWorkMutation>(CreateWorkDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createWork', 'mutation');
     },
     deleteWork(variables: DeleteWorkMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<DeleteWorkMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<DeleteWorkMutation>(DeleteWorkDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'deleteWork', 'mutation');

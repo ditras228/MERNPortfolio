@@ -18,6 +18,12 @@
   <app-modal *ngIf="isEditDescVisible">
     <app-edit-desc></app-edit-desc>
   </app-modal>
+  <app-modal *ngIf="isCreateWorkVisible">
+    <app-create-work></app-create-work>
+  </app-modal>
+  <app-modal *ngIf="isCreateDescVisible">
+    <app-create-desc></app-create-desc>
+  </app-modal>
 </div>
 
 <app-notification></app-notification>

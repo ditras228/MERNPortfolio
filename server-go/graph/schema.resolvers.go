@@ -26,6 +26,14 @@ func (r *mutationResolver) UpdateInfo(ctx context.Context, input model.UpdateInf
 	return &upd, nil
 }
 
+func (r *mutationResolver) CreateWork(ctx context.Context, input model.CreateWorkInput) (*model.GetWork, error) {
+	res, err := container.WorkRepository.CreateWork(ctx, input)
+	if err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
 func (r *mutationResolver) UpdateWork(ctx context.Context, input model.UpdateWorkInput) (*model.GetWork, error) {
 	res, err := container.WorkRepository.UpdateWork(ctx, input)
 	if err != nil {

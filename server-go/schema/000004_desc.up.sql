@@ -1,6 +1,6 @@
 CREATE TABLE public.desc
 (
-    id     INT GENERATED ALWAYS AS IDENTITY,
+    id     SERIAL UNIQUE PRIMARY KEY,
     text   TEXT NOT NULL,
     imgUrl TEXT NOT NULL
 );

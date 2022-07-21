@@ -1,15 +1,13 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {UrlService} from "../../services/url.service";
 
 @Component({
   selector: 'app-info-profile',
   templateUrl: './info-profile.component.html',
   styleUrls: ['./info-profile.component.scss']
 })
-export class InfoProfileComponent implements OnInit {
+export class InfoProfileComponent {
   @Input() info
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+  constructor(public urlService: UrlService) { }
 
 }

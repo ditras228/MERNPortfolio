@@ -1,3 +1,12 @@
+input  CreateWorkInput{
+  name: String!
+  tags: [Int]!
+  description: String!
+  github: String
+  demo: String!
+  figma: String
+}
+
 input  UpdateWorkInput{
   id: Int!
   name: String!

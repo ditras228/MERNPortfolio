@@ -1,5 +1,5 @@
 <div class="profile">
-  <div class="profile__photo" [ngStyle]="{backgroundImage: 'url('+'http://localhost:4000/'+info.img+')'}"></div>
+  <div class="profile__photo" [ngStyle]="{backgroundImage: urlService.formBgImgUrl(info.img)}"></div>
 
   <div class="profile__content">
     <div class="profile__content__who">{{info.name}}

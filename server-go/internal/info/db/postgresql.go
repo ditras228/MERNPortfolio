@@ -21,7 +21,7 @@ func (r *repository) UpdateInfo(ctx context.Context, input model.UpdateInfoInput
 				FROM 
 					public.info
 
-				WHERE id = 0
+				WHERE id = 1
 `
 	q := `
 
@@ -33,7 +33,7 @@ func (r *repository) UpdateInfo(ctx context.Context, input model.UpdateInfoInput
 			telegramtitle = $4, telegramlink = $5, githubtitle = $6, githublink = $7, img = $8
 
 		WHERE 
-			id = 0
+			id = 1
 
 		RETURNING 
 			name, job,  experience,
@@ -95,7 +95,7 @@ func (r *repository) FindOne(ctx context.Context) (model.GetInfo, error) {
 		FROM public.info 
 
 		WHERE 
-			id = 0
+			id = 1
 
 		`
 

@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {UrlService} from "../../services/url.service";
 
 @Component({
   selector: 'app-image-input',
@@ -10,7 +11,7 @@ export class ImageInputComponent {
   @Output() setFormImageUrl=new EventEmitter<string | ArrayBuffer | null>();
   public isDirty = false
 
-  constructor() { }
+  constructor(public urlService: UrlService) { }
   getFile(event: any) {
     const file = event.target.files[0];
     const reader = new FileReader();

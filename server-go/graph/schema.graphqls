@@ -19,6 +19,9 @@ type Mutation {
   # Обновить инфу
   updateInfo(input: UpdateInfoInput!): GetInfo!
 
+  # Создать работу
+  createWork(input: CreateWorkInput!): GetWork!
+
   # Обновить работу
   updateWork(input: UpdateWorkInput!): GetWork!
 

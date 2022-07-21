@@ -1,8 +1,9 @@
 import {Injectable} from "@angular/core";
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {
+  CreateWorkDocument, CreateWorkMutation,
   DeleteWorkDocument,
-  DeleteWorkMutation, MutationDeleteWorkArgs,
+  DeleteWorkMutation, MutationCreateWorkArgs, MutationDeleteWorkArgs,
   MutationUpdateWorkArgs,
   UpdateWorkDocument,
   UpdateWorkMutation
@@ -43,6 +44,7 @@ export class EditWorkEffects extends GraphqlService {
                 ({result}) => {
                   switch (result.__typename){
                     case "DeleteWorkResult":{
+                      this.store$.dispatch(getWorks())
                       this.store$.dispatch(setEditWorkVisible(undefined))
                       break
                     }
@@ -65,6 +67,7 @@ export class EditWorkEffects extends GraphqlService {
       )
     )
   )
+
   submitEditWorkForm$ = createEffect(() =>
     this.actions$.pipe(ofType(submitEditWorkForm),
       withLatestFrom(this.store$),
@@ -83,9 +86,14 @@ export class EditWorkEffects extends GraphqlService {
 
             }
           } as MutationUpdateWorkArgs)
-            .pipe(map((data) => {
-              this.store$.dispatch(getWorks())
-              this.store$.dispatch(setEditWorkVisible(undefined))
+            .pipe(map(({result}) => {
+              switch (result.__typename){
+                case "GetWork":{
+                  this.store$.dispatch(getWorks())
+                  this.store$.dispatch(setEditWorkVisible(undefined))
+                }
+              }
+
               return okay()
             }))
 

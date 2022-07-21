@@ -1,6 +1,6 @@
 CREATE TABLE public.user
 (
-    id       INT PRIMARY KEY,
+    id       SERIAL UNIQUE PRIMARY KEY,
     login     TEXT NOT NULL,
     password TEXT NOT NULL
 );

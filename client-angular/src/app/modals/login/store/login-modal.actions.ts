@@ -20,9 +20,15 @@ export const setLoginVisible = createAction(
 export const setEditInfoVisible = createAction(
   "[App] SetEditInfoVisible"
 );
+export const setCreateWorkVisible = createAction(
+  "[App] SetCreateWorkVisible"
+);
 export const setEditDescVisible = createAction(
   "[App] SetEditDescVisible",
   (desc:GetDesc | undefined)=>({desc})
+);
+export const setCreateDescVisible = createAction(
+  "[App] SetCreateDescVisible"
 );
 export const setEditWorkVisible = createAction(
   "[App] SetEditWorkVisible",

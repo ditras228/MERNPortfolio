@@ -1,12 +1,9 @@
-import {Component, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {Store} from "@ngrx/store";
 import {selectInfo} from "../../store/app.selectors";
 import {GetInfo} from "../../../generated/graphql";
-import {SwiperOptions} from "swiper";
-import {SwiperComponent} from "swiper/angular";
 import {fadeAnimation} from "../../app.animation";
 import {setEditInfoVisible} from "../../modals/login/store/login-modal.actions";
-import {selectIsAuth} from "../../modals/login/store/login-modal.selectors";
 
 @Component({
   selector: 'app-sidebar-info',

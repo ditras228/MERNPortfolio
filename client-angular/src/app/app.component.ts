@@ -4,6 +4,8 @@ import {Store} from "@ngrx/store";
 
 import {isPlatformBrowser} from '@angular/common';
 import {
+  selectCreateDescVisible,
+  selectCreateWorkVisible,
   selectEditDescVisible,
   selectEditInfoVisible,
   selectEditWorkVisible, selectIsAuth,
@@ -35,6 +37,8 @@ export class AppComponent implements OnInit{
   public isEditInfoVisible: boolean | undefined;
   public isEditWorkVisible: boolean | undefined;
   public isEditDescVisible: boolean | undefined;
+  public isCreateWorkVisible: boolean | undefined;
+  public isCreateDescVisible: boolean | undefined;
 
   ngOnInit(): void{
     if(isPlatformBrowser(this.platformId)){
@@ -46,6 +50,8 @@ export class AppComponent implements OnInit{
       this.store$.select(selectEditInfoVisible).subscribe(value => this.isEditInfoVisible= value)
       this.store$.select(selectEditWorkVisible).subscribe(value => this.isEditWorkVisible= value)
       this.store$.select(selectEditDescVisible).subscribe(value => this.isEditDescVisible= value)
+      this.store$.select(selectCreateWorkVisible).subscribe(value => this.isCreateWorkVisible= value)
+      this.store$.select(selectCreateDescVisible).subscribe(value => this.isCreateDescVisible= value)
 
       this.store$.select(selectLock).subscribe(value=> {
         this.isLock=value
