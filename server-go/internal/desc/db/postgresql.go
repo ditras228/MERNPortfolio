@@ -40,20 +40,28 @@ func (r *repository) FindAll(ctx context.Context) (model.GetDescOutput, error) {
 }
 func (r *repository) Update(ctx context.Context, input model.UpdateDescInput) (model.UpdateDescOutput, error) {
 	qImgUrl := `
+
 				SELECT 
 					imgUrl
 				
 				FROM 
 					public.desc
 
-				WHERE id = $1
-`
+				WHERE 
+					id = $1
+
+				`
 	var oldLink string
+	var newLink string
+
 	err := r.client.
 		QueryRow(ctx, qImgUrl, input.ID).
 		Scan(&oldLink)
+	if err != nil {
+		return nil, err
+	}
 
-	err = os.Remove(oldLink)
+	var dsc model.GetDesc
 
 	qDesc := `
 
@@ -71,14 +79,18 @@ func (r *repository) Update(ctx context.Context, input model.UpdateDescInput) (m
 
 			 `
 
-	var dsc model.GetDesc
-
-	link, err := utils.SaveImage(input.ImgURL)
-	if err != nil {
-		return nil, err
+	if oldLink == input.ImgURL {
+		newLink = input.ImgURL
+	} else {
+		err = os.Remove(oldLink)
+		newLink, err = utils.SaveImage(input.ImgURL)
+		if err != nil {
+			return nil, err
+		}
 	}
+
 	err = r.client.
-		QueryRow(ctx, qDesc, input.ID, input.Text, link).
+		QueryRow(ctx, qDesc, input.ID, input.Text, newLink).
 		Scan(&dsc.ID, &dsc.Text, &dsc.ImgURL)
 	if err != nil {
 		return nil, err
@@ -93,9 +105,11 @@ func (r *repository) Create(ctx context.Context, input model.CreateDescInput) (m
 				INSERT INTO 
 					public.desc (text, imgurl)
 
-				VALUES ($1, $2)
+				VALUES
+					($1, $2)
 
-				RETURNING id, text, imgurl
+				RETURNING
+					id, text, imgurl
 
 			 `
 	var dsc model.GetDesc
@@ -135,7 +149,7 @@ func (r *repository) Delete(ctx context.Context, input model.DeleteDescInput) (m
 	if err != nil {
 		return nil, err
 	}
-	return nil, nil
+	return dsc, nil
 }
 func NewRepository(client postgres.Client) desc.Repository {
 	return &repository{

@@ -113,8 +113,10 @@ func (r *repository) CreateWork(ctx context.Context, input model.CreateWorkInput
 
 				INSERT INTO
 					public.work
-					(id, name, description, github, demo, figma)
-				VALUES(default, $1,$2,$3,$4,$5)
+					(name, description, github, demo, figma)
+
+				VALUES
+					($1,$2,$3,$4,$5)
 			
 				RETURNING
 					id, name, description, github, demo
@@ -125,7 +127,7 @@ func (r *repository) CreateWork(ctx context.Context, input model.CreateWorkInput
 
 	err := r.client.
 		QueryRow(ctx, qUpdWork, input.Name, input.Description, input.Github, input.Demo, input.Figma).
-		Scan(&wrk.ID, &wrk.Name, &wrk.Description, &wrk.Github, &wrk.Demo, &wrk.Figma)
+		Scan(&wrk.ID, &wrk.Name, &wrk.Description, &wrk.Github, &wrk.Demo)
 	if err != nil {
 		return model.GetWork{}, err
 	}

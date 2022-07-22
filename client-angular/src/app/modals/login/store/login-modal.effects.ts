@@ -12,12 +12,11 @@ import {GraphqlService} from "../../../services/graphql.service";
 import {HttpClient} from '@angular/common/http';
 import {switchMap, withLatestFrom} from "rxjs";
 import {map} from "rxjs/operators";
-import {setAuth, setError, setLoginVisible, submitLoginForm} from "./login-modal.actions";
+import {setError, submitLoginForm} from "./login-modal.actions";
 import {okay} from "../../../store/app.actions";
 import {Store} from "@ngrx/store";
 import {selectLoginInput} from "./login-modal.selectors";
 import {getTags, setFilterTags, setTags} from "../../edit-work/store/edit-work.actions";
-import {CookieService} from "ngx-cookie-service";
 import {AuthService} from "../../../services/auth.service";
 
 @Injectable()
@@ -45,6 +44,7 @@ export class LoginEffects extends GraphqlService {
         }
       )
     ))
+
   setLoginForm$ = createEffect(() =>
     this.actions$.pipe(ofType(submitLoginForm),
       withLatestFrom(this.store$),

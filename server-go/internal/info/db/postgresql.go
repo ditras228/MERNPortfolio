@@ -53,15 +53,23 @@ func (r *repository) UpdateInfo(ctx context.Context, input model.UpdateInfoInput
 	var con model.Contacts
 
 	var oldLink string
+	var newLink string
 
 	err := r.client.
 		QueryRow(ctx, qImgUrl).
 		Scan(&oldLink)
 
-	err = os.Remove(oldLink)
-	imgLink, err := utils.SaveImage(input.Img)
+	if oldLink != input.Img {
+		err = os.Remove(oldLink)
+		newLink, err = utils.SaveImage(input.Img)
+		if err != nil {
+			return model.GetInfo{}, err
+		}
+	} else {
+		newLink = input.Img
+	}
 
-	err = r.client.QueryRow(ctx, q, input.Name, input.Job, input.Experience, input.TelegramTitle, input.TelegramLink, input.GithubTitle, input.GithubLink, imgLink).
+	err = r.client.QueryRow(ctx, q, input.Name, input.Job, input.Experience, input.TelegramTitle, input.TelegramLink, input.GithubTitle, input.GithubLink, newLink).
 		Scan(&inf.Name, &inf.Job, &inf.Experience, &con.TelegramTitle, &con.TelegramLink, &con.GithubTitle, &con.GithubLink)
 
 	rows, err := r.client.Query(ctx, qDesc)

@@ -38,15 +38,16 @@ export class EditInfoComponent implements OnInit {
     this.store$.dispatch(setEditInfoVisible())
   }
 
-  setImgUrlValue(e: string | ArrayBuffer | null):void{
+  setImgUrlValue(e: string | ArrayBuffer | null): void {
     this.img.setValue(e)
   }
+
   submitForm(): void {
     if (this.form?.invalid) {
       this.errors = this.validationService.GetValidationMessage(this.form, this.errors)
     } else {
       this.store$.dispatch(setEditInfoForm({
-        img:this.img.value,
+        img: this.img.value,
         name: this.name.value, job: this.job.value,
         telegramTitle: this.telegramTitle.value, telegramLink: this.telegramLink.value,
         githubTitle: this.githubTitle.value,

@@ -5,16 +5,9 @@ import {Store} from "@ngrx/store";
 import {setEditWorkVisible} from "../login/store/login-modal.actions";
 import {selectCurrentWorkID} from "../login/store/login-modal.selectors";
 import {GetTag, GetWork} from "../../../generated/graphql";
-import {
-  addTag,
-  getTags,
-  removeTag,
-  setEditWorkForm,
-  setFilterTags,
-  submitEditWorkForm
-} from "./store/edit-work.actions";
+import {addTag, getTags, removeTag, setEditWorkForm, submitEditWorkForm} from "./store/edit-work.actions";
 import {ValidationService} from "../../services/validation.service";
-import {selectAllTags, selectEditFormTags, selectFilterTags} from "./store/edit-work.selectors";
+import {selectEditFormTags, selectFilterTags} from "./store/edit-work.selectors";
 import {deleteWork} from "../edit-info/store/edit-info.actions";
 
 @Component({

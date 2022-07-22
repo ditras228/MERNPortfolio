@@ -1,10 +1,13 @@
 <div class="desc">
-  <button *ngIf="isAuth" class="desc__edit" (click)="editDescHandler()">
-    <div class="desc__edit__icon"></div>
-  </button>
-  <button *ngIf="isAuth" class="desc__add" (click)="createDescHandler()">
-    <div class="desc__edit__icon"></div>
-  </button>
+  <div class="desc__buttons" *ngIf="isAuth">
+    <button class="desc__buttons__edit" (click)="editDescHandler()">
+      <div class="desc__buttons__edit__icon"></div>
+    </button>
+    <button  class="desc__buttons__add" (click)="createDescHandler()">
+      <div class="desc__buttons__add__icon"></div>
+    </button>
+  </div>
+
   <swiper #swiper
           [autoplay]="{delay: 10000}" [loop]="true"
           [pagination]="{type: 'progressbar'}"

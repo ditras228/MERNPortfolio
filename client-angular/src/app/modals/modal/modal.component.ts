@@ -1,7 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import {Store} from "@ngrx/store";
-import {selectIsLoginVisible} from "../login/store/login-modal.selectors";
-import {setLoginVisible} from "../login/store/login-modal.actions";
+import {Component} from '@angular/core';
 import {fadeAnimation, modalAnimation} from "../../app.animation";
 
 @Component({
@@ -11,10 +8,6 @@ import {fadeAnimation, modalAnimation} from "../../app.animation";
   animations: [modalAnimation, fadeAnimation]
 })
 export class ModalComponent {
-
-  constructor(public store$: Store) {
+  constructor() {
   }
-
-
-
 }

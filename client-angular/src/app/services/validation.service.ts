@@ -4,9 +4,11 @@ import {sprintf} from 'sprintf-js'
 
 @Injectable({providedIn: "root"})
 export class ValidationService {
+  constructor() {
+  }
+
   public passMinLength = 5
   public passMaxLength = 12
-
 
   public messages = {
     required: 'Поле не может быть пустым',

@@ -61,11 +61,10 @@ export class AppComponent implements OnInit{
           this.renderer.removeClass(document.body,'stop-scrolling');
         }
       })
-
-
-      this.store$.dispatch(getWorks())
-      this.store$.dispatch(getInfo())
     }
+
+    this.store$.dispatch(getWorks())
+    this.store$.dispatch(getInfo())
   }
 
 }

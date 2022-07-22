@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Store} from "@ngrx/store";
-import {setCreateWorkVisible, setEditWorkVisible} from "../login/store/login-modal.actions";
+import {setCreateWorkVisible} from "../login/store/login-modal.actions";
 import {GetTag} from "../../../generated/graphql";
 import {ValidationService} from "../../services/validation.service";
-import {deleteWork} from "../edit-info/store/edit-info.actions";
 import {addTag, getTags, removeTag} from "../edit-work/store/edit-work.actions";
 import {setCreateWorkForm, submitCreateWorkForm} from "./store/create-work.actions";
 import {selectEditFormTags, selectFilterTags} from "../edit-work/store/edit-work.selectors";

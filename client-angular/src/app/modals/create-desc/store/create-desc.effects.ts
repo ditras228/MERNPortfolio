@@ -1,12 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {
-  CreateDescDocument,
-  CreateDescMutation, MutationCreateDescArgs,
-  MutationUpdateDescArgs,
-  UpdateDescDocument,
-  UpdateDescMutation
-} from "../../../../generated/graphql";
+import {CreateDescDocument, CreateDescMutation, MutationCreateDescArgs} from "../../../../generated/graphql";
 import {GraphqlService} from "../../../services/graphql.service";
 import {HttpClient} from '@angular/common/http';
 import {switchMap, withLatestFrom} from "rxjs";
@@ -15,12 +9,14 @@ import {getInfo, okay} from "../../../store/app.actions";
 import {Store} from "@ngrx/store";
 import {submitCreateDescForm} from "./create-desc.actions";
 import {selectEditInfoFormInput} from "./create-desc.selectors";
-import {setCreateDescVisible, setEditDescVisible} from "../../login/store/login-modal.actions";
+import {setCreateDescVisible} from "../../login/store/login-modal.actions";
+import {NotificationService} from "../../../services/notification.service";
 
 @Injectable()
 export class CreateDescEffects extends GraphqlService {
   constructor(
     private actions$: Actions,
+    public notificationService: NotificationService,
     public store$: Store,
     override httpClient: HttpClient) {
     super(httpClient);
@@ -48,7 +44,11 @@ export class CreateDescEffects extends GraphqlService {
                     case "GetDesc":{
                       this.store$.dispatch(setCreateDescVisible())
                       this.store$.dispatch(getInfo())
+                      this.notificationService.addNotification({typeId: 0, message: 'Описание успешно изменено'})
                       break
+                    }
+                    default:{
+                      this.notificationService.addNotification({typeId: 1, message: "Непредвиденная ошибка"})
                     }
                   }
                   return okay()

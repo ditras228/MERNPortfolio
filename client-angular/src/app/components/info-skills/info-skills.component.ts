@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Input, ViewEncapsulation} from '@angular/core';
 
 @Component({
   selector: 'app-info-skills',
@@ -7,11 +7,7 @@ import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
   encapsulation: ViewEncapsulation.None,
 
 })
-export class InfoSkillsComponent implements OnInit {
+export class InfoSkillsComponent  {
   @Input() experience: String | undefined
   constructor() { }
-
-  ngOnInit(): void {
-  }
-
 }

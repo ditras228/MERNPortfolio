@@ -1,9 +1,9 @@
 import {Injectable} from "@angular/core";
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {
-  CreateWorkDocument, CreateWorkMutation,
   DeleteWorkDocument,
-  DeleteWorkMutation, MutationCreateWorkArgs, MutationDeleteWorkArgs,
+  DeleteWorkMutation,
+  MutationDeleteWorkArgs,
   MutationUpdateWorkArgs,
   UpdateWorkDocument,
   UpdateWorkMutation
@@ -19,15 +19,18 @@ import {selectEditFormInput} from "./edit-work.selectors";
 import {setEditWorkVisible} from "../../login/store/login-modal.actions";
 import {deleteWork} from "../../edit-info/store/edit-info.actions";
 import {selectCurrentWorkID} from "../../login/store/login-modal.selectors";
+import {NotificationService} from "../../../services/notification.service";
 
 @Injectable()
 export class EditWorkEffects extends GraphqlService {
   constructor(
     private actions$: Actions,
     public store$: Store,
+    public notificationService: NotificationService,
     override httpClient: HttpClient) {
     super(httpClient);
   }
+
   deleteWork$ = createEffect(() =>
     this.actions$.pipe(ofType(deleteWork),
       withLatestFrom(this.store$),
@@ -46,17 +49,19 @@ export class EditWorkEffects extends GraphqlService {
                     case "DeleteWorkResult":{
                       this.store$.dispatch(getWorks())
                       this.store$.dispatch(setEditWorkVisible(undefined))
+                      this.notificationService.addNotification({typeId: 0, message: 'Работа успешно удалена'})
                       break
                     }
                     case "NotFoundError":{
+                      this.notificationService.addNotification({typeId: 0, message: 'Работа не найдена'})
                       break
                     }
                     case "UnexpectedError":{
-
+                      this.notificationService.addNotification({typeId: 1, message: "Непредвиденная ошибка"})
                       break
                     }
                     default:{
-
+                      this.notificationService.addNotification({typeId: 1, message: "Непредвиденная ошибка"})
                     }
                   }
                   return okay()
@@ -91,6 +96,11 @@ export class EditWorkEffects extends GraphqlService {
                 case "GetWork":{
                   this.store$.dispatch(getWorks())
                   this.store$.dispatch(setEditWorkVisible(undefined))
+                  this.notificationService.addNotification({typeId: 0, message: 'Работа успешно отредактирована'})
+                  break
+                }
+                default:{
+                  this.notificationService.addNotification({typeId: 1, message: "Непредвиденная ошибка"})
                 }
               }
 

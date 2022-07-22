@@ -1,3 +1,6 @@
-<div class="notification">
-NOTIFICATION
+<div class="notification-list"  [@listAnimation]="notifications?.length" >
+
+  <div class="notification" *ngFor="let notification of notifications" [ngClass]="notification.typeId ? 'notification--red' : ''">
+    {{notification.message}}
+  </div>
 </div>

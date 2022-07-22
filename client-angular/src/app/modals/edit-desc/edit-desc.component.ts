@@ -1,10 +1,9 @@
-import {Component, EventEmitter, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Store} from "@ngrx/store";
-import {setEditDescForm, submitEditDescForm} from "./store/edit-desc.actions";
+import {setDeleteDesc, setEditDescForm, submitDeleteDesc, submitEditDescForm} from "./store/edit-desc.actions";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {selectEditInfoFormInput} from "./store/edit-desc.selectors";
 import {ValidationService} from "../../services/validation.service";
-import {setEditDescVisible, setEditInfoVisible} from "../login/store/login-modal.actions";
+import {setEditDescVisible} from "../login/store/login-modal.actions";
 import {selectCurrentDesc} from "../login/store/login-modal.selectors";
 
 @Component({
@@ -32,6 +31,10 @@ export class EditDescComponent implements OnInit {
 
   setImgUrlValue(e: string | ArrayBuffer | null):void{
     this.imgUrl.setValue(e)
+  }
+  deleteDescHandler():void{
+    this.store$.dispatch(setDeleteDesc(this.id))
+    this.store$.dispatch(submitDeleteDesc())
   }
   submitFormHandler(): void {
     if (this.form?.invalid) {

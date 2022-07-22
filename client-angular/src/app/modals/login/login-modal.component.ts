@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Store} from "@ngrx/store";
-import {setError, setLoginForm, setLoginVisible, submitLoginForm} from "./store/login-modal.actions";
+import {setLoginForm, setLoginVisible, submitLoginForm} from "./store/login-modal.actions";
 import {selectLoginError} from "./store/login-modal.selectors";
 import {ValidationService} from "../../services/validation.service";
 import {errorInputs} from "./store/login-modal.reducer";
@@ -44,9 +44,7 @@ export class LoginModalComponent implements OnInit {
   sendForm(): void {
     if (this.form?.invalid) {
       this.errors = this.validationService.GetValidationMessage(this.form, this.errors)
-    }
-
-    else {
+    } else {
       this.errors={}
       this.store$.dispatch(setLoginForm({login: this.login.value, password: this.password.value}))
       this.store$.dispatch(submitLoginForm())

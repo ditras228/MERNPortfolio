@@ -1,7 +1,10 @@
 import {createReducer, on} from "@ngrx/store";
 import {
   loginInputs,
-  setAuth, setCreateDescVisible, setCreateWorkVisible, setEditDescVisible,
+  setAuth,
+  setCreateDescVisible,
+  setCreateWorkVisible,
+  setEditDescVisible,
   setEditInfoVisible,
   setEditWorkVisible,
   setError,
@@ -9,11 +12,12 @@ import {
   setLoginVisible,
 } from "./login-modal.actions";
 import {GetDesc, GetWork} from "../../../../generated/graphql";
-import {setCreateWorkForm} from "../../create-work/store/create-work.actions";
+
 export type errorInputs = {
   id: number,
   message: string
 }
+
 export interface State {
   isAuth: boolean,
   isLock: boolean,
@@ -28,6 +32,7 @@ export interface State {
   currentEditWork: GetWork | undefined
   currentEditDesc: GetDesc | undefined
 }
+
 const initialState: State = {
   isWorkVisible: false,
   isCreateDescVisible: false,
@@ -46,6 +51,7 @@ const initialState: State = {
     password: ''
   },
 }
+
 export const loginModalReducer= createReducer(
   initialState,
   on(setLoginForm, (state, { input }) => ({...state, input: input})),

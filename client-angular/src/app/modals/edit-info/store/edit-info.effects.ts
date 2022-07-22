@@ -1,32 +1,26 @@
 import {Injectable} from "@angular/core";
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {
-  DeleteWorkDocument,
-  DeleteWorkMutation, MutationDeleteWorkArgs,
-  MutationUpdateInfoArgs,
-  UpdateInfoDocument,
-  UpdateInfoMutation
-} from "../../../../generated/graphql";
+import {MutationUpdateInfoArgs, UpdateInfoDocument, UpdateInfoMutation} from "../../../../generated/graphql";
 import {GraphqlService} from "../../../services/graphql.service";
 import {HttpClient} from '@angular/common/http';
 import {switchMap, withLatestFrom} from "rxjs";
 import {map} from "rxjs/operators";
 import {getInfo, okay} from "../../../store/app.actions";
 import {Store} from "@ngrx/store";
-import {deleteWork, submitEditInfoForm} from "./edit-info.actions";
+import {submitEditInfoForm} from "./edit-info.actions";
 import {selectEditInfoFormInput} from "./edit-info.selectors";
 import {setEditInfoVisible} from "../../login/store/login-modal.actions";
-import {selectCurrentWorkID} from "../../login/store/login-modal.selectors";
+import {NotificationService} from "../../../services/notification.service";
 
 @Injectable()
 export class EditInfoEffects extends GraphqlService {
   constructor(
     private actions$: Actions,
+    public notificationService: NotificationService,
     public store$: Store,
     override httpClient: HttpClient) {
     super(httpClient);
   }
-
 
   submitEditInfoForm$ = createEffect(() =>
     this.actions$.pipe(ofType(submitEditInfoForm),
@@ -51,9 +45,18 @@ export class EditInfoEffects extends GraphqlService {
           } as MutationUpdateInfoArgs)
             .pipe(
               map(
-                (data) => {
-                  this.store$.dispatch(getInfo())
-                  this.store$.dispatch(setEditInfoVisible())
+                ({result}) => {
+                  switch (result.__typename){
+                    case "GetInfo": {
+                      this.store$.dispatch(getInfo())
+                      this.store$.dispatch(setEditInfoVisible())
+                      this.notificationService.addNotification({typeId: 0, message: 'Информация успешно изменена'})
+                      break
+                    }
+                    default:{
+                      this.notificationService.addNotification({typeId: 1, message: "Непредвиденная ошибка"})
+                    }
+                  }
                   return okay()
                 }))
 

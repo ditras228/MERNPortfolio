@@ -1,5 +1,21 @@
+@import "../../../styles/mixins/font";
+
 .notification{
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
+  background-color: #5F2EEA;
+  padding: 20px 30px;
+  @include font();
+  font-weight: bold;
+  color: #FFFFFF;
+  border-radius: 15px;
+  width: 400px;
+  &--error{
+    background-color: red;
+  }
+  &-list{
+    display: grid;
+    grid-row-gap: 15px;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+  }
 }

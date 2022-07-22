@@ -1,8 +1,9 @@
-import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Inject, Input, PLATFORM_ID, ViewEncapsulation} from '@angular/core';
 import {GetWork} from "../../../generated/graphql";
-import {setAuth, setEditInfoVisible, setEditWorkVisible} from "../../modals/login/store/login-modal.actions";
+import {setEditWorkVisible} from "../../modals/login/store/login-modal.actions";
 import {Store} from "@ngrx/store";
 import {setEditWorkTags} from "../../modals/edit-work/store/edit-work.actions";
+import {platformBrowser} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-work',
@@ -10,23 +11,28 @@ import {setEditWorkTags} from "../../modals/edit-work/store/edit-work.actions";
   styleUrls: ['./work.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class WorkComponent implements OnInit {
+export class WorkComponent {
   @Input() work: GetWork | undefined
   @Input() isAuth = false
 
-  constructor(public store$: Store) { }
+  constructor(public store$: Store, @Inject(PLATFORM_ID) private platformId) { }
+
   editWorkHandler():void{
     this.store$.dispatch(setEditWorkTags(this.work?.tags))
 
     this.store$.dispatch(setEditWorkVisible(this.work))
   }
-  ngOnInit(): void {
-  }
 
   isPortfolio(url: any):boolean{
-    return window.location.origin==url
+    if(platformBrowser(this.platformId)) {
+      return window.location.origin == url
+    }
+    return false
   }
+
   public openLink(url: any): void{
-    window.open(url)
+    if(platformBrowser(this.platformId)){
+      window.open(url)
+    }
   }
 }

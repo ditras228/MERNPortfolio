@@ -7,5 +7,4 @@ const editWorkState = createFeatureSelector<State>(featureName);
 
 export const selectEditFormInput = createSelector(editWorkState, state => state.input);
 export const selectEditFormTags = createSelector(editWorkState, state => state.tags);
-export const selectAllTags = createSelector(editWorkState, state => state.allTags);
 export const selectFilterTags = createSelector(editWorkState, state => state.filterTags);

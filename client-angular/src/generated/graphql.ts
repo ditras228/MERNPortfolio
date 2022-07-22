@@ -248,12 +248,19 @@ export type DeleteWorkMutationVariables = Exact<{
 }>;
 
 
-export type DeleteWorkMutation = { __typename: 'Mutation', result: { __typename: 'DeleteWorkResult', id: number } | { __typename: 'NotFoundError' } | { __typename: 'UnexpectedError' } };
+export type DeleteWorkMutation = { __typename?: 'Mutation', result: { __typename: 'DeleteWorkResult', id: number } | { __typename: 'NotFoundError' } | { __typename: 'UnexpectedError' } };
 
 export type GetInfoQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetInfoQuery = { __typename?: 'Query', result: { __typename: 'GetInfo', experience: string, job: string, name: string, img: string, desc: Array<{ __typename?: 'GetDesc', id: number, text: string, imgURL: string } | null>, contacts: { __typename?: 'Contacts', telegramTitle: string, telegramLink: string, githubTitle: string, githubLink: string } } };
+
+export type DeleteDescMutationVariables = Exact<{
+  input: DeleteDescInput;
+}>;
+
+
+export type DeleteDescMutation = { __typename?: 'Mutation', result: { __typename: 'GetDesc', id: number } | { __typename: 'NotFoundError' } | { __typename: 'UnexpectedError' } };
 
 export type CreateDescMutationVariables = Exact<{
   input: CreateDescInput;
@@ -274,7 +281,7 @@ export type UpdateInfoMutationVariables = Exact<{
 }>;
 
 
-export type UpdateInfoMutation = { __typename: 'Mutation', result: { __typename?: 'GetInfo', experience: string, job: string, name: string, img: string, contacts: { __typename?: 'Contacts', telegramTitle: string, telegramLink: string, githubTitle: string, githubLink: string } } };
+export type UpdateInfoMutation = { __typename?: 'Mutation', result: { __typename: 'GetInfo', experience: string, job: string, name: string, img: string, contacts: { __typename?: 'Contacts', telegramTitle: string, telegramLink: string, githubTitle: string, githubLink: string } } };
 
 export type UpdateWorkMutationVariables = Exact<{
   input: UpdateWorkInput;
@@ -286,7 +293,7 @@ export type UpdateWorkMutation = { __typename?: 'Mutation', result: { __typename
 export type GetDescQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetDescQuery = { __typename: 'Query', result: { __typename: 'GetDescResult', desc?: Array<{ __typename?: 'GetDesc', id: number, text: string, imgURL: string } | null> | null } | { __typename: 'NotFoundError' } | { __typename: 'UnexpectedError' } };
+export type GetDescQuery = { __typename?: 'Query', result: { __typename: 'GetDescResult', desc?: Array<{ __typename?: 'GetDesc', id: number, text: string, imgURL: string } | null> | null } | { __typename: 'NotFoundError' } | { __typename: 'UnexpectedError' } };
 
 export type GetTagsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -296,7 +303,7 @@ export type GetTagsQuery = { __typename?: 'Query', result: Array<{ __typename: '
 export type GetWorksQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetWorksQuery = { __typename: 'Query', result: Array<{ __typename?: 'GetWork', id: number, demo: string, description: string, figma: string, github?: string | null, name: string, tags: Array<{ __typename?: 'GetTag', id: number, title: string } | null> } | null> };
+export type GetWorksQuery = { __typename?: 'Query', result: Array<{ __typename: 'GetWork', id: number, demo: string, description: string, figma: string, github?: string | null, name: string, tags: Array<{ __typename?: 'GetTag', id: number, title: string } | null> } | null> };
 
 
 export const AuthDocument = `
@@ -336,7 +343,6 @@ export const CreateWorkDocument = `
     `;
 export const DeleteWorkDocument = `
     mutation deleteWork($input: DeleteWorkInput!) {
-  __typename
   result: deleteWork(input: $input) {
     __typename
     ... on DeleteWorkResult {
@@ -367,6 +373,16 @@ export const GetInfoDocument = `
   }
 }
     `;
+export const DeleteDescDocument = `
+    mutation deleteDesc($input: DeleteDescInput!) {
+  result: deleteDesc(input: $input) {
+    __typename
+    ... on GetDesc {
+      id
+    }
+  }
+}
+    `;
 export const CreateDescDocument = `
     mutation createDesc($input: CreateDescInput!) {
   result: createDesc(input: $input) {
@@ -393,8 +409,8 @@ export const UpdateDescDocument = `
     `;
 export const UpdateInfoDocument = `
     mutation updateInfo($input: UpdateInfoInput!) {
-  __typename
   result: updateInfo(input: $input) {
+    __typename
     experience
     job
     name
@@ -427,7 +443,6 @@ export const UpdateWorkDocument = `
     `;
 export const GetDescDocument = `
     query getDesc {
-  __typename
   result: getDesc {
     __typename
     ... on GetDescResult {
@@ -451,8 +466,8 @@ export const GetTagsDocument = `
     `;
 export const GetWorksDocument = `
     query getWorks {
-  __typename
   result: getWorks {
+    __typename
     id
     demo
     description
@@ -485,6 +500,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getInfo(variables?: GetInfoQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetInfoQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetInfoQuery>(GetInfoDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getInfo', 'query');
+    },
+    deleteDesc(variables: DeleteDescMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<DeleteDescMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<DeleteDescMutation>(DeleteDescDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'deleteDesc', 'mutation');
     },
     createDesc(variables: CreateDescMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateDescMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateDescMutation>(CreateDescDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createDesc', 'mutation');

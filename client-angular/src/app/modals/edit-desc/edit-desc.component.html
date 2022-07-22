@@ -8,5 +8,6 @@
                    [internalValue]="text.value"
                    (valueChange)="text.patchValue($event)"></app-text-area>
 
+  <button class="edit-desc__delete" (click)="deleteDescHandler()">Удалить</button>
   <button class="edit-desc__button" (click)="submitFormHandler()">Применить</button>
 </div>

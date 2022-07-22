@@ -9,13 +9,14 @@ import {getWorks, okay} from "../../../store/app.actions";
 import {Store} from "@ngrx/store";
 import {submitCreateWorkForm,} from "./create-work.actions";
 import {setCreateWorkVisible} from "../../login/store/login-modal.actions";
-import {selectEditFormInput} from "../../edit-work/store/edit-work.selectors";
 import {selectCreateFormInput} from "./create-work.selectors";
+import {NotificationService} from "../../../services/notification.service";
 
 @Injectable()
 export class CreateWorkEffects extends GraphqlService {
   constructor(
     private actions$: Actions,
+    public notificationService: NotificationService,
     public store$: Store,
     override httpClient: HttpClient) {
     super(httpClient);
@@ -43,7 +44,11 @@ export class CreateWorkEffects extends GraphqlService {
                 case "GetWork": {
                   this.store$.dispatch(getWorks())
                   this.store$.dispatch(setCreateWorkVisible())
-
+                  this.notificationService.addNotification({typeId: 0, message: 'Работа успешно создана'})
+                  break
+                }
+                default:{
+                  this.notificationService.addNotification({typeId: 1, message: "Непредвиденная ошибка"})
                 }
               }
               return okay()
