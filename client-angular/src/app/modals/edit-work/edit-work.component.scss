@@ -1,21 +1,20 @@
-@import "../../../styles/mixins/button";
-@import "../../../styles/mixins/modal-close";
-@import "../../../styles/mixins/font";
+@import '../../../styles/mixins/button';
+@import '../../../styles/mixins/modal-close';
+@import '../../../styles/mixins/font';
 
 .edit-work {
   padding: 96px 132px;
 
-  &__close{
-    @include modal-close()
+  &__close {
+    @include modal-close();
   }
 
   &__grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-column-gap: 15px;
-    &__title{
+    &__title {
       @include font(12px, 24px, 400, 1px);
-
     }
     &__tags {
       display: flex;
@@ -27,22 +26,22 @@
 
       &__item {
         @include font(12px, 24px, 400, 1px);
-        color: #2A00A2;
+        color: #2a00a2;
         padding: 0 8px;
         border-radius: 4px;
-        background-color: #E4DAFF;
+        background-color: #e4daff;
         position: relative;
         text-transform: uppercase;
 
-        &:hover{
+        &:hover {
           cursor: pointer;
         }
       }
     }
-
   }
 
-  &__field, &__grid__field {
+  &__field,
+  &__grid__field {
     display: block;
     margin-bottom: 35px;
   }
@@ -51,7 +50,7 @@
     @include button-fill();
     width: 100%;
 
-    &__delete{
+    &__delete {
       @include button-red();
       margin-bottom: 15px;
     }

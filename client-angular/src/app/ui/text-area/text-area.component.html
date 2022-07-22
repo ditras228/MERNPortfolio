@@ -1,12 +1,13 @@
 <div class="input">
-  <textarea name="" id=""
-            placeholder=" "
-            class="input__field"
-            [rows]="rows"
-            [(ngModel)]="internalValue"
-            (ngModelChange)="internalValueUpdate.next($event)"
-  >
+  <textarea
+    name=""
+    id=""
+    placeholder=" "
+    class="input__field"
+    [rows]="rows"
+    [(ngModel)]="internalValue"
+    (ngModelChange)="internalValueUpdate.next($event)">
   </textarea>
-  <label class="input__label" >{{placeholder}}</label>
-  <div class="input__error" *ngIf="error">{{error}}</div>
+  <label class="input__label">{{ placeholder }}</label>
+  <div class="input__error" *ngIf="error">{{ error }}</div>
 </div>

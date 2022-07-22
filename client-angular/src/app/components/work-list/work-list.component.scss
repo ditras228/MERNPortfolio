@@ -1,13 +1,13 @@
-@import "../../../styles/mixins/screen";
-@import "../../../styles/mixins/button";
+@import '../../../styles/mixins/screen';
+@import '../../../styles/mixins/button';
 
-.work-list{
+.work-list {
   display: grid;
   grid-row-gap: 50px;
-  &__button{
-    @include button-fill()
+  &__button {
+    @include button-fill();
   }
-  @include screen-lg{
+  @include screen-lg {
     grid-column: 2/3;
     margin-bottom: 100px;
   }

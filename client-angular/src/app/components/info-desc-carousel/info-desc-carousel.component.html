@@ -3,19 +3,23 @@
     <button class="desc__buttons__edit" (click)="editDescHandler()">
       <div class="desc__buttons__edit__icon"></div>
     </button>
-    <button  class="desc__buttons__add" (click)="createDescHandler()">
+    <button class="desc__buttons__add" (click)="createDescHandler()">
       <div class="desc__buttons__add__icon"></div>
     </button>
   </div>
 
-  <swiper #swiper
-          [autoplay]="{delay: 10000}" [loop]="true"
-          [pagination]="{type: 'progressbar'}"
-  >
+  <swiper
+    #swiper
+    [autoplay]="{ delay: 10000 }"
+    [loop]="true"
+    [pagination]="{ type: 'progressbar' }">
     <ng-template swiperSlide *ngFor="let desc of info$?.desc">
       <div class="swiper-slide__item">
         <span [innerHTML]="desc?.text"></span>
-        <img class="swiper-slide__item__img" [src]="urlService.formImgUrl(desc?.imgURL)" alt="">
+        <img
+          class="swiper-slide__item__img"
+          [src]="urlService.formImgUrl(desc?.imgURL)"
+          alt="" />
       </div>
     </ng-template>
   </swiper>

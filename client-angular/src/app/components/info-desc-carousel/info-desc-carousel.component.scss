@@ -1,7 +1,7 @@
-@import "../../../styles/mixins/icon";
-@import "../../../styles/mixins/screen";
-@import "../../../styles/mixins/button";
-@import "../../../styles/mixins/font";
+@import '../../../styles/mixins/icon';
+@import '../../../styles/mixins/screen';
+@import '../../../styles/mixins/button';
+@import '../../../styles/mixins/font';
 
 .swiper {
   padding-top: 45px;
@@ -69,7 +69,6 @@
         width: 30px;
         height: 30px;
       }
-
     }
 
     &__edit {

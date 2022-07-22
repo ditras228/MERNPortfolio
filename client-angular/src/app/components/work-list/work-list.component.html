@@ -1,6 +1,11 @@
-<div class="work-list" >
-  <button *ngIf="isAuth" class="work-list__button" (click)="createWorkHandler()">Создать</button>
-  <ng-container  *ngFor="let work of works$">
+<div class="work-list">
+  <button
+    *ngIf="isAuth"
+    class="work-list__button"
+    (click)="createWorkHandler()">
+    Создать
+  </button>
+  <ng-container *ngFor="let work of works$">
     <app-work [isAuth]="isAuth" [work]="work"></app-work>
   </ng-container>
 </div>

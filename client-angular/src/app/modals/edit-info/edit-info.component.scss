@@ -1,13 +1,13 @@
-@import "../../../styles/mixins/button";
-@import "../../../styles/mixins/modal-close";
+@import '../../../styles/mixins/button';
+@import '../../../styles/mixins/modal-close';
 
 .edit-info {
   padding: 96px 132px;
 
-  &__close{
+  &__close {
     @include modal-close();
   }
-  &__img{
+  &__img {
     margin-bottom: 35px;
     display: block;
   }
@@ -17,7 +17,8 @@
     grid-column-gap: 15px;
   }
 
-  &__field, &__grid__field {
+  &__field,
+  &__grid__field {
     display: block;
     margin-bottom: 35px;
   }

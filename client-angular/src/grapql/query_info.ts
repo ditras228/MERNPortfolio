@@ -1,10 +1,10 @@
-import {gql} from "apollo-angular";
+import { gql } from 'apollo-angular';
 
 export const getInfoQuery = gql`
   query getInfo {
     result: getInfo {
       __typename
-      desc{
+      desc {
         id
         text
         imgURL
@@ -13,11 +13,12 @@ export const getInfoQuery = gql`
       job
       name
       img
-      contacts{
+      contacts {
         telegramTitle
         telegramLink
         githubTitle
         githubLink
       }
     }
-  }`;
+  }
+`;

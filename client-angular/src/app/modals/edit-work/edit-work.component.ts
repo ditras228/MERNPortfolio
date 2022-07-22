@@ -1,91 +1,104 @@
-import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {selectWorks} from "../../store/app.selectors";
-import {Store} from "@ngrx/store";
-import {setEditWorkVisible} from "../login/store/login-modal.actions";
-import {selectCurrentWorkID} from "../login/store/login-modal.selectors";
-import {GetTag, GetWork} from "../../../generated/graphql";
-import {addTag, getTags, removeTag, setEditWorkForm, submitEditWorkForm} from "./store/edit-work.actions";
-import {ValidationService} from "../../services/validation.service";
-import {selectEditFormTags, selectFilterTags} from "./store/edit-work.selectors";
-import {deleteWork} from "../edit-info/store/edit-info.actions";
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { selectWorks } from '../../store/app.selectors';
+import { Store } from '@ngrx/store';
+import { setEditWorkVisible } from '../login/store/login-modal.actions';
+import { selectCurrentWorkID } from '../login/store/login-modal.selectors';
+import { GetTag, GetWork } from '../../../generated/graphql';
+import {
+  addTag,
+  getTags,
+  removeTag,
+  setEditWorkForm,
+  submitEditWorkForm,
+} from './store/edit-work.actions';
+import { ValidationService } from '../../services/validation.service';
+import {
+  selectEditFormTags,
+  selectFilterTags,
+} from './store/edit-work.selectors';
+import { deleteWork } from '../edit-info/store/edit-info.actions';
 
 @Component({
   selector: 'app-edit-work',
   templateUrl: './edit-work.component.html',
-  styleUrls: ['./edit-work.component.scss']
+  styleUrls: ['./edit-work.component.scss'],
 })
 export class EditWorkComponent implements OnInit {
   public errors: { [key: string]: string } = {};
-  public name = new FormControl
-  public description = new FormControl
-  public tags = [] as any
-  public allTags = [] as any
-  public github = new FormControl
-  public figma = new FormControl
-  public demo = new FormControl
+  public name = new FormControl();
+  public description = new FormControl();
+  public tags = [] as any;
+  public allTags = [] as any;
+  public github = new FormControl();
+  public figma = new FormControl();
+  public demo = new FormControl();
   public form = {} as FormGroup<{
     name: FormControl<string>;
     description: FormControl<string>;
     demo: FormControl<string>;
     github: FormControl<string>;
     figma: FormControl<string>;
-  }>
-  public currentWork = {} as GetWork | undefined
+  }>;
+  public currentWork = {} as GetWork | undefined;
 
-  constructor(public store$: Store, public validationService: ValidationService) {
-  }
-  deleteWorkHandler():void{
-    this.store$.dispatch(deleteWork())
+  constructor(
+    public store$: Store,
+    public validationService: ValidationService
+  ) {}
+  deleteWorkHandler(): void {
+    this.store$.dispatch(deleteWork());
   }
   closeModal(): void {
-    this.store$.dispatch(setEditWorkVisible(undefined))
+    this.store$.dispatch(setEditWorkVisible(undefined));
   }
 
   remove(tag: GetTag): void {
-    this.store$.dispatch(removeTag(tag))
+    this.store$.dispatch(removeTag(tag));
   }
 
   add(tag: GetTag): void {
-    this.store$.dispatch(addTag(tag))
+    this.store$.dispatch(addTag(tag));
   }
 
   submitForm(): void {
     if (this.form?.invalid) {
-      this.errors = this.validationService.GetValidationMessage(this.form, this.errors)
+      this.errors = this.validationService.GetValidationMessage(
+        this.form,
+        this.errors
+      );
     } else {
-      this.errors = {}
-      this.store$.dispatch(setEditWorkForm(
-        {
+      this.errors = {};
+      this.store$.dispatch(
+        setEditWorkForm({
           id: this.currentWork?.id,
           name: this.name.value,
           description: this.description.value,
           demo: this.demo.value,
           github: this.github.value,
           tags: this.tags.reduce((idArray, tagObj) => {
-            idArray.push(tagObj.id)
-            return idArray
+            idArray.push(tagObj.id);
+            return idArray;
           }, []),
           figma: this.figma.value,
-        }
-      ))
-      this.store$.dispatch(submitEditWorkForm())
+        })
+      );
+      this.store$.dispatch(submitEditWorkForm());
     }
-
   }
 
   ngOnInit(): void {
-    this.name = new FormControl(null, [Validators.required])
-    this.description = new FormControl(null, [Validators.required])
-    this.github = new FormControl(null, [Validators.required])
-    this.figma = new FormControl(null)
-    this.demo = new FormControl(null, [Validators.required])
+    this.name = new FormControl(null, [Validators.required]);
+    this.description = new FormControl(null, [Validators.required]);
+    this.github = new FormControl(null, [Validators.required]);
+    this.figma = new FormControl(null);
+    this.demo = new FormControl(null, [Validators.required]);
 
-
-    this.store$.dispatch(getTags())
-    this.store$.select(selectCurrentWorkID).subscribe(work => this.currentWork = work)
+    this.store$.dispatch(getTags());
+    this.store$
+      .select(selectCurrentWorkID)
+      .subscribe(work => (this.currentWork = work));
     this.store$.select(selectWorks).subscribe(works => {
-
       if (works?.length && this.currentWork) {
         this.name.setValue(this.currentWork.name);
         this.description.setValue(this.currentWork.description);
@@ -94,19 +107,18 @@ export class EditWorkComponent implements OnInit {
         this.demo.setValue(this.currentWork.demo);
       }
       this.store$.select(selectEditFormTags).subscribe(value => {
-          this.tags = value
-        }
-      )
+        this.tags = value;
+      });
       this.store$.select(selectFilterTags).subscribe(value => {
-        this.allTags = value
-      })
-    })
+        this.allTags = value;
+      });
+    });
     this.form = new FormGroup({
       name: this.name,
       description: this.description,
       github: this.github,
       figma: this.figma,
       demo: this.demo,
-    })
+    });
   }
 }

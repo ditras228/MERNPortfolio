@@ -1,13 +1,13 @@
-import {createReducer, on} from "@ngrx/store";
-import {EditInfoInputs, setEditInfoForm} from "./edit-info.actions";
+import { createReducer, on } from '@ngrx/store';
+import { EditInfoInputs, setEditInfoForm } from './edit-info.actions';
 
 export interface State {
-  input: EditInfoInputs
+  input: EditInfoInputs;
 }
 const initialState: State = {
-  input: {} as EditInfoInputs
-}
-export const editInfoReducer= createReducer(
+  input: {} as EditInfoInputs,
+};
+export const editInfoReducer = createReducer(
   initialState,
-  on(setEditInfoForm, (state, { input }) => ({...state, input: input})),
-)
+  on(setEditInfoForm, (state, { input }) => ({ ...state, input: input }))
+);

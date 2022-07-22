@@ -1,4 +1,4 @@
-import {createReducer, on} from "@ngrx/store";
+import { createReducer, on } from '@ngrx/store';
 import {
   addTag,
   EditWorkInputs,
@@ -7,14 +7,14 @@ import {
   setEditWorkTags,
   setFilterTags,
   setTags,
-} from "./edit-work.actions";
-import {GetTag} from "../../../../generated/graphql";
+} from './edit-work.actions';
+import { GetTag } from '../../../../generated/graphql';
 
 export interface State {
-  input: EditWorkInputs
-  tags: GetTag[],
-  allTags: GetTag[]
-  filterTags: GetTag[]
+  input: EditWorkInputs;
+  tags: GetTag[];
+  allTags: GetTag[];
+  filterTags: GetTag[];
 }
 
 const initialState: State = {
@@ -22,29 +22,29 @@ const initialState: State = {
   tags: [] as GetTag[],
   allTags: [] as GetTag[],
   filterTags: [] as GetTag[],
-
-}
+};
 export const editWorkReducer = createReducer(
   initialState,
-  on(setEditWorkForm, (state, {input}) => ({...state, input: input})),
+  on(setEditWorkForm, (state, { input }) => ({ ...state, input: input })),
 
-  on(setFilterTags, (state) => ({
-    ...state, filterTags: state.allTags.filter(
-      (array22) =>
-        !state.tags.some((array11) => array11?.id === array22?.id))
+  on(setFilterTags, state => ({
+    ...state,
+    filterTags: state.allTags.filter(
+      array22 => !state.tags.some(array11 => array11?.id === array22?.id)
+    ),
   })),
 
-  on(setTags, (state, {tags}) => ({...state, allTags: tags})),
+  on(setTags, (state, { tags }) => ({ ...state, allTags: tags })),
 
-  on(addTag, (state, {input}) => ({
+  on(addTag, (state, { input }) => ({
     ...state,
     tags: [...state.tags, input],
-    filterTags: state.filterTags.filter(tag => tag.id != input.id)
+    filterTags: state.filterTags.filter(tag => tag.id != input.id),
   })),
-  on(setEditWorkTags, (state, {tags}) => ({...state, tags: tags})),
-  on(removeTag, (state, {input}) => ({
+  on(setEditWorkTags, (state, { tags }) => ({ ...state, tags: tags })),
+  on(removeTag, (state, { input }) => ({
     ...state,
     filterTags: [...state.filterTags, input],
-    tags: state.tags.filter(tag => tag.id != input.id)
-  })),
-)
+    tags: state.tags.filter(tag => tag.id != input.id),
+  }))
+);

@@ -6,14 +6,12 @@
 
 :root {
   --swiper-theme-color: #5f2eea !important;
-
 }
 
 .stop-scrolling {
   height: 100%;
   overflow: hidden;
   padding-right: 15px;
-
 }
 
 .app {
@@ -21,7 +19,6 @@
   padding-top: 80px;
 
   @include screen-lg {
-
     &__content {
       display: grid;
       max-width: 1200px;

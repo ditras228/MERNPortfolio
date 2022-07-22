@@ -2,11 +2,17 @@
   <div class="navbar__container">
     <div class="navbar__container__logo"></div>
     MERNPortfolio
-    <button class="navbar__container__admin-btn" (click)="showLoginHandler()" *ngIf="!isAuth">
+    <button
+      class="navbar__container__admin-btn"
+      (click)="showLoginHandler()"
+      *ngIf="!isAuth">
       <span class="navbar__container__admin-btn__icon"></span>
       Войти
     </button>
-    <button class="navbar__container__logout" (click)="authService.logout()" *ngIf="isAuth">
+    <button
+      class="navbar__container__logout"
+      (click)="authService.logout()"
+      *ngIf="isAuth">
       Выйти
     </button>
   </div>

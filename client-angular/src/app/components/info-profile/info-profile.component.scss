@@ -1,6 +1,6 @@
-@import "../../../styles/mixins/font";
-@import "../../../styles/mixins/screen";
-@import "../../../styles/mixins/icon";
+@import '../../../styles/mixins/font';
+@import '../../../styles/mixins/screen';
+@import '../../../styles/mixins/icon';
 
 .profile {
   align-content: center;
@@ -12,13 +12,11 @@
 
   @include screen-lg {
     justify-items: right;
-
   }
 
   &__content {
     display: grid;
     align-content: center;
-
 
     &__who {
       @include font(32px, 36px, 700, 1px);
@@ -39,7 +37,6 @@
 
       @include screen-lg {
         margin-bottom: 10px;
-
       }
     }
 
@@ -84,17 +81,14 @@
       @include screen-lg {
         margin: 0;
         justify-content: flex-end;
-
       }
-
     }
-
   }
 
   &__photo {
     width: 100px;
     height: 100px;
-    @include icon("/Photos.png");
+    @include icon('/Photos.png');
     background-position: center;
     background-size: 125%;
   }

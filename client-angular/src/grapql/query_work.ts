@@ -1,4 +1,4 @@
-import {gql} from "apollo-angular";
+import { gql } from 'apollo-angular';
 
 export const getWorksQuery = gql`
   query getWorks {
@@ -10,7 +10,7 @@ export const getWorksQuery = gql`
       figma
       github
       name
-      tags{
+      tags {
         id
         title
       }

@@ -1,13 +1,21 @@
 <div class="edit-desc">
   <div class="edit-desc__close" (click)="closeModal()"></div>
-  <app-image-input class="edit-desc__img" [imgUrlValue]="imgUrl.value" (setFormImageUrl)="setImgUrlValue($event)"></app-image-input>
-  <app-text-area class="edit-desc__field"
-                   [error]="errors?.['text']"
-                   [placeholder]="'Текст'"
-                   [rows]="3"
-                   [internalValue]="text.value"
-                   (valueChange)="text.patchValue($event)"></app-text-area>
+  <app-image-input
+    class="edit-desc__img"
+    [imgUrlValue]="imgUrl.value"
+    (setFormImageUrl)="setImgUrlValue($event)"></app-image-input>
+  <app-text-area
+    class="edit-desc__field"
+    [error]="errors?.['text']"
+    [placeholder]="'Текст'"
+    [rows]="3"
+    [internalValue]="text.value"
+    (valueChange)="text.patchValue($event)"></app-text-area>
 
-  <button class="edit-desc__delete" (click)="deleteDescHandler()">Удалить</button>
-  <button class="edit-desc__button" (click)="submitFormHandler()">Применить</button>
+  <button class="edit-desc__delete" (click)="deleteDescHandler()">
+    Удалить
+  </button>
+  <button class="edit-desc__button" (click)="submitFormHandler()">
+    Применить
+  </button>
 </div>

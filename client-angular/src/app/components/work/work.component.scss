@@ -1,5 +1,5 @@
-@import "../../../styles/mixins/font";
-@import "../../../styles/mixins/button";
+@import '../../../styles/mixins/font';
+@import '../../../styles/mixins/button';
 @import '../../../styles/mixins/screen';
 @import '../../../styles/mixins/icon';
 
@@ -7,7 +7,7 @@
   padding: 0 21px 0 21px;
   position: relative;
 
-  &__edit{
+  &__edit {
     @include button-edit();
     right: -120px;
     top: 30px;
@@ -15,7 +15,7 @@
     display: grid;
     justify-content: center;
 
-    &__icon{
+    &__icon {
       @include icon('icon/edit.svg');
       width: 30px;
       height: 30px;
@@ -27,7 +27,7 @@
 
     @include screen-lg {
       margin-bottom: 17px;
-      padding: 32px  32px 0 32px;
+      padding: 32px 32px 0 32px;
     }
   }
 
@@ -40,10 +40,10 @@
 
     &__item {
       @include font(12px, 24px, 400, 1px);
-      color: #2A00A2;
-      padding: 0 8px ;
+      color: #2a00a2;
+      padding: 0 8px;
       border-radius: 4px;
-      background-color: #E4DAFF;
+      background-color: #e4daff;
       position: relative;
       text-transform: uppercase;
     }
@@ -55,45 +55,43 @@
   }
 
   &__functional-list {
-    ul{
+    ul {
       display: grid;
       margin-bottom: 15px;
       text-align: right;
 
-      li{
-        background-color: #EFF0F7;
+      li {
+        background-color: #eff0f7;
         padding: 12px 32px 12px 105px;
 
-        &:nth-child(even){
-          background-color: #FFFFFF;
-
+        &:nth-child(even) {
+          background-color: #ffffff;
         }
         display: block;
-          position: relative;
-          @include font(16px, 28px, 400, 1px);
+        position: relative;
+        @include font(16px, 28px, 400, 1px);
 
-          &:before {
-            content: '';
-            width: 32px;
-            height: 32px;
-            position: absolute;
-            border-radius: 50%;
-            left: 10px;
-            top: 50%;
-            transform: translate(0, -50%);
-            @include icon('/radio/radio.svg');
-
-            @include screen-lg {
-              left: 32px;
-            }
-          }
+        &:before {
+          content: '';
+          width: 32px;
+          height: 32px;
+          position: absolute;
+          border-radius: 50%;
+          left: 10px;
+          top: 50%;
+          transform: translate(0, -50%);
+          @include icon('/radio/radio.svg');
 
           @include screen-lg {
-            padding:  13px  32px 13px 95px;
-            @include font(20px, 32px, 400, 1.5px);
-            left: 0;
+            left: 32px;
           }
+        }
 
+        @include screen-lg {
+          padding: 13px 32px 13px 95px;
+          @include font(20px, 32px, 400, 1.5px);
+          left: 0;
+        }
       }
       @include screen-lg {
         margin-bottom: 25px;
@@ -120,14 +118,13 @@
       @include button-fill();
     }
 
-    @include screen-lg{
+    @include screen-lg {
       padding: 0 32px 32px 32px;
-
     }
   }
 
   @include screen-lg {
-    background: #FFFFFF;
+    background: #ffffff;
     box-shadow: 0 2px 2px rgb(0 32 51 / 2%), 0 2px 8px rgb(0 32 51 / 16%);
     border-radius: 4px;
     padding: 0;

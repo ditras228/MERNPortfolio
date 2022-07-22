@@ -1,17 +1,17 @@
-@import "../../../styles/mixins/font";
+@import '../../../styles/mixins/font';
 
-.notification{
-  background-color: #5F2EEA;
+.notification {
+  background-color: #5f2eea;
   padding: 20px 30px;
   @include font();
   font-weight: bold;
-  color: #FFFFFF;
+  color: #ffffff;
   border-radius: 15px;
   width: 400px;
-  &--error{
+  &--error {
     background-color: red;
   }
-  &-list{
+  &-list {
     display: grid;
     grid-row-gap: 15px;
     position: fixed;

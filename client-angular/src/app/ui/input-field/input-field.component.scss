@@ -1,52 +1,50 @@
-@import "../../../styles/mixins/input";
+@import '../../../styles/mixins/input';
 
-.input{
+.input {
   position: relative;
   $root: &;
 
-  &__error{
-    color: #C30052;
-    @include font(14px,22px,500, 1.5px);
+  &__error {
+    color: #c30052;
+    @include font(14px, 22px, 500, 1.5px);
     position: absolute;
     bottom: -28px;
   }
-  &__field{
+  &__field {
     @include input();
-    color: #14142B;
+    color: #14142b;
     border: 2px solid transparent;
 
-
-
-    &:focus{
-      background-color: #FCFCFC;
+    &:focus {
+      background-color: #fcfcfc;
       border: 2px solid black;
       outline: none;
     }
 
-    &:focus ~ #{$root}__label, &:not(:placeholder-shown) ~  #{$root}__label{
+    &:focus ~ #{$root}__label,
+    &:not(:placeholder-shown) ~ #{$root}__label {
       top: 13px;
-      @include font(14px,22px,500,0.25px);
-
+      @include font(14px, 22px, 500, 0.25px);
     }
   }
 
-  &__label{
+  &__label {
     position: absolute;
     left: 24px;
-    @include font(16px,28px,400,0.75px);
+    @include font(16px, 28px, 400, 0.75px);
     top: 50%;
     transform: translateY(-50%);
-    color: #6E7191;
+    color: #6e7191;
     transition: top 50ms linear;
   }
 
-  &--error{
-    #{$root}__field{
-      border: 2px solid #ED2E7E!important;background: #FFF3F8;
+  &--error {
+    #{$root}__field {
+      border: 2px solid #ed2e7e !important;
+      background: #fff3f8;
     }
-    #{$root}__label{
-      color: #C30052;
+    #{$root}__label {
+      color: #c30052;
     }
   }
 }
-

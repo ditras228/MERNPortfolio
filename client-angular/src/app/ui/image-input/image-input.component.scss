@@ -1,6 +1,6 @@
-@import "../../../styles/mixins/icon";
+@import '../../../styles/mixins/icon';
 .image {
-  &__input{
+  &__input {
     display: none;
   }
   &__img {
@@ -13,10 +13,10 @@
     position: relative;
     border-radius: 25px;
     overflow: hidden;
-    &--none{
-      background-color: #6E7191;
+    &--none {
+      background-color: #6e7191;
     }
-    &:after{
+    &:after {
       transition: all 0.1s linear;
       content: '';
       width: 100%;
@@ -28,7 +28,7 @@
       background: #000;
       opacity: 0;
     }
-    &:before{
+    &:before {
       transition: all 0.1s linear;
       content: '';
       display: block;
@@ -42,17 +42,15 @@
       z-index: 3;
       opacity: 0;
     }
-    &:hover{
+    &:hover {
       border-radius: 50%;
       cursor: pointer;
-      &:after{
+      &:after {
         opacity: 0.4;
       }
-      &:before{
+      &:before {
         opacity: 1;
       }
     }
   }
-
-
 }

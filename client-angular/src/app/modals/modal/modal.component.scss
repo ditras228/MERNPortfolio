@@ -1,22 +1,21 @@
-@import "../../../styles/mixins/screen";
-@import "../../../styles/mixins/icon";
+@import '../../../styles/mixins/screen';
+@import '../../../styles/mixins/icon';
 
-.backdrop{
+.backdrop {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgb(0,0,0,0.3);
+  background: rgb(0, 0, 0, 0.3);
   z-index: 2;
-
 }
-.modal{
-  background: #FFFFFF;
+.modal {
+  background: #ffffff;
   border-radius: 24px;
-  margin:  30px 0;
+  margin: 30px 0;
   position: relative;
-  &-container{
+  &-container {
     z-index: 3;
     justify-content: center;
     display: grid;
@@ -28,5 +27,4 @@
     width: 100vw;
     align-items: center;
   }
-
 }

@@ -1,8 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
-import { selectWorks} from "../../store/app.selectors";
-import {GetWork} from "../../../generated/graphql";
-import {Store} from "@ngrx/store";
-import {setCreateWorkVisible} from "../../modals/login/store/login-modal.actions";
+import { Component, Input, OnInit } from '@angular/core';
+import { selectWorks } from '../../store/app.selectors';
+import { GetWork } from '../../../generated/graphql';
+import { Store } from '@ngrx/store';
+import { setCreateWorkVisible } from '../../modals/login/store/login-modal.actions';
 
 @Component({
   selector: 'app-work-list',
@@ -10,20 +10,16 @@ import {setCreateWorkVisible} from "../../modals/login/store/login-modal.actions
   styleUrls: ['./work-list.component.scss'],
 })
 export class WorkListComponent implements OnInit {
-  works$: GetWork[] | any
-  @Input() isAuth = false
+  works$: GetWork[] | any;
+  @Input() isAuth = false;
 
-  constructor(public store$: Store) { }
-  createWorkHandler():void{
-    this.store$.dispatch(setCreateWorkVisible())
+  constructor(public store$: Store) {}
+  createWorkHandler(): void {
+    this.store$.dispatch(setCreateWorkVisible());
   }
   ngOnInit(): void {
     this.store$.select(selectWorks).subscribe(works => {
-        this.works$ = works
-      }
-    )
-
+      this.works$ = works;
+    });
   }
-
-
 }

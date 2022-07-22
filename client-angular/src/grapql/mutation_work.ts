@@ -1,5 +1,4 @@
-import {gql} from "apollo-angular";
-
+import { gql } from 'apollo-angular';
 
 export const createWorkMutation = gql`
   mutation createWork($input: CreateWorkInput!) {
@@ -11,7 +10,7 @@ export const createWorkMutation = gql`
       figma
       github
       name
-      tags{
+      tags {
         id
         title
       }
@@ -29,7 +28,7 @@ export const updateWorkMutation = gql`
       figma
       github
       name
-      tags{
+      tags {
         id
         title
       }
@@ -41,7 +40,7 @@ export const deleteWorkMutation = gql`
   mutation deleteWork($input: DeleteWorkInput!) {
     result: deleteWork(input: $input) {
       __typename
-      ... on DeleteWorkResult{
+      ... on DeleteWorkResult {
         id
       }
     }

@@ -1,33 +1,33 @@
-@import "../../../styles/mixins/font";
-@import "../../../styles/mixins/icon";
-@import "../../../styles/mixins/screen";
+@import '../../../styles/mixins/font';
+@import '../../../styles/mixins/icon';
+@import '../../../styles/mixins/screen';
 
-.contacts{
+.contacts {
   display: grid;
   grid-row-gap: 12px;
 
-  &__item{
+  &__item {
     $root: &;
     display: grid;
     grid-template-columns: 40px 1fr;
     transition: all 0.1s linear;
     position: relative;
-    &:after{
+    &:after {
       transition: all 0.3s ease-in-out;
       content: '';
       position: absolute;
       display: block;
       height: 100%;
-      background: #EFF0F7;
+      background: #eff0f7;
       bottom: 0;
       left: 0;
       z-index: -1;
       width: 100%;
       opacity: 0;
     }
-    &__icon{
+    &__icon {
       height: 40px;
-      background-color: #27A6E5;
+      background-color: #27a6e5;
       background-repeat: no-repeat;
       background-position: center;
       @include icon('social/telegram.svg');
@@ -35,36 +35,33 @@
       transition: background-size 0.1s linear;
       border-radius: 0;
 
-      &--github{
+      &--github {
         @include icon('social/github.svg');
-        background-color: #231E1B;
+        background-color: #231e1b;
       }
     }
 
-    &__text{
+    &__text {
       @include font(16px, 28px, 600, 0.9px);
       text-align: right;
       align-self: center;
 
-      @include screen-lg{
+      @include screen-lg {
         @include font(24px, 32px, 700, 1.5px);
       }
     }
 
-    &:hover{
+    &:hover {
       cursor: pointer;
-      color: #FFFFFF;
-      text-shadow: 1px 0 1px #000,
-      0 1px 1px #000,
-      -1px 0 1px #000,
-      0 -1px 1px #000;
-      #{$root}__icon{
+      color: #ffffff;
+      text-shadow: 1px 0 1px #000, 0 1px 1px #000, -1px 0 1px #000,
+        0 -1px 1px #000;
+      #{$root}__icon {
         background-size: 25px;
       }
-      &:after{
+      &:after {
         opacity: 1;
       }
     }
-
   }
 }

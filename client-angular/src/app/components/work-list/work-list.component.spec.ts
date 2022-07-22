@@ -8,9 +8,8 @@ describe('WorkListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ WorkListComponent ]
-    })
-    .compileComponents();
+      declarations: [WorkListComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(WorkListComponent);
     component = fixture.componentInstance;

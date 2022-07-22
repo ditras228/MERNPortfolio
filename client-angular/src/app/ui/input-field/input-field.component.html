@@ -1,9 +1,11 @@
 <div class="input">
-  <input [type]="type" placeholder=" " class="input__field"
-         [(ngModel)]="internalValue"
-         (ngModelChange)="internalValueUpdate.next($event)"
-  >
-  <label class="input__label" >{{placeholder}}</label>
+  <input
+    [type]="type"
+    placeholder=" "
+    class="input__field"
+    [(ngModel)]="internalValue"
+    (ngModelChange)="internalValueUpdate.next($event)" />
+  <label class="input__label">{{ placeholder }}</label>
 
-  <div class="input__error" *ngIf="error">{{error}}</div>
+  <div class="input__error" *ngIf="error">{{ error }}</div>
 </div>

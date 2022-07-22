@@ -8,9 +8,8 @@ describe('DescCarouselComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ InfoDescCarouselComponent ]
-    })
-    .compileComponents();
+      declarations: [InfoDescCarouselComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(InfoDescCarouselComponent);
     component = fixture.componentInstance;

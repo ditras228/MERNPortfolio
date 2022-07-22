@@ -1,11 +1,11 @@
-@import "../../../styles/mixins/button";
-@import "../../../styles/mixins/modal-close";
+@import '../../../styles/mixins/button';
+@import '../../../styles/mixins/modal-close';
 
 .create-desc {
   padding: 96px 132px;
   display: grid;
   justify-items: center;
-  &__img{
+  &__img {
     margin-bottom: 35px;
   }
   &__close {
@@ -18,7 +18,8 @@
     grid-column-gap: 15px;
   }
 
-  &__field, &__grid__field {
+  &__field,
+  &__grid__field {
     display: block;
     margin-bottom: 35px;
   }
