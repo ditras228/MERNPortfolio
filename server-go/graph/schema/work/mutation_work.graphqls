@@ -1,4 +1,4 @@
-input  CreateWorkInput{
+input CreateWorkInput {
   name: String!
   tags: [Int]!
   description: String!
@@ -7,7 +7,7 @@ input  CreateWorkInput{
   figma: String
 }
 
-input  UpdateWorkInput{
+input UpdateWorkInput {
   id: Int!
   name: String!
   tags: [Int]!
@@ -19,14 +19,11 @@ input  UpdateWorkInput{
 
 union UpdateWorkOutput = GetWork | UnexpectedError | NotFoundError
 
-input  DeleteWorkInput{
+input DeleteWorkInput {
   id: Int!
 }
 
-type  DeleteWorkResult{
+type DeleteWorkResult {
   id: Int!
 }
-union DeleteWorkOutput =
-  DeleteWorkResult |
-  NotFoundError |
-  UnexpectedError
+union DeleteWorkOutput = DeleteWorkResult | NotFoundError | UnexpectedError

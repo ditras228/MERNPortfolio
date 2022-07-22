@@ -34,7 +34,7 @@ export class EditDescComponent implements OnInit {
     public validationService: ValidationService
   ) {}
 
-  closeModal(): void {
+  closeModalHandler(): void {
     this.store$.dispatch(setEditDescVisible(undefined));
   }
 

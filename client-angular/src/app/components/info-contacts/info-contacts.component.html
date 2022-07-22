@@ -1,9 +1,9 @@
 <div class="contacts">
-  <div class="contacts__item" (click)="openLink(contacts?.telegramLink)">
+  <div class="contacts__item" (click)="openLinkHandler(contacts?.telegramLink)">
     <div class="contacts__item__icon"></div>
     <div class="contacts__item__text">{{ contacts?.telegramTitle }}</div>
   </div>
-  <div class="contacts__item" (click)="openLink(contacts?.githubLink)">
+  <div class="contacts__item" (click)="openLinkHandler(contacts?.githubLink)">
     <div class="contacts__item__icon contacts__item__icon--github"></div>
     <div class="contacts__item__text">{{ contacts?.githubTitle }}</div>
   </div>

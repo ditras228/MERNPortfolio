@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Contacts } from '../../../generated/graphql';
+import { WindowService } from '../../services/window.service';
 
 @Component({
   selector: 'app-info-contacts',
@@ -7,10 +8,11 @@ import { Contacts } from '../../../generated/graphql';
   styleUrls: ['./info-contacts.component.scss'],
 })
 export class InfoContactsComponent {
-  constructor() {}
   @Input() contacts: Contacts | undefined;
 
-  public openLink(link: string | undefined): void {
-    window.open(link);
+  constructor(public windowService: WindowService) {}
+
+  public openLinkHandler(link: string | undefined): void {
+    this.windowService.get(link);
   }
 }

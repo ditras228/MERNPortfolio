@@ -1,4 +1,4 @@
-type GetInfo{
+type GetInfo {
   name: String!
   img: String!
   job: String!
@@ -7,7 +7,7 @@ type GetInfo{
   contacts: Contacts!
 }
 
-type Contacts{
+type Contacts {
   telegramTitle: String!
   telegramLink: String!
 

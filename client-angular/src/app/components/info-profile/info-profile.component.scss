@@ -24,17 +24,6 @@
       position: relative;
       display: grid;
 
-      &__icon {
-        display: none;
-        @include icon('icon/check.svg');
-        width: 32px;
-        height: 32px;
-        position: absolute;
-        right: -36px;
-        top: 50%;
-        transform: translateY(-50%);
-      }
-
       @include screen-lg {
         margin-bottom: 10px;
       }
@@ -88,9 +77,7 @@
   &__photo {
     width: 100px;
     height: 100px;
-    @include icon('/Photos.png');
     background-position: center;
-    background-size: 125%;
   }
 
   @include screen-lg {

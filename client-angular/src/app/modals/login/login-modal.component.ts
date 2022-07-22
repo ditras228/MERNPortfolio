@@ -46,7 +46,7 @@ export class LoginModalComponent implements OnInit {
     });
   }
 
-  closeModal(): void {
+  closeModalHandler(): void {
     this.store$.dispatch(setLoginVisible());
   }
 

@@ -27,8 +27,8 @@ export class CreateWorkComponent implements OnInit {
   public errors: { [key: string]: string } = {};
   public name = new FormControl();
   public description = new FormControl();
-  public tags = [] as any;
-  public allTags = [] as any;
+  public tags: GetTag[] | any = [];
+  public allTags: GetTag[] = [];
   public github = new FormControl();
   public figma = new FormControl();
   public demo = new FormControl();
@@ -45,7 +45,7 @@ export class CreateWorkComponent implements OnInit {
     public validationService: ValidationService
   ) {}
 
-  closeModal(): void {
+  closeModalHandler(): void {
     this.store$.dispatch(setCreateWorkVisible());
   }
 

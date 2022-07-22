@@ -18,14 +18,16 @@ SwiperCore.use([Pagination, Navigation, Autoplay]);
   encapsulation: ViewEncapsulation.None,
 })
 export class InfoDescCarouselComponent {
+  @ViewChild('swiper', { static: false }) swiper?: SwiperComponent;
   @Input() info$: GetInfo | undefined;
   @Input() isAuth = false;
-  @ViewChild('swiper', { static: false }) swiper?: SwiperComponent;
 
   constructor(public store$: Store, public urlService: UrlService) {}
-  createDescHandler(): void {
+
+  showCreateDescHandler(): void {
     this.store$.dispatch(setCreateDescVisible());
   }
+
   editDescHandler(): void {
     this.store$.dispatch(
       setEditDescVisible(

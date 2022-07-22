@@ -38,7 +38,7 @@ export class EditInfoComponent implements OnInit {
     public validationService: ValidationService
   ) {}
 
-  closeModal(): void {
+  closeModalHandler(): void {
     this.store$.dispatch(setEditInfoVisible());
   }
 

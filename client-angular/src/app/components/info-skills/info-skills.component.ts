@@ -8,5 +8,6 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
 })
 export class InfoSkillsComponent {
   @Input() experience: String | undefined;
+
   constructor() {}
 }

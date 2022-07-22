@@ -1,14 +1,11 @@
-type User{
+type User {
   id: Int!
   login: String!
   password: String!
   accessToken: String!
 }
 
-type WrongPassword implements ServiceErrorInterface{
+type WrongPassword implements ServiceErrorInterface {
   message: String!
 }
-union UserOutput =
-  User |
-  NotFoundError |
-  WrongPassword
+union UserOutput = User | NotFoundError | WrongPassword

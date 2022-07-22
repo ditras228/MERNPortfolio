@@ -13,9 +13,11 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
-  public isAuth;
-  public isLock;
+  public isAuth: boolean | undefined;
+  public isLock: boolean | undefined;
+
   constructor(public store$: Store, public authService: AuthService) {}
+
   ngOnInit() {
     this.store$.select(selectIsAuth).subscribe(value => (this.isAuth = value));
     this.store$.select(selectLock).subscribe(value => (this.isLock = value));

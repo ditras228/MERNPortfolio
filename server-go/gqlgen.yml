@@ -7,7 +7,6 @@ schema:
   - graph/schema/desc/*.graphqls
   - graph/*.graphqls
 
-
 # Where should the generated server code go?
 exec:
   filename: graph/generated/generated.go
@@ -67,11 +66,3 @@ models:
       - github.com/99designs/gqlgen/graphql.Int
       - github.com/99designs/gqlgen/graphql.Int64
       - github.com/99designs/gqlgen/graphql.Int32
-
-
-
-
-
-
-
-

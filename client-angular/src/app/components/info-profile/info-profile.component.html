@@ -1,17 +1,16 @@
 <div class="profile">
   <div
     class="profile__photo"
-    [ngStyle]="{ backgroundImage: urlService.formBgImgUrl(info.img) }"></div>
+    [ngStyle]="{ backgroundImage: formBgImgUrlHandler(info?.img) }"></div>
 
   <div class="profile__content">
     <div class="profile__content__who">
-      {{ info.name }}
-      <div class="profile__content__who__icon"></div>
+      {{ info?.name }}
     </div>
     <div class="profile__content__job">
       <div class="profile__content__job__icon"></div>
       <div class="profile__content__job__text">
-        {{ info.job }}
+        {{ info?.job }}
       </div>
     </div>
   </div>

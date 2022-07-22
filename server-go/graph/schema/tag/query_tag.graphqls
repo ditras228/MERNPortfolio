@@ -1,9 +1,9 @@
-type  GetTag{
+type GetTag {
   id: Int!
   title: String!
 }
 
-type  GetWorkTag{
+type GetWorkTag {
   id: Int!
   workId: Int!
   tagId: Int!

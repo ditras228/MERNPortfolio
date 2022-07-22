@@ -29,13 +29,14 @@ export class CreateDescComponent implements OnInit {
     public validationService: ValidationService
   ) {}
 
-  closeModal(): void {
+  closeModalHandler(): void {
     this.store$.dispatch(setCreateDescVisible());
   }
 
   setImgUrlValue(e: string | ArrayBuffer | null): void {
     this.imgUrl.setValue(e);
   }
+
   submitFormHandler(): void {
     console.log('form');
     if (this.form?.invalid) {

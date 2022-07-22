@@ -48,6 +48,7 @@ import { AuthService } from './services/auth.service';
 import { NotificationService } from './services/notification.service';
 import { ValidationService } from './services/validation.service';
 import { GraphqlService } from './services/graphql.service';
+import { WindowService } from './services/window.service';
 
 @NgModule({
   declarations: [
@@ -112,6 +113,7 @@ import { GraphqlService } from './services/graphql.service';
     NotificationService,
     ValidationService,
     GraphqlService,
+    WindowService,
   ],
   bootstrap: [AppComponent],
 })

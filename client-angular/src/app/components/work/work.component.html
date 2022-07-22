@@ -14,23 +14,23 @@
       <button
         class="work__buttons__group__item"
         *ngIf="work?.github"
-        (click)="openLink(work?.github)">
+        (click)="openLinkHandler(work?.github)">
         GitHub
       </button>
       <button
         class="work__buttons__group__item"
         *ngIf="work?.figma"
-        (click)="openLink(work?.figma)">
+        (click)="openLinkHandler(work?.figma)">
         Figma
       </button>
     </div>
     <button
       class="work__buttons__item-fill"
       *ngIf="work?.demo"
-      (click)="openLink(work?.demo)"
-      [disabled]="isPortfolio(work?.demo)">
-      <span *ngIf="!isPortfolio(work?.demo)">Демо</span>
-      <span *ngIf="isPortfolio(work?.demo)">Вы здесь</span>
+      (click)="openLinkHandler(work?.demo)"
+      [disabled]="isOurLink">
+      <span *ngIf="isNotOurLink">Демо</span>
+      <span *ngIf="isOurLink">Вы здесь</span>
     </button>
   </div>
 </div>

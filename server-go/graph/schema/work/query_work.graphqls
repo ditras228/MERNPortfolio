@@ -1,4 +1,4 @@
-type  GetWork{
+type GetWork {
   id: Int!
   name: String!
   tags: [GetTag]!
@@ -7,4 +7,3 @@ type  GetWork{
   demo: String!
   figma: String!
 }
-

@@ -46,10 +46,12 @@ export class EditWorkComponent implements OnInit {
     public store$: Store,
     public validationService: ValidationService
   ) {}
+
   deleteWorkHandler(): void {
     this.store$.dispatch(deleteWork());
   }
-  closeModal(): void {
+
+  closeModalHandler(): void {
     this.store$.dispatch(setEditWorkVisible(undefined));
   }
 

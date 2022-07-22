@@ -10,8 +10,8 @@ import { setCreateWorkVisible } from '../../modals/login/store/login-modal.actio
   styleUrls: ['./work-list.component.scss'],
 })
 export class WorkListComponent implements OnInit {
-  works$: GetWork[] | any;
-  @Input() isAuth = false;
+  works$: GetWork[] | null | undefined;
+  @Input() isAuth: boolean = false;
 
   constructor(public store$: Store) {}
   createWorkHandler(): void {
