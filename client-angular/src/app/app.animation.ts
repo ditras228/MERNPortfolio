@@ -9,7 +9,7 @@ import {
 
 export const modalAnimation = trigger('modalAnimation', [
   transition(':enter', [
-    style({ transform: 'translateY(-10px)' }),
+    style({ transform: 'translateY(10px)' }),
     animate('150ms', style({ transform: 'translateY(0)' })),
   ]),
 ]);
