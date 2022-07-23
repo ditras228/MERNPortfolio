@@ -1,7 +1,7 @@
 # Инструкция
 ## Клиент (cd client-angular)
-### `$ npm i`
-### `$ make dev`
+### `$ npm i` устоновить зависимости
+### `$ make dev` запустить приложение
 
 ## Сервер (cd server-go)
 ### `$ docker-compose up pg_db` поднять бд
