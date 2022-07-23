@@ -1,7 +1,10 @@
 # Инструкция
-
+## Клиент (cd client-angular)
 ### `$ npm i`
+### `$ make dev`
 
-### `$ npm start`
+## Сервер (cd server-go)
+### `$ docker-compose up pg_db` поднять бд
+### `$ make dev` запустить GraphQL серевер 
+### `$ make img` запустить сервер раздачи картинок
 
-### `$ npm run dev`

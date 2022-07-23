@@ -3,6 +3,7 @@ dev:
 	$(call _info, "\nСтарт сервера");
 	npm run start
 
+.PHONY: gen
 gen:
 	$(call _info, "\nГенерация GraphQL типов");
 	npm run gen
