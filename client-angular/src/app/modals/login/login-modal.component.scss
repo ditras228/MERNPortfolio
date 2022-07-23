@@ -2,10 +2,10 @@
 @import '../../../styles/mixins/input';
 @import '../../../styles/mixins/button';
 @import '../../../styles/mixins/modal-close';
+@import '../../../styles/mixins/screen';
 
 .login {
-  padding: 96px 132px;
-
+  padding: 48px 21px;
   &__close {
     @include modal-close();
   }
@@ -18,14 +18,21 @@
     }
   }
   &__title {
-    @include font(48px, 50px, 700, 1px);
+    @include font(32px, 36px, 700, 1px);
     text-align: center;
     margin-bottom: 25px;
+    @include screen-lg{
+      @include font(48px, 50px, 700, 1px);
+    }
   }
   &__btn {
     @include button-fill();
     width: 220px;
     border-radius: 28px;
     height: 56px;
+  }
+  @include screen-lg{
+    padding: 96px 132px;
+
   }
 }

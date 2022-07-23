@@ -22,13 +22,18 @@ import {
   setTags,
 } from '../../edit-work/store/edit-work.actions';
 import { AuthService } from '../../../services/auth.service';
+import { LoginErrors } from './login-modal.reducer';
+import { NotificationService } from '../../../services/notification.service';
 
 @Injectable()
 export class LoginEffects extends GraphqlService {
+  public loginErrors = LoginErrors;
+
   constructor(
     private actions$: Actions,
     public store$: Store,
     public authService: AuthService,
+    public notificationService: NotificationService,
     override httpClient: HttpClient
   ) {
     super(httpClient);
@@ -69,13 +74,19 @@ export class LoginEffects extends GraphqlService {
             switch (auth.__typename) {
               case 'NotFoundError': {
                 this.store$.dispatch(
-                  setError({ id: 0, message: auth.message })
+                  setError({
+                    type: this.loginErrors.NOT_FOUND,
+                    message: auth.message,
+                  })
                 );
                 break;
               }
               case 'WrongPassword': {
                 this.store$.dispatch(
-                  setError({ id: 1, message: auth.message })
+                  setError({
+                    type: this.loginErrors.WRONG_PASSWORD,
+                    message: auth.message,
+                  })
                 );
                 break;
               }
@@ -84,10 +95,7 @@ export class LoginEffects extends GraphqlService {
                 break;
               }
               default: {
-                this.store$.dispatch(
-                  setError({ id: 2, message: 'Непредвиденная ошибка' })
-                );
-                break;
+                this.notificationService.addErrorNotification();
               }
             }
             return okay();

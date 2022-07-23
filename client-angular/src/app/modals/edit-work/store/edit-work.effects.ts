@@ -47,31 +47,19 @@ export class EditWorkEffects extends GraphqlService {
               case 'DeleteWorkResult': {
                 this.store$.dispatch(getWorks());
                 this.store$.dispatch(setEditWorkVisible(undefined));
-                this.notificationService.addNotification({
-                  typeId: 0,
-                  message: 'Работа успешно удалена',
-                });
+                this.notificationService.addSuccessNotification(
+                  'Работа успешно удалена'
+                );
                 break;
               }
               case 'NotFoundError': {
-                this.notificationService.addNotification({
-                  typeId: 0,
-                  message: 'Работа не найдена',
-                });
-                break;
-              }
-              case 'UnexpectedError': {
-                this.notificationService.addNotification({
-                  typeId: 1,
-                  message: 'Непредвиденная ошибка',
-                });
+                this.notificationService.addErrorNotification(
+                  'Работа не найдена'
+                );
                 break;
               }
               default: {
-                this.notificationService.addNotification({
-                  typeId: 1,
-                  message: 'Непредвиденная ошибка',
-                });
+                this.notificationService.addErrorNotification();
               }
             }
             return okay();
@@ -104,17 +92,13 @@ export class EditWorkEffects extends GraphqlService {
               case 'GetWork': {
                 this.store$.dispatch(getWorks());
                 this.store$.dispatch(setEditWorkVisible(undefined));
-                this.notificationService.addNotification({
-                  typeId: 0,
-                  message: 'Работа успешно отредактирована',
-                });
+                this.notificationService.addSuccessNotification(
+                  'Работа успешно отредактирована'
+                );
                 break;
               }
               default: {
-                this.notificationService.addNotification({
-                  typeId: 1,
-                  message: 'Непредвиденная ошибка',
-                });
+                this.notificationService.addErrorNotification();
               }
             }
 

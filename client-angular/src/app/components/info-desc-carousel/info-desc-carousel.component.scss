@@ -39,7 +39,7 @@
       display: grid;
       grid-template-columns: 1fr 76px;
       grid-column-gap: 25px;
-
+      align-items: center;
       img {
         display: block;
         height: 76px;
@@ -65,7 +65,7 @@
       @include button-edit();
 
       &__icon {
-        @include icon('icon/add.svg');
+        @include icon('add.svg');
         width: 30px;
         height: 30px;
       }
@@ -78,7 +78,7 @@
       justify-content: center;
 
       &__icon {
-        @include icon('icon/edit.svg');
+        @include icon('edit.svg');
         width: 30px;
         height: 30px;
       }

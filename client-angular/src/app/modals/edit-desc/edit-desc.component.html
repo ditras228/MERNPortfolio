@@ -1,8 +1,10 @@
 <div class="edit-desc">
+  <div class="edit-desc__title">Создать работу</div>
   <div class="edit-desc__close" (click)="closeModalHandler()"></div>
+
   <app-image-input
     class="edit-desc__img"
-    [imgUrlValue]="imgUrl.value"
+    [imgUrlValue]="img.value"
     (setFormImageUrl)="setImgUrlValue($event)"></app-image-input>
   <app-text-area
     class="edit-desc__field"

@@ -2,6 +2,7 @@ package desc
 
 import (
 	"context"
+	"github.com/ztrue/tracerr"
 	"os"
 	"portfolio/graph/model"
 	postgres "portfolio/infrastructure/postgresql"
@@ -17,19 +18,22 @@ func (r *repository) FindAll(ctx context.Context) (model.GetDescOutput, error) {
 	q := `
 
 			SELECT 
-				id, text, imgUrl
+				id, text, img
 
-			FROM public.desc
+			FROM 
+				public.desc
+
 		 `
+
 	rows, err := r.client.Query(ctx, q)
 	if err != nil {
-		return model.UnexpectedError{Message: err.Error()}, nil
+		return nil, tracerr.Errorf("failed to find all descs: %w", err)
 	}
 	var res model.GetDescResult
 	descs := make([]*model.GetDesc, 0)
 	for rows.Next() {
 		var dsc model.GetDesc
-		err := rows.Scan(&dsc.ID, &dsc.Text, &dsc.ImgURL)
+		err := rows.Scan(&dsc.ID, &dsc.Text, &dsc.Img)
 		if err != nil {
 			return nil, nil
 		}
@@ -38,11 +42,12 @@ func (r *repository) FindAll(ctx context.Context) (model.GetDescOutput, error) {
 	res.Desc = descs
 	return res, nil
 }
-func (r *repository) Update(ctx context.Context, input model.UpdateDescInput) (model.UpdateDescOutput, error) {
-	qImgUrl := `
+
+func (r *repository) UpdateDesc(ctx context.Context, input model.UpdateDescInput) (model.UpdateDescOutput, error) {
+	qImg := `
 
 				SELECT 
-					imgUrl
+					img
 				
 				FROM 
 					public.desc
@@ -55,10 +60,10 @@ func (r *repository) Update(ctx context.Context, input model.UpdateDescInput) (m
 	var newLink string
 
 	err := r.client.
-		QueryRow(ctx, qImgUrl, input.ID).
+		QueryRow(ctx, qImg, input.ID).
 		Scan(&oldLink)
 	if err != nil {
-		return nil, err
+		return model.NotFoundError{Message: "Описание не найдено", ID: input.ID}, nil
 	}
 
 	var dsc model.GetDesc
@@ -69,65 +74,65 @@ func (r *repository) Update(ctx context.Context, input model.UpdateDescInput) (m
 					public.desc
 				
 				SET 
-					text = $2, imgUrl = $3
+					text = $2, img = $3
 
 				WHERE 
 					id = $1
 
 				RETURNING
-					id, text, imgUrl
+					id, text, img
 
 			 `
 
-	if oldLink == input.ImgURL {
-		newLink = input.ImgURL
+	if oldLink == input.Img {
+		newLink = input.Img
 	} else {
 		err = os.Remove(oldLink)
-		newLink, err = utils.SaveImage(input.ImgURL)
+		newLink, err = utils.SaveImage(input.Img)
 		if err != nil {
-			return nil, err
+			return nil, tracerr.Errorf("failed to save image: %w", err)
 		}
 	}
 
 	err = r.client.
 		QueryRow(ctx, qDesc, input.ID, input.Text, newLink).
-		Scan(&dsc.ID, &dsc.Text, &dsc.ImgURL)
+		Scan(&dsc.ID, &dsc.Text, &dsc.Img)
 	if err != nil {
-		return nil, err
+		return nil, tracerr.Errorf("failed to update desc: %w", err)
 	}
 
 	return dsc, nil
 }
 
-func (r *repository) Create(ctx context.Context, input model.CreateDescInput) (model.CreateDescOutput, error) {
+func (r *repository) CreateDesc(ctx context.Context, input model.CreateDescInput) (model.CreateDescOutput, error) {
 	qDesc := `
 
 				INSERT INTO 
-					public.desc (text, imgurl)
+					public.desc (text, img)
 
 				VALUES
 					($1, $2)
 
 				RETURNING
-					id, text, imgurl
+					id, text, img
 
 			 `
 	var dsc model.GetDesc
-	link, err := utils.SaveImage(input.ImgURL)
+	link, err := utils.SaveImage(input.Img)
 	if err != nil {
-		return nil, err
+		return nil, tracerr.Errorf("failed to save image: %w", err)
 	}
 	err = r.client.
 		QueryRow(ctx, qDesc, input.Text, link).
-		Scan(&dsc.ID, &dsc.Text, &dsc.ImgURL)
+		Scan(&dsc.ID, &dsc.Text, &dsc.Img)
 
 	if err != nil {
-		return nil, err
+		return nil, tracerr.Errorf("failed to create desc: %w", err)
 	}
 	return dsc, nil
 }
 
-func (r *repository) Delete(ctx context.Context, input model.DeleteDescInput) (model.DeleteDescOutput, error) {
+func (r *repository) DeleteDesc(ctx context.Context, input model.DeleteDescInput) (model.DeleteDescOutput, error) {
 	qDesc := `
 
 			DELETE FROM 
@@ -137,19 +142,20 @@ func (r *repository) Delete(ctx context.Context, input model.DeleteDescInput) (m
 				id = $1
 
 			RETURNING 
-				id, text, imgUrl
+				id
 
 			`
 
-	var dsc model.GetDesc
+	var res model.DeleteDescResult
 
 	err := r.client.
 		QueryRow(ctx, qDesc, input.ID).
-		Scan(&dsc.ID, &dsc.Text, &dsc.ImgURL)
+		Scan(&res.ID)
+
 	if err != nil {
-		return nil, err
+		return model.NotFoundError{Message: "Описание не найдено", ID: input.ID}, nil
 	}
-	return dsc, nil
+	return res, nil
 }
 func NewRepository(client postgres.Client) desc.Repository {
 	return &repository{

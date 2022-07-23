@@ -8,7 +8,7 @@ import {
 } from './store/login-modal.actions';
 import { selectLoginError } from './store/login-modal.selectors';
 import { ValidationService } from '../../services/validation.service';
-import { errorInputs } from './store/login-modal.reducer';
+import { errorInputs, LoginErrors } from './store/login-modal.reducer';
 
 @Component({
   selector: 'app-login-modal',
@@ -21,6 +21,7 @@ export class LoginModalComponent implements OnInit {
   public form:
     | FormGroup<{ password: FormControl<string>; login: FormControl<string> }>
     | undefined;
+  public loginErrors = LoginErrors;
   public serverError: errorInputs | undefined;
   public errors: { [key: string]: string } = {};
 

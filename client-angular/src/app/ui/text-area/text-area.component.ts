@@ -10,7 +10,6 @@ export class TextAreaComponent implements OnInit {
   @Input() placeholder = '' as string;
   @Input() rows = 1 as number;
   @Output() valueChange = new EventEmitter<string>();
-
   @Input() internalValue = '';
   internalValueUpdate = new EventEmitter<string>();
 

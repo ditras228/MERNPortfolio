@@ -16,7 +16,7 @@ import { setCreateDescVisible } from '../login/store/login-modal.actions';
 export class CreateDescComponent implements OnInit {
   public errors: { [key: string]: string } = {};
   public text = new FormControl();
-  public imgUrl = new FormControl();
+  public img = new FormControl();
   public form:
     | FormGroup<{
         text: FormControl<string>;
@@ -34,14 +34,11 @@ export class CreateDescComponent implements OnInit {
   }
 
   setImgUrlValue(e: string | ArrayBuffer | null): void {
-    this.imgUrl.setValue(e);
+    this.img.setValue(e);
   }
 
   submitFormHandler(): void {
-    console.log('form');
     if (this.form?.invalid) {
-      console.log('invalid');
-
       this.errors = this.validationService.GetValidationMessage(
         this.form,
         this.errors
@@ -51,7 +48,7 @@ export class CreateDescComponent implements OnInit {
       this.store$.dispatch(
         setCreateDescForm({
           text: this.text.value,
-          imgUrl: this.imgUrl.value,
+          img: this.img.value,
         })
       );
       this.store$.dispatch(submitCreateDescForm());
@@ -60,11 +57,11 @@ export class CreateDescComponent implements OnInit {
 
   ngOnInit(): void {
     this.text = new FormControl(null, [Validators.required]);
-    this.imgUrl = new FormControl(null, [Validators.required]);
+    this.img = new FormControl(null, [Validators.required]);
 
     this.form = new FormGroup({
       text: this.text,
-      imgUrl: this.imgUrl,
+      imgUrl: this.img,
     });
   }
 }

@@ -49,17 +49,13 @@ export class CreateWorkEffects extends GraphqlService {
               case 'GetWork': {
                 this.store$.dispatch(getWorks());
                 this.store$.dispatch(setCreateWorkVisible());
-                this.notificationService.addNotification({
-                  typeId: 0,
-                  message: 'Работа успешно создана',
-                });
+                this.notificationService.addSuccessNotification(
+                  'Работа успешно создана'
+                );
                 break;
               }
               default: {
-                this.notificationService.addNotification({
-                  typeId: 1,
-                  message: 'Непредвиденная ошибка',
-                });
+                this.notificationService.addErrorNotification();
               }
             }
             return okay();

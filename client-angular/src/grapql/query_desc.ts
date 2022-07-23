@@ -8,7 +8,7 @@ export const DescQuery = gql`
         desc {
           id
           text
-          imgURL
+          img
         }
       }
     }

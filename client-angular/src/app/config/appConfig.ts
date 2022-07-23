@@ -1,5 +1,5 @@
 const AppConfig = {
-  baseUrl: 'http://localhost:8080/grapql',
-  imgUrl: 'http://localhost:4000',
+  baseUrl: 'http://192.168.1.2:8080/grapql',
+  imgUrl: 'http://192.168.1.2:4001',
 };
 export default AppConfig;

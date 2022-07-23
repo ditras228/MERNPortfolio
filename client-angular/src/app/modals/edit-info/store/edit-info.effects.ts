@@ -51,17 +51,13 @@ export class EditInfoEffects extends GraphqlService {
               case 'GetInfo': {
                 this.store$.dispatch(getInfo());
                 this.store$.dispatch(setEditInfoVisible());
-                this.notificationService.addNotification({
-                  typeId: 0,
-                  message: 'Информация успешно изменена',
-                });
+                this.notificationService.addSuccessNotification(
+                  'Информация успешно изменена'
+                );
                 break;
               }
               default: {
-                this.notificationService.addNotification({
-                  typeId: 1,
-                  message: 'Непредвиденная ошибка',
-                });
+                this.notificationService.addErrorNotification();
               }
             }
             return okay();

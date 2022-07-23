@@ -13,8 +13,13 @@ import {
 } from './login-modal.actions';
 import { GetDesc, GetWork } from '../../../../generated/graphql';
 
+export const LoginErrors = {
+  NOT_FOUND: 'not_found',
+  WRONG_PASSWORD: 'wrong_password',
+};
+
 export type errorInputs = {
-  id: number;
+  type: string;
   message: string;
 };
 

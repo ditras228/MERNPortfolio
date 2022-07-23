@@ -1,21 +1,42 @@
 @import '../../../styles/mixins/font';
+@import '../../../styles/mixins/icon';
 
 .notification {
-  background-color: #5f2eea;
+  background-color: green;
   padding: 20px 30px;
-  @include font();
+  @include font(16px, 28px, 600, 0.9px);
   font-weight: bold;
   color: #ffffff;
   border-radius: 15px;
   width: 400px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-column-gap: 20px;
+  align-items: center;
+  opacity: 0.8;
   &--error {
     background-color: red;
   }
+
+  &__icon{
+    @include icon('check.svg');
+    width: 32px;
+    height: 32px;
+
+    &--error{
+      @include icon('warning.svg')
+    }
+  }
+
   &-list {
     display: grid;
     grid-row-gap: 15px;
     position: fixed;
     bottom: 20px;
     right: 20px;
+
+    &--lock{
+      margin-right: 15px;
+    }
   }
 }

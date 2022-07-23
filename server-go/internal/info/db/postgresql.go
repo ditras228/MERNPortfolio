@@ -14,7 +14,7 @@ type repository struct {
 }
 
 func (r *repository) UpdateInfo(ctx context.Context, input model.UpdateInfoInput) (model.GetInfo, error) {
-	qImgUrl := `
+	qImg := `
 				SELECT 
 					img
 				
@@ -43,7 +43,7 @@ func (r *repository) UpdateInfo(ctx context.Context, input model.UpdateInfoInput
 	qDesc := `
 
 			SELECT 
-				id, text, imgUrl
+				id, text, img
 
 			FROM public.desc
 
@@ -56,7 +56,7 @@ func (r *repository) UpdateInfo(ctx context.Context, input model.UpdateInfoInput
 	var newLink string
 
 	err := r.client.
-		QueryRow(ctx, qImgUrl).
+		QueryRow(ctx, qImg).
 		Scan(&oldLink)
 
 	if oldLink != input.Img {
@@ -79,7 +79,7 @@ func (r *repository) UpdateInfo(ctx context.Context, input model.UpdateInfoInput
 	descs := make([]*model.GetDesc, 0)
 	for rows.Next() {
 		var dsc model.GetDesc
-		err := rows.Scan(&dsc.ID, &dsc.Text, &dsc.ImgURL)
+		err := rows.Scan(&dsc.ID, &dsc.Text, &dsc.Img)
 		if err != nil {
 			return model.GetInfo{}, nil
 		}
@@ -121,7 +121,7 @@ func (r *repository) FindOne(ctx context.Context) (model.GetInfo, error) {
 	qDesc := `
 
 			SELECT 
-				id, text, imgUrl
+				id, text, img
 
 			FROM public.desc
 
@@ -136,7 +136,7 @@ func (r *repository) FindOne(ctx context.Context) (model.GetInfo, error) {
 	descs := make([]*model.GetDesc, 0)
 	for descRows.Next() {
 		var dsc model.GetDesc
-		err := descRows.Scan(&dsc.ID, &dsc.Text, &dsc.ImgURL)
+		err := descRows.Scan(&dsc.ID, &dsc.Text, &dsc.Img)
 		if err != nil {
 			return model.GetInfo{}, nil
 		}

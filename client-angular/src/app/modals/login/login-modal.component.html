@@ -1,18 +1,18 @@
 <div class="login">
+  <div class="login__title">Админка</div>
   <div class="login__close" (click)="closeModalHandler()"></div>
 
-  <div class="login__title">Админка</div>
   <div class="login__form">
     <app-input-field
       class="login__form__input"
-      [error]="errors?.['login'] || serverError?.id === 0 &&  serverError?.message"
+      [error]="errors?.['login'] || serverError?.type === loginErrors.NOT_FOUND &&  serverError?.message"
       [placeholder]="'Логин'"
       [internalValue]="login.value"
       (valueChange)="login.patchValue($event)"></app-input-field>
     <app-input-field
       class="login__form__input"
       [type]="'password'"
-      [error]="errors?.['password'] || serverError?.id === 1 &&  serverError?.message"
+      [error]="errors?.['password'] || serverError?.type === loginErrors.WRONG_PASSWORD &&  serverError?.message"
       [placeholder]="'Пароль'"
       [internalValue]="password.value"
       (valueChange)="password.patchValue($event)"></app-input-field>

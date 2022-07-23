@@ -4,9 +4,15 @@ import {
   removeLastNotification,
 } from './notification.actions';
 
+export const NotificationTypes = {
+  SUCCESS: 'success',
+  ALERT: 'alert',
+  ERROR: 'error',
+};
+
 export type NotificationItem = {
   message: string;
-  typeId: number;
+  type: string;
 };
 export interface State {
   notifications: NotificationItem[];

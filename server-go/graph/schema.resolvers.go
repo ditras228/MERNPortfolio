@@ -34,12 +34,12 @@ func (r *mutationResolver) CreateWork(ctx context.Context, input model.CreateWor
 	return &res, nil
 }
 
-func (r *mutationResolver) UpdateWork(ctx context.Context, input model.UpdateWorkInput) (*model.GetWork, error) {
+func (r *mutationResolver) UpdateWork(ctx context.Context, input model.UpdateWorkInput) (model.UpdateWorkOutput, error) {
 	res, err := container.WorkRepository.UpdateWork(ctx, input)
 	if err != nil {
 		return nil, err
 	}
-	return &res, nil
+	return res, nil
 }
 
 func (r *mutationResolver) DeleteWork(ctx context.Context, input model.DeleteWorkInput) (model.DeleteWorkOutput, error) {
@@ -51,7 +51,7 @@ func (r *mutationResolver) DeleteWork(ctx context.Context, input model.DeleteWor
 }
 
 func (r *mutationResolver) UpdateDesc(ctx context.Context, input model.UpdateDescInput) (model.UpdateDescOutput, error) {
-	desc, err := container.DescRepository.Update(ctx, input)
+	desc, err := container.DescRepository.UpdateDesc(ctx, input)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +59,7 @@ func (r *mutationResolver) UpdateDesc(ctx context.Context, input model.UpdateDes
 }
 
 func (r *mutationResolver) CreateDesc(ctx context.Context, input model.CreateDescInput) (model.CreateDescOutput, error) {
-	desc, err := container.DescRepository.Create(ctx, input)
+	desc, err := container.DescRepository.CreateDesc(ctx, input)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +67,7 @@ func (r *mutationResolver) CreateDesc(ctx context.Context, input model.CreateDes
 }
 
 func (r *mutationResolver) DeleteDesc(ctx context.Context, input model.DeleteDescInput) (model.DeleteDescOutput, error) {
-	desc, err := container.DescRepository.Delete(ctx, input)
+	desc, err := container.DescRepository.DeleteDesc(ctx, input)
 	if err != nil {
 		return nil, err
 	}

@@ -17,7 +17,7 @@ input UpdateWorkInput {
   figma: String!
 }
 
-union UpdateWorkOutput = GetWork | UnexpectedError | NotFoundError
+union UpdateWorkOutput = GetWork  | NotFoundError
 
 input DeleteWorkInput {
   id: Int!
@@ -26,4 +26,4 @@ input DeleteWorkInput {
 type DeleteWorkResult {
   id: Int!
 }
-union DeleteWorkOutput = DeleteWorkResult | NotFoundError | UnexpectedError
+union DeleteWorkOutput = DeleteWorkResult | NotFoundError

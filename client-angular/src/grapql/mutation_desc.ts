@@ -3,7 +3,11 @@ export const deleteDescMutation = gql`
   mutation deleteDesc($input: DeleteDescInput!) {
     result: deleteDesc(input: $input) {
       __typename
-      ... on GetDesc {
+      ... on DeleteDescResult {
+        id
+      }
+      ... on NotFoundError {
+        message
         id
       }
     }
@@ -17,7 +21,7 @@ export const createDescMutation = gql`
       ... on GetDesc {
         id
         text
-        imgURL
+        img
       }
     }
   }
@@ -30,7 +34,11 @@ export const updateDescMutation = gql`
       ... on GetDesc {
         id
         text
-        imgURL
+        img
+      }
+      ... on NotFoundError {
+        message
+        id
       }
     }
   }

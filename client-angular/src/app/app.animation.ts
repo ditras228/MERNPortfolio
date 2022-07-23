@@ -31,7 +31,7 @@ export const listAnimation = trigger('listAnimation', [
       ':enter',
       [
         style({ opacity: 0 }),
-        stagger('60ms', animate('600ms ease-out', style({ opacity: 1 }))),
+        stagger('60ms', animate('600ms ease-out', style({ opacity: 0.9 }))),
       ],
       { optional: true }
     ),

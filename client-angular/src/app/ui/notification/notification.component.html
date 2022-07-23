@@ -1,8 +1,10 @@
-<div class="notification-list" [@listAnimation]="notifications?.length">
+<div class="notification-list" [@listAnimation]="notifications?.length" [ngClass]="isLock? 'notification-list--lock':''">
   <div
     class="notification"
     *ngFor="let notification of notifications"
-    [ngClass]="notification.typeId ? 'notification--red' : ''">
+    [ngClass]="notification.type === notificationTypes.ERROR ? 'notification--error' : ''">
+    <div class="notification__icon" [ngClass]="notification.type === notificationTypes.ERROR ? 'notification__icon--error' : ''"></div>
     {{ notification.message }}
   </div>
 </div>
+

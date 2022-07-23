@@ -51,6 +51,15 @@ export class EditDescEffects extends GraphqlService {
                 this.store$.dispatch(getInfo());
                 break;
               }
+              case 'NotFoundError': {
+                this.notificationService.addErrorNotification(result.message);
+                break;
+              }
+              default: {
+                this.notificationService.addErrorNotification(
+                  'Непредвиденная ошибка'
+                );
+              }
             }
             return okay();
           })
@@ -70,39 +79,27 @@ export class EditDescEffects extends GraphqlService {
           input: {
             id: editDescInputs.id,
             text: editDescInputs.text,
-            imgURL: editDescInputs.imgUrl,
+            img: editDescInputs.img,
           },
         } as MutationUpdateDescArgs).pipe(
           map(({ result }) => {
             switch (result.__typename) {
               case 'GetDesc': {
-                this.notificationService.addNotification({
-                  typeId: 0,
-                  message: 'Описание успешно изменена',
-                });
+                this.notificationService.addSuccessNotification(
+                  'Описание успешно изменено'
+                );
                 this.store$.dispatch(setEditDescVisible(undefined));
                 this.store$.dispatch(getInfo());
                 break;
               }
               case 'NotFoundError': {
-                this.notificationService.addNotification({
-                  typeId: 1,
-                  message: 'Описание не найдено',
-                });
-                break;
-              }
-              case 'UnexpectedError': {
-                this.notificationService.addNotification({
-                  typeId: 1,
-                  message: 'Непредвиденная ошибка',
-                });
+                this.notificationService.addErrorNotification(result.message);
                 break;
               }
               default: {
-                this.notificationService.addNotification({
-                  typeId: 1,
-                  message: 'Непредвиденная ошибка',
-                });
+                this.notificationService.addErrorNotification(
+                  'Непредвиденная ошибка'
+                );
               }
             }
 

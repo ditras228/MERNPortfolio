@@ -18,13 +18,13 @@ export class AuthService {
   public logout(): void {
     this.cookieService.delete('token');
     this.store$.dispatch(setAuth(false));
-    this.notificationService.addNotification({ typeId: 0, message: 'Логаут' });
+    this.notificationService.addSuccessNotification('Логаут');
   }
 
   public login(token: string) {
     this.store$.dispatch(setAuth(true));
     this.cookieService.set('token', token);
     this.store$.dispatch(setLoginVisible());
-    this.notificationService.addNotification({ typeId: 0, message: 'Логин' });
+    this.notificationService.addSuccessNotification('Логин');
   }
 }

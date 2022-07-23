@@ -2,7 +2,7 @@ import { createAction } from '@ngrx/store';
 
 export type CreateDescInputs = {
   text: string;
-  imgUrl: string;
+  img: string;
 };
 
 export const setCreateDescForm = createAction(

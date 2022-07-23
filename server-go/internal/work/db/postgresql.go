@@ -158,7 +158,7 @@ func (r *repository) CreateWork(ctx context.Context, input model.CreateWorkInput
 
 	return wrk, nil
 }
-func (r *repository) UpdateWork(ctx context.Context, input model.UpdateWorkInput) (model.GetWork, error) {
+func (r *repository) UpdateWork(ctx context.Context, input model.UpdateWorkInput) (model.UpdateWorkOutput, error) {
 	qDeleteTags := `
 
 					DELETE 
@@ -173,6 +173,7 @@ func (r *repository) UpdateWork(ctx context.Context, input model.UpdateWorkInput
 	if err != nil {
 		return model.GetWork{}, err
 	}
+
 	defer res.Close()
 
 	qAddTags := `
@@ -221,8 +222,8 @@ func (r *repository) UpdateWork(ctx context.Context, input model.UpdateWorkInput
 	err = r.client.
 		QueryRow(ctx, qUpdWork, input.ID, input.Name, input.Description, input.Github, input.Demo, input.Figma).
 		Scan(&wrk.ID, &wrk.Name, &wrk.Description, &wrk.Github, &wrk.Demo, &wrk.Figma)
-	if err != nil {
-		return model.GetWork{}, err
+	if err == nil {
+		return model.NotFoundError{Message: "Работа не найдена", ID: input.ID}, nil
 	}
 
 	return wrk, nil
@@ -251,6 +252,7 @@ func (r *repository) DeleteWork(ctx context.Context, input model.DeleteWorkInput
 				id
 
 		`
+
 	var res model.DeleteWorkResult
 	r.client.QueryRow(ctx, qWorkTag, input.ID)
 

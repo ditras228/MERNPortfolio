@@ -6,8 +6,8 @@
 .navbar {
   @include font(22px, 34px, 400, 0.1px);
   color: #14142a;
-  box-shadow: 0px 2px 2px rgba(0, 32, 51, 0.02),
-    0px 2px 8px rgba(0, 32, 51, 0.16);
+  box-shadow: 0 2px 2px rgba(0, 32, 51, 0.02),
+    0 2px 8px rgba(0, 32, 51, 0.16);
   width: 100%;
   position: fixed;
   top: 0;
@@ -28,24 +28,22 @@
     &__logo {
       height: 30px;
       background-size: contain;
-      @include icon('icon/logo.svg');
+      @include icon('logo.svg');
     }
     &__logout {
       @include button-small();
     }
     &__admin-btn {
       @include button-small();
-      display: none;
+      display: grid;
+      grid-column-gap: 7px;
+      grid-template-columns: 22px 1fr;
       &__icon {
         height: 22px;
-        @include icon('/icon/admin.svg');
+        @include icon('admin.svg');
         background-size: contain;
       }
-      @include screen-lg {
-        display: grid;
-        grid-column-gap: 7px;
-        grid-template-columns: 22px 1fr;
-      }
+
     }
 
     @include screen-lg {

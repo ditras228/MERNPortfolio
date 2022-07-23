@@ -37,7 +37,7 @@ export class CreateDescEffects extends GraphqlService {
         return this.doRequest<CreateDescMutation>(CreateDescDocument, {
           input: {
             text: editDescInputs.text,
-            imgURL: editDescInputs.imgUrl,
+            img: editDescInputs.img,
           },
         } as MutationCreateDescArgs).pipe(
           map(({ result }) => {
@@ -45,17 +45,15 @@ export class CreateDescEffects extends GraphqlService {
               case 'GetDesc': {
                 this.store$.dispatch(setCreateDescVisible());
                 this.store$.dispatch(getInfo());
-                this.notificationService.addNotification({
-                  typeId: 0,
-                  message: 'Описание успешно изменено',
-                });
+                this.notificationService.addSuccessNotification(
+                  'Описание успешно изменено'
+                );
                 break;
               }
               default: {
-                this.notificationService.addNotification({
-                  typeId: 1,
-                  message: 'Непредвиденная ошибка',
-                });
+                this.notificationService.addErrorNotification(
+                  'Непредвиденная ошибка'
+                );
               }
             }
             return okay();

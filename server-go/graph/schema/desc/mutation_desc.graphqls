@@ -1,15 +1,22 @@
 input UpdateDescInput {
-  id: Int!
-  text: String!
-  imgURL: String!
+    id: Int!
+    text: String!
+    img: String!
 }
+
 input CreateDescInput {
-  text: String!
-  imgURL: String!
+    text: String!
+    img: String!
 }
+
 input DeleteDescInput {
-  id: Int!
+    id: Int!
 }
-union DeleteDescOutput = GetDesc | UnexpectedError | NotFoundError
-union UpdateDescOutput = GetDesc | UnexpectedError | NotFoundError
-union CreateDescOutput = GetDesc | UnexpectedError
+
+type DeleteDescResult  {
+    id: Int!
+}
+
+union DeleteDescOutput = DeleteDescResult | NotFoundError
+union UpdateDescOutput = GetDesc | NotFoundError
+union CreateDescOutput = GetDesc

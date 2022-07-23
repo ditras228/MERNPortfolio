@@ -42,8 +42,8 @@ type Contacts struct {
 }
 
 type CreateDescInput struct {
-	Text   string `json:"text"`
-	ImgURL string `json:"imgURL"`
+	Text string `json:"text"`
+	Img  string `json:"img"`
 }
 
 type CreateWorkInput struct {
@@ -59,6 +59,12 @@ type DeleteDescInput struct {
 	ID int `json:"id"`
 }
 
+type DeleteDescResult struct {
+	ID int `json:"id"`
+}
+
+func (DeleteDescResult) IsDeleteDescOutput() {}
+
 type DeleteWorkInput struct {
 	ID int `json:"id"`
 }
@@ -70,12 +76,11 @@ type DeleteWorkResult struct {
 func (DeleteWorkResult) IsDeleteWorkOutput() {}
 
 type GetDesc struct {
-	ID     int    `json:"id"`
-	Text   string `json:"text"`
-	ImgURL string `json:"imgURL"`
+	ID   int    `json:"id"`
+	Text string `json:"text"`
+	Img  string `json:"img"`
 }
 
-func (GetDesc) IsDeleteDescOutput() {}
 func (GetDesc) IsUpdateDescOutput() {}
 func (GetDesc) IsCreateDescOutput() {}
 
@@ -119,6 +124,7 @@ type GetWorkTag struct {
 
 type NotFoundError struct {
 	Message string `json:"message"`
+	ID      int    `json:"id"`
 }
 
 func (NotFoundError) IsUpdateWorkOutput()      {}
@@ -129,22 +135,10 @@ func (NotFoundError) IsDeleteDescOutput()      {}
 func (NotFoundError) IsUpdateDescOutput()      {}
 func (NotFoundError) IsGetDescOutput()         {}
 
-type UnexpectedError struct {
-	Message string `json:"message"`
-}
-
-func (UnexpectedError) IsUpdateWorkOutput()      {}
-func (UnexpectedError) IsDeleteWorkOutput()      {}
-func (UnexpectedError) IsServiceErrorInterface() {}
-func (UnexpectedError) IsDeleteDescOutput()      {}
-func (UnexpectedError) IsUpdateDescOutput()      {}
-func (UnexpectedError) IsCreateDescOutput()      {}
-func (UnexpectedError) IsGetDescOutput()         {}
-
 type UpdateDescInput struct {
-	ID     int    `json:"id"`
-	Text   string `json:"text"`
-	ImgURL string `json:"imgURL"`
+	ID   int    `json:"id"`
+	Text string `json:"text"`
+	Img  string `json:"img"`
 }
 
 type UpdateInfoInput struct {

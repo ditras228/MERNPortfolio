@@ -30,13 +30,13 @@
       background-color: #27a6e5;
       background-repeat: no-repeat;
       background-position: center;
-      @include icon('social/telegram.svg');
+      @include icon('telegram.svg');
       background-size: 20px;
       transition: background-size 0.1s linear;
       border-radius: 0;
 
       &--github {
-        @include icon('social/github.svg');
+        @include icon('github.svg');
         background-color: #231e1b;
       }
     }

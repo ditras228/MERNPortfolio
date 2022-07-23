@@ -7,7 +7,7 @@ export const getInfoQuery = gql`
       desc {
         id
         text
-        imgURL
+        img
       }
       experience
       job

@@ -11,7 +11,8 @@ VALUES ('Angular'),
        ('NextJS'),
        ('Express'),
        ('NestJS'),
-       ('NodeJS');
+       ('NodeJS'),
+       ('Golang');
 
 CREATE TABLE public.worktag
 (
@@ -28,6 +29,6 @@ VALUES (1, 1),
        (2, 6),
        (2, 7),
 
-       (3, 3),
-       (3, 5),
-       (3, 7);
+       (3, 1),
+       (3, 2),
+       (3, 8);

@@ -23,7 +23,7 @@ type Mutation {
   createWork(input: CreateWorkInput!): GetWork!
 
   # Обновить работу
-  updateWork(input: UpdateWorkInput!): GetWork!
+  updateWork(input: UpdateWorkInput!): UpdateWorkOutput!
 
   # Удалить работу
   deleteWork(input: DeleteWorkInput!): DeleteWorkOutput!
