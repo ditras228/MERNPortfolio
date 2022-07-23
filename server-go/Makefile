@@ -8,7 +8,7 @@ dev:
 drop:
 	$(call _warning, "\nДроп миграций");
 	migrate -database postgresql://postgres:secret@localhost:5432/stage?sslmode=disable -path ./schema/ drop
-
+	go run migrate.go
 .PHONY: gen
 gen:
 	$(call _info, "\nГенерация GraphQL типов");
