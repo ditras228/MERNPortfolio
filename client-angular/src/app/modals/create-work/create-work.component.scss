@@ -4,7 +4,7 @@
 @import '../../../styles/mixins/screen';
 
 .create-work {
-  padding: 40px 20px;
+  padding: 60px 20px 40px 20px;
 
   &__close {
     @include modal-close();
@@ -13,7 +13,7 @@
     @include font(32px, 36px, 700, 1px);
     text-align: center;
     margin-bottom: 25px;
-    @include screen-lg{
+    @include screen-lg {
       @include font(48px, 50px, 700, 1px);
     }
   }
@@ -21,9 +21,11 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-column-gap: 15px;
+
     &__title {
       @include font(12px, 24px, 400, 1px);
     }
+
     &__tags {
       display: flex;
       flex-wrap: wrap;
@@ -63,7 +65,7 @@
       margin-bottom: 15px;
     }
   }
-  @include screen-lg{
+  @include screen-lg {
     padding: 96px 132px;
   }
 }

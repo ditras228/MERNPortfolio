@@ -4,23 +4,8 @@
 @import '../../../styles/mixins/button';
 
 .info {
-  margin-bottom: 32px;
+  margin: 45px 0 100px 0;
   padding: 0 21px 0 21px;
-
-  &__edit {
-    @include button-edit();
-    left: -120px;
-    top: 50px;
-    position: absolute;
-    display: grid;
-    justify-content: center;
-
-    &__icon {
-      @include icon('edit.svg');
-      width: 30px;
-      height: 30px;
-    }
-  }
 
   @include screen-lg {
     display: grid;

@@ -4,12 +4,13 @@
 @import '../../../styles/mixins/font';
 
 .edit-info {
-  padding: 40px 20px;
+  display: grid;
+  padding: 60px 20px 40px 20px;
   &__title {
     @include font(32px, 36px, 700, 1px);
     text-align: center;
     margin-bottom: 25px;
-    @include screen-lg{
+    @include screen-lg {
       @include font(48px, 50px, 700, 1px);
     }
   }
@@ -19,11 +20,14 @@
   &__img {
     margin-bottom: 35px;
     display: block;
+    justify-self: center;
   }
   &__grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-column-gap: 15px;
+    @include screen-lg {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-column-gap: 15px;
+    }
   }
 
   &__field,
@@ -36,7 +40,7 @@
     @include button-fill();
     width: 100%;
   }
-  @include screen-lg{
+  @include screen-lg {
     padding: 96px 132px;
   }
 }

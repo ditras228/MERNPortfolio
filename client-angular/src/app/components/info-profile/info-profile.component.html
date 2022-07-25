@@ -1,7 +1,15 @@
 <div class="profile">
   <div
+    *ngIf="info?.img"
     class="profile__photo"
-    [ngStyle]="{ backgroundImage: formBgImgUrlHandler(info?.img) }"></div>
+    [ngStyle]="{ backgroundImage: formBgImgUrlHandler(info?.img) }">
+    <button
+      *ngIf="isAuth"
+      class="profile__photo__edit"
+      (click)="editInfoHandler()">
+      <div class="profile__photo__edit__icon"></div>
+    </button>
+  </div>
 
   <div class="profile__content">
     <div class="profile__content__who">

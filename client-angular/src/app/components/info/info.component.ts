@@ -17,10 +17,6 @@ export class InfoComponent implements OnInit {
 
   constructor(public store$: Store) {}
 
-  editInfoHandler(): void {
-    this.store$.dispatch(setEditInfoVisible());
-  }
-
   ngOnInit(): void {
     this.store$.select(selectInfo).subscribe(info => {
       this.info$ = info;

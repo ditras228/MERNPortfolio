@@ -6,8 +6,8 @@ CREATE TABLE public.desc
 );
 
 INSERT INTO public.desc(text, img)
-VALUES ( '<b>Созданием</b> сайтов занимаюсь более <b>трёх</b> лет', 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/480px-Unofficial_JavaScript_logo_2.svg.png'),
-       ( 'Работал с <b>множеством</b> фронтенд-фреймворков <br/> <b>Angular</b>, <b>Next</b>, <b>Vue</b>', 'https://cdn4.telegram-cdn.org/file/kH5Fb6TuR6qtyuOGTrJ1FNjbRk57w5-VEmnOqBM9IThvbCFbZ9MrRnVy12FIUbjt6G6i2pwY1hUycfvjvfoJ8oPuRu7xQh72eMTWyPq0MkpGfbWLfoA0A7kbOWfFmPPDMhmhXx-ZjwArdem4S19jFLp5gM1GhBJxAq9Mgj2Wx3pQknxzwP82DPjclXE2a-NNNn_pw11PWVfFY4f7BjInf6vrT6sYFDnW0YxAHvhMsmgID1gjvEt_kTJJ7PDfQ6h6FZAHmkiEv8AEM3Vlkqq63loP33rSoDyrkS5hTFDa5Qs4tjSkGQxsJ8VeqidMs9FHimNAfV7Y-ohjVxJfUMGC3g.jpg"'),
-       ( 'На работе, <b>кроме</b> серверной и клиентской логики, также <b>практиковал верстку</b>', 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/1024px-HTML5_logo_and_wordmark.svg.png'),
-       ( 'На бекенде использую <b>Golang</b>. <br/> Работал с <b>разными</b> видами БД', 'https://cdn4.telegram-cdn.org/file/kH5Fb6TuR6qtyuOGTrJ1FNjbRk57w5-VEmnOqBM9IThvbCFbZ9MrRnVy12FIUbjt6G6i2pwY1hUycfvjvfoJ8oPuRu7xQh72eMTWyPq0MkpGfbWLfoA0A7kbOWfFmPPDMhmhXx-ZjwArdem4S19jFLp5gM1GhBJxAq9Mgj2Wx3pQknxzwP82DPjclXE2a-NNNn_pw11PWVfFY4f7BjInf6vrT6sYFDnW0YxAHvhMsmgID1gjvEt_kTJJ7PDfQ6h6FZAHmkiEv8AEM3Vlkqq63loP33rSoDyrkS5hTFDa5Qs4tjSkGQxsJ8VeqidMs9FHimNAfV7Y-ohjVxJfUMGC3g.jpg"')
+VALUES ( '<b>Созданием</b> сайтов занимаюсь более <b>трёх</b> лет', 'uploaded/e9b2fe8c-0aad-11ed-8284-7412b3c0b125.png'),
+       ( 'Работал с <b>множеством</b> фронтенд-фреймворков <br/> <b>Angular</b>, <b>Next</b>, <b>Vue</b>', 'uploaded/d489e051-0aad-11ed-8284-7412b3c0b125.png'),
+       ( 'На работе, <b>кроме</b> серверной и клиентской логики, также <b>практиковал верстку</b>', 'uploaded/dbae8256-0aad-11ed-8284-7412b3c0b125.png'),
+       ( 'На бекенде использую <b>Golang</b>. <br/> Работал с <b>разными</b> видами БД', 'uploaded/e3269f11-0aad-11ed-8284-7412b3c0b125.png')
 

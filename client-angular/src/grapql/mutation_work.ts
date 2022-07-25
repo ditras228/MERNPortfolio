@@ -2,21 +2,21 @@ import { gql } from 'apollo-angular';
 
 export const createWorkMutation = gql`
   mutation createWork($input: CreateWorkInput!) {
-      result: createWork(input: $input) {
-          __typename
-          ...on GetWork{
-              id
-              demo
-              description
-              figma
-              github
-              name
-              tags {
-                  id
-                  title
-              }
-          }
+    result: createWork(input: $input) {
+      __typename
+      ... on GetWork {
+        id
+        demo
+        description
+        figma
+        github
+        name
+        tags {
+          id
+          title
+        }
       }
+    }
   }
 `;
 
@@ -24,11 +24,11 @@ export const updateWorkMutation = gql`
   mutation updateWork($input: UpdateWorkInput!) {
     result: updateWork(input: $input) {
       __typename
-      ...on NotFoundError{
+      ... on NotFoundError {
         id
         message
       }
-      ...on GetWork{
+      ... on GetWork {
         id
         demo
         description

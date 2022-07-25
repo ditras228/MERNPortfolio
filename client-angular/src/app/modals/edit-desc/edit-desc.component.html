@@ -1,5 +1,5 @@
 <div class="edit-desc">
-  <div class="edit-desc__title">Создать работу</div>
+  <div class="edit-desc__title">Изменить описание</div>
   <div class="edit-desc__close" (click)="closeModalHandler()"></div>
 
   <app-image-input
@@ -10,7 +10,7 @@
     class="edit-desc__field"
     [error]="errors?.['text']"
     [placeholder]="'Текст'"
-    [rows]="3"
+    [rows]="4"
     [internalValue]="text.value"
     (valueChange)="text.patchValue($event)"></app-text-area>
 

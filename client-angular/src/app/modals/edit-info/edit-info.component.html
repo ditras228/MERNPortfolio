@@ -1,5 +1,5 @@
 <div class="edit-info">
-  <div class="edit-info__title">Редактировать инфу</div>
+  <div class="edit-info__title">Изменить инфу</div>
   <div class="edit-info__close" (click)="closeModalHandler()"></div>
 
   <app-image-input
@@ -24,7 +24,7 @@
     [error]="errors?.['experience']"
     [placeholder]="'Навыки'"
     [internalValue]="experience.value"
-    [rows]="10"
+    [rows]="13"
     (valueChange)="experience.patchValue($event)"></app-text-area>
 
   <div class="edit-info__grid">

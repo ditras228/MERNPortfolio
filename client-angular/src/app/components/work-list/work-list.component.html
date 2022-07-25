@@ -3,7 +3,7 @@
     *ngIf="isAuth"
     class="work-list__button"
     (click)="createWorkHandler()">
-    Создать
+    Создать работу
   </button>
   <ng-container *ngFor="let work of works$">
     <app-work [isAuth]="isAuth" [work]="work"></app-work>

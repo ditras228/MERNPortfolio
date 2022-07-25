@@ -11,21 +11,18 @@
 .stop-scrolling {
   height: 100%;
   overflow: hidden;
-  @include screen-lg{
+  @include screen-lg {
     padding-right: 15px;
   }
 }
 
 .app {
   overflow: hidden;
-  padding-top: 80px;
-
   @include screen-lg {
     &__content {
       display: grid;
       max-width: 1200px;
       margin: 0 auto;
-      padding: 0;
       grid-template-columns: 465px 1fr;
       grid-column-gap: 106px;
     }

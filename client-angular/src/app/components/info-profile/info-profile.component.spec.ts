@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InfoProfileComponent } from './info-profile.component';
+import { StoreModule } from '@ngrx/store';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('InfoProfileComponent', () => {
   let component: InfoProfileComponent;
@@ -9,6 +11,8 @@ describe('InfoProfileComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [InfoProfileComponent],
+      imports: [StoreModule.forRoot({})],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
     fixture = TestBed.createComponent(InfoProfileComponent);

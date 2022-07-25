@@ -20,13 +20,13 @@
     background-color: red;
   }
 
-  &__icon{
+  &__icon {
     @include icon('check.svg');
     width: 32px;
     height: 32px;
 
-    &--error{
-      @include icon('warning.svg')
+    &--error {
+      @include icon('warning.svg');
     }
   }
 
@@ -37,13 +37,13 @@
     bottom: 20px;
     right: 20px;
 
-    &--lock{
-      @include screen-lg{
+    &--lock {
+      @include screen-lg {
         margin-right: 15px;
       }
     }
   }
-  @include screen-lg{
+  @include screen-lg {
     width: 400px;
   }
 }

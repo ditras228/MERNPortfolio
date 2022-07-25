@@ -75,7 +75,7 @@ import { WindowService } from './services/window.service';
   ],
   imports: [
     SwiperModule,
-
+    FormsModule,
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     StoreModule.forRoot(
       {

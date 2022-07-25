@@ -14,7 +14,7 @@ CREATE TABLE public.info
 INSERT INTO public.info( name, job, experience, img, telegramTitle, telegramLink, githubTitle, githubLink)
 VALUES ('Дмитрий Дружинин', 'Middle Fullstack',
         '<ul> <li> коммерческой опыт <br/> разработки в команде </li> <li> исправлял и разрабатывал<br/> функционал на Angular </li> <li> разрабатывал API с <br/>использованием GraphQl </li> <li> разрабатывал серверную<br/> логику на Golang </li> </ul>',
-        '',
+        'uploaded/4bd26626-0a9c-11ed-8284-7412b3c0b125.png',
         '+7 (911) 878-03-02',
         'https://t.me/Ditras',
         'ditras228',
@@ -34,7 +34,7 @@ CREATE TABLE public.work
 INSERT INTO public.work( name, description, github, demo)
 
 VALUES ('Облачное хранилище',
-        '<ul> <li> Загрузка, поиск, скачивание<br/> файлов, либо папок </li>  <li> Рекурсивная загрузка папок на сервер, скачивание с помощью ZIP-архива </li> <li> Система drag & drop, как в проводнике </li> <li> Система авторизации </li> <li> Рассылка писем на email </li> </ul>',
+        '<ul> <li> Загрузка, поиск, скачивание<br/> файлов, либо папок </li>  <li> Рекурсивная загрузка папок на сервер, скачивание с помощью ZIP-архива </li> <li> Система drag & drop </li> <li> Система авторизации </li> <li> Рассылка писем на email </li> </ul>',
         'https://github.com/ditras228/cloud-disk',
         'http://localhost:4201'),
        ('Музыкальная платформа',
@@ -42,6 +42,6 @@ VALUES ('Облачное хранилище',
         'https://github.com/ditras228/cloud-disk',
         'http://localhost:5432'),
        ( 'Портфолио',
-        '<ul> <li> Презентация работ, раздел «обо мне» </li> <li> Админпанель: редактирование всех<br/> данных, предоставленных на сайте </li> </ul>',
+        '<ul> <li> Презентация работ, раздел «обо мне» </li> <li> Админка: CRUD всех данных, предоставленных на сайте </li>  <li> Оригинальный UI/UX дизайн, Mobile first </li></ul>',
         'https://github.com/ditras228/MERNPortfolio',
         'http://localhost:4200')

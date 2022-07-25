@@ -8,8 +8,9 @@
 
   &__edit {
     @include button-edit();
-    right: -120px;
-    top: 30px;
+    left: 50%;
+    top: -75px;
+    transform: translateX(-50%);
     position: absolute;
     display: grid;
     justify-content: center;
@@ -18,6 +19,9 @@
       @include icon('edit.svg');
       width: 30px;
       height: 30px;
+    }
+    @include screen-lg {
+      top: -20px;
     }
   }
   &__title {
@@ -123,10 +127,24 @@
       padding: 0 32px 32px 32px;
     }
   }
-
+  &:before {
+    display: block;
+    content: '';
+    width: calc(100vw - 42px);
+    left: 50%;
+    transform: translateX(-50%);
+    height: 3px;
+    background: #eff0f7;
+    position: absolute;
+    top: -50px;
+  }
   @include screen-lg {
     background: #ffffff;
     box-shadow: 0 2px 2px rgb(0 32 51 / 2%), 0 2px 8px rgb(0 32 51 / 16%);
     border-radius: 4px;
+
+    &:before {
+      content: none;
+    }
   }
 }

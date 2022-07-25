@@ -1,4 +1,4 @@
-<div class="navbar" [ngClass]="isLock ? 'navbar--lock' : ''">
+<div class="navbar">
   <div class="navbar__container">
     <div class="navbar__container__logo"></div>
     MERNPortfolio
@@ -7,13 +7,21 @@
       (click)="showLoginHandler()"
       *ngIf="!isAuth">
       <span class="navbar__container__admin-btn__icon"></span>
-      Войти
+      Вход
     </button>
+    <div
+      class="navbar__container__admin-btn-mobile"
+      (click)="showLoginHandler()"
+      *ngIf="!isAuth"></div>
     <button
       class="navbar__container__logout"
       (click)="authService.logout()"
       *ngIf="isAuth">
       Выйти
     </button>
+    <div
+      class="navbar__container__logout-mobile"
+      (click)="authService.logout()"
+      *ngIf="isAuth"></div>
   </div>
 </div>

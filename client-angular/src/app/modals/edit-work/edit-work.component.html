@@ -1,5 +1,5 @@
 <div class="edit-work">
-  <div class="edit-work__title">Редактировать работу</div>
+  <div class="edit-work__title">Изменить работу</div>
   <div class="edit-work__close" (click)="closeModalHandler()"></div>
 
   <app-input-field
@@ -35,7 +35,7 @@
     [error]="errors?.['description']"
     [placeholder]="'Описание'"
     [internalValue]="description.value"
-    [rows]="9"
+    [rows]="13"
     (valueChange)="description.patchValue($event)"></app-text-area>
 
   <div class="edit-work__grid">
