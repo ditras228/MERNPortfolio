@@ -5,6 +5,8 @@ schema:
   - graph/schema/user/*.graphqls
   - graph/schema/tag/*.graphqls
   - graph/schema/desc/*.graphqls
+  - graph/schema/directives/*.graphqls
+  - graph/schema/translation/*.graphqls
   - graph/*.graphqls
 
 # Where should the generated server code go?

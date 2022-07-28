@@ -41,6 +41,7 @@ type ResolverRoot interface {
 }
 
 type DirectiveRoot struct {
+	HasRole func(ctx context.Context, obj interface{}, next graphql.Resolver, role model.Role) (res interface{}, err error)
 }
 
 type ComplexityRoot struct {
@@ -83,6 +84,10 @@ type ComplexityRoot struct {
 		Title func(childComplexity int) int
 	}
 
+	GetTranslate struct {
+		Translations func(childComplexity int) int
+	}
+
 	GetWork struct {
 		Demo        func(childComplexity int) int
 		Description func(childComplexity int) int
@@ -116,10 +121,16 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
-		GetDesc  func(childComplexity int) int
-		GetInfo  func(childComplexity int) int
-		GetTags  func(childComplexity int) int
-		GetWorks func(childComplexity int) int
+		GetDesc    func(childComplexity int) int
+		GetInfo    func(childComplexity int) int
+		GetOneUser func(childComplexity int, id int) int
+		GetTags    func(childComplexity int) int
+		GetWorks   func(childComplexity int) int
+	}
+
+	Translation struct {
+		Field  func(childComplexity int) int
+		Locale func(childComplexity int) int
 	}
 
 	User struct {
@@ -127,6 +138,8 @@ type ComplexityRoot struct {
 		ID          func(childComplexity int) int
 		Login       func(childComplexity int) int
 		Password    func(childComplexity int) int
+		Role        func(childComplexity int) int
+		RoleID      func(childComplexity int) int
 	}
 
 	WrongPassword struct {
@@ -149,6 +162,7 @@ type QueryResolver interface {
 	GetWorks(ctx context.Context) ([]*model.GetWork, error)
 	GetTags(ctx context.Context) ([]*model.GetTag, error)
 	GetDesc(ctx context.Context) (model.GetDescOutput, error)
+	GetOneUser(ctx context.Context, id int) (*model.User, error)
 }
 
 type executableSchema struct {
@@ -291,6 +305,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.GetTag.Title(childComplexity), true
+
+	case "GetTranslate.translations":
+		if e.complexity.GetTranslate.Translations == nil {
+			break
+		}
+
+		return e.complexity.GetTranslate.Translations(childComplexity), true
 
 	case "GetWork.demo":
 		if e.complexity.GetWork.Demo == nil {
@@ -486,6 +507,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.GetInfo(childComplexity), true
 
+	case "Query.getOneUser":
+		if e.complexity.Query.GetOneUser == nil {
+			break
+		}
+
+		args, err := ec.field_Query_getOneUser_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.GetOneUser(childComplexity, args["id"].(int)), true
+
 	case "Query.getTags":
 		if e.complexity.Query.GetTags == nil {
 			break
@@ -499,6 +532,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.GetWorks(childComplexity), true
+
+	case "Translation.field":
+		if e.complexity.Translation.Field == nil {
+			break
+		}
+
+		return e.complexity.Translation.Field(childComplexity), true
+
+	case "Translation.locale":
+		if e.complexity.Translation.Locale == nil {
+			break
+		}
+
+		return e.complexity.Translation.Locale(childComplexity), true
 
 	case "User.accessToken":
 		if e.complexity.User.AccessToken == nil {
@@ -528,6 +575,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.User.Password(childComplexity), true
 
+	case "User.role":
+		if e.complexity.User.Role == nil {
+			break
+		}
+
+		return e.complexity.User.Role(childComplexity), true
+
+	case "User.roleId":
+		if e.complexity.User.RoleID == nil {
+			break
+		}
+
+		return e.complexity.User.RoleID(childComplexity), true
+
 	case "WrongPassword.message":
 		if e.complexity.WrongPassword.Message == nil {
 			break
@@ -547,8 +608,10 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputCreateWorkInput,
 		ec.unmarshalInputDeleteDescInput,
 		ec.unmarshalInputDeleteWorkInput,
+		ec.unmarshalInputTranslationInput,
 		ec.unmarshalInputUpdateDescInput,
 		ec.unmarshalInputUpdateInfoInput,
+		ec.unmarshalInputUpdateTranslationInput,
 		ec.unmarshalInputUpdateWorkInput,
 		ec.unmarshalInputUserInput,
 	)
@@ -697,6 +760,8 @@ type NotFoundError implements ServiceErrorInterface {
   login: String!
   password: String!
   accessToken: String!
+  roleId: Int!
+  role: Role!
 }
 
 type WrongPassword implements ServiceErrorInterface {
@@ -748,6 +813,41 @@ type GetDescResult {
 }
 union GetDescOutput = GetDescResult | NotFoundError
 `, BuiltIn: false},
+	{Name: "../schema/directives/role.graphqls", Input: `directive @hasRole(role: Role!) on FIELD_DEFINITION
+
+enum Role {
+    ADMIN
+    USER
+}
+
+
+enum TranslationEntities {
+    WORK
+    INFO
+}`, BuiltIn: false},
+	{Name: "../schema/translation/mutation_translation.graphqls", Input: `input UpdateTranslationInput {
+  id: Int!
+  translations: [TranslationInput]!
+}
+
+input TranslationInput{
+  locale: Locales!
+  field: String!
+}
+
+enum Locales{
+  EN
+  RU
+}`, BuiltIn: false},
+	{Name: "../schema/translation/query_translation.graphqls", Input: `type GetTranslate{
+  translations: [Translation]!
+}
+
+type Translation{
+  locale: Int!
+  field: String!
+}
+`, BuiltIn: false},
 	{Name: "../schema.graphqls", Input: `type Query {
   # Получить инфу
   getInfo: GetInfo!
@@ -760,6 +860,9 @@ union GetDescOutput = GetDescResult | NotFoundError
 
   # Получить описание
   getDesc: GetDescOutput!
+
+  # Получить пользователя по id
+  getOneUser(id: Int!): User!
 }
 
 type Mutation {
@@ -767,25 +870,25 @@ type Mutation {
   auth(input: UserInput!): UserOutput!
 
   # Обновить инфу
-  updateInfo(input: UpdateInfoInput!): GetInfo!
+  updateInfo(input: UpdateInfoInput!): GetInfo! @hasRole(role: ADMIN)
 
   # Создать работу
-  createWork(input: CreateWorkInput!): GetWork!
+  createWork(input: CreateWorkInput!): GetWork! @hasRole(role: ADMIN)
 
   # Обновить работу
-  updateWork(input: UpdateWorkInput!): UpdateWorkOutput!
+  updateWork(input: UpdateWorkInput!): UpdateWorkOutput! @hasRole(role: ADMIN)
 
   # Удалить работу
-  deleteWork(input: DeleteWorkInput!): DeleteWorkOutput!
+  deleteWork(input: DeleteWorkInput!): DeleteWorkOutput! @hasRole(role: ADMIN)
 
   # Обновить описание
-  updateDesc(input: UpdateDescInput!): UpdateDescOutput!
+  updateDesc(input: UpdateDescInput!): UpdateDescOutput! @hasRole(role: ADMIN)
 
   # Создать описание
-  createDesc(input: CreateDescInput!): CreateDescOutput!
+  createDesc(input: CreateDescInput!): CreateDescOutput! @hasRole(role: ADMIN)
 
   # Удалить описание
-  deleteDesc(input: DeleteDescInput!): DeleteDescOutput!
+  deleteDesc(input: DeleteDescInput!): DeleteDescOutput! @hasRole(role: ADMIN)
 }
 `, BuiltIn: false},
 }
@@ -794,6 +897,21 @@ var parsedSchema = gqlparser.MustLoadSchema(sources...)
 // endregion ************************** generated!.gotpl **************************
 
 // region    ***************************** args.gotpl *****************************
+
+func (ec *executionContext) dir_hasRole_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.Role
+	if tmp, ok := rawArgs["role"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("role"))
+		arg0, err = ec.unmarshalNRole2portfolioᚋgraphᚋmodelᚐRole(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["role"] = arg0
+	return args, nil
+}
 
 func (ec *executionContext) field_Mutation_auth_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
@@ -927,6 +1045,21 @@ func (ec *executionContext) field_Query___type_args(ctx context.Context, rawArgs
 		}
 	}
 	args["name"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_getOneUser_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 int
+	if tmp, ok := rawArgs["id"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+		arg0, err = ec.unmarshalNInt2int(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg0
 	return args, nil
 }
 
@@ -1783,6 +1916,56 @@ func (ec *executionContext) fieldContext_GetTag_title(ctx context.Context, field
 	return fc, nil
 }
 
+func (ec *executionContext) _GetTranslate_translations(ctx context.Context, field graphql.CollectedField, obj *model.GetTranslate) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_GetTranslate_translations(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Translations, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*model.Translation)
+	fc.Result = res
+	return ec.marshalNTranslation2ᚕᚖportfolioᚋgraphᚋmodelᚐTranslation(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_GetTranslate_translations(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "GetTranslate",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "locale":
+				return ec.fieldContext_Translation_locale(ctx, field)
+			case "field":
+				return ec.fieldContext_Translation_field(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Translation", field.Name)
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _GetWork_id(ctx context.Context, field graphql.CollectedField, obj *model.GetWork) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_GetWork_id(ctx, field)
 	if err != nil {
@@ -2294,8 +2477,32 @@ func (ec *executionContext) _Mutation_updateInfo(ctx context.Context, field grap
 		}
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateInfo(rctx, fc.Args["input"].(model.UpdateInfoInput))
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return ec.resolvers.Mutation().UpdateInfo(rctx, fc.Args["input"].(model.UpdateInfoInput))
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			role, err := ec.unmarshalNRole2portfolioᚋgraphᚋmodelᚐRole(ctx, "ADMIN")
+			if err != nil {
+				return nil, err
+			}
+			if ec.directives.HasRole == nil {
+				return nil, errors.New("directive hasRole is not implemented")
+			}
+			return ec.directives.HasRole(ctx, nil, directive0, role)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(*model.GetInfo); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *portfolio/graph/model.GetInfo`, tmp)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2363,8 +2570,32 @@ func (ec *executionContext) _Mutation_createWork(ctx context.Context, field grap
 		}
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateWork(rctx, fc.Args["input"].(model.CreateWorkInput))
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return ec.resolvers.Mutation().CreateWork(rctx, fc.Args["input"].(model.CreateWorkInput))
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			role, err := ec.unmarshalNRole2portfolioᚋgraphᚋmodelᚐRole(ctx, "ADMIN")
+			if err != nil {
+				return nil, err
+			}
+			if ec.directives.HasRole == nil {
+				return nil, errors.New("directive hasRole is not implemented")
+			}
+			return ec.directives.HasRole(ctx, nil, directive0, role)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(*model.GetWork); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *portfolio/graph/model.GetWork`, tmp)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2434,8 +2665,32 @@ func (ec *executionContext) _Mutation_updateWork(ctx context.Context, field grap
 		}
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateWork(rctx, fc.Args["input"].(model.UpdateWorkInput))
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return ec.resolvers.Mutation().UpdateWork(rctx, fc.Args["input"].(model.UpdateWorkInput))
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			role, err := ec.unmarshalNRole2portfolioᚋgraphᚋmodelᚐRole(ctx, "ADMIN")
+			if err != nil {
+				return nil, err
+			}
+			if ec.directives.HasRole == nil {
+				return nil, errors.New("directive hasRole is not implemented")
+			}
+			return ec.directives.HasRole(ctx, nil, directive0, role)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(model.UpdateWorkOutput); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be portfolio/graph/model.UpdateWorkOutput`, tmp)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2489,8 +2744,32 @@ func (ec *executionContext) _Mutation_deleteWork(ctx context.Context, field grap
 		}
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().DeleteWork(rctx, fc.Args["input"].(model.DeleteWorkInput))
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return ec.resolvers.Mutation().DeleteWork(rctx, fc.Args["input"].(model.DeleteWorkInput))
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			role, err := ec.unmarshalNRole2portfolioᚋgraphᚋmodelᚐRole(ctx, "ADMIN")
+			if err != nil {
+				return nil, err
+			}
+			if ec.directives.HasRole == nil {
+				return nil, errors.New("directive hasRole is not implemented")
+			}
+			return ec.directives.HasRole(ctx, nil, directive0, role)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(model.DeleteWorkOutput); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be portfolio/graph/model.DeleteWorkOutput`, tmp)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2544,8 +2823,32 @@ func (ec *executionContext) _Mutation_updateDesc(ctx context.Context, field grap
 		}
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateDesc(rctx, fc.Args["input"].(model.UpdateDescInput))
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return ec.resolvers.Mutation().UpdateDesc(rctx, fc.Args["input"].(model.UpdateDescInput))
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			role, err := ec.unmarshalNRole2portfolioᚋgraphᚋmodelᚐRole(ctx, "ADMIN")
+			if err != nil {
+				return nil, err
+			}
+			if ec.directives.HasRole == nil {
+				return nil, errors.New("directive hasRole is not implemented")
+			}
+			return ec.directives.HasRole(ctx, nil, directive0, role)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(model.UpdateDescOutput); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be portfolio/graph/model.UpdateDescOutput`, tmp)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2599,8 +2902,32 @@ func (ec *executionContext) _Mutation_createDesc(ctx context.Context, field grap
 		}
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateDesc(rctx, fc.Args["input"].(model.CreateDescInput))
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return ec.resolvers.Mutation().CreateDesc(rctx, fc.Args["input"].(model.CreateDescInput))
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			role, err := ec.unmarshalNRole2portfolioᚋgraphᚋmodelᚐRole(ctx, "ADMIN")
+			if err != nil {
+				return nil, err
+			}
+			if ec.directives.HasRole == nil {
+				return nil, errors.New("directive hasRole is not implemented")
+			}
+			return ec.directives.HasRole(ctx, nil, directive0, role)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(model.CreateDescOutput); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be portfolio/graph/model.CreateDescOutput`, tmp)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2654,8 +2981,32 @@ func (ec *executionContext) _Mutation_deleteDesc(ctx context.Context, field grap
 		}
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().DeleteDesc(rctx, fc.Args["input"].(model.DeleteDescInput))
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return ec.resolvers.Mutation().DeleteDesc(rctx, fc.Args["input"].(model.DeleteDescInput))
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			role, err := ec.unmarshalNRole2portfolioᚋgraphᚋmodelᚐRole(ctx, "ADMIN")
+			if err != nil {
+				return nil, err
+			}
+			if ec.directives.HasRole == nil {
+				return nil, errors.New("directive hasRole is not implemented")
+			}
+			return ec.directives.HasRole(ctx, nil, directive0, role)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(model.DeleteDescOutput); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be portfolio/graph/model.DeleteDescOutput`, tmp)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2996,6 +3347,75 @@ func (ec *executionContext) fieldContext_Query_getDesc(ctx context.Context, fiel
 	return fc, nil
 }
 
+func (ec *executionContext) _Query_getOneUser(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_getOneUser(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().GetOneUser(rctx, fc.Args["id"].(int))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.User)
+	fc.Result = res
+	return ec.marshalNUser2ᚖportfolioᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_getOneUser(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_User_id(ctx, field)
+			case "login":
+				return ec.fieldContext_User_login(ctx, field)
+			case "password":
+				return ec.fieldContext_User_password(ctx, field)
+			case "accessToken":
+				return ec.fieldContext_User_accessToken(ctx, field)
+			case "roleId":
+				return ec.fieldContext_User_roleId(ctx, field)
+			case "role":
+				return ec.fieldContext_User_role(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_getOneUser_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Query___type(ctx, field)
 	if err != nil {
@@ -3120,6 +3540,94 @@ func (ec *executionContext) fieldContext_Query___schema(ctx context.Context, fie
 				return ec.fieldContext___Schema_directives(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type __Schema", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Translation_locale(ctx context.Context, field graphql.CollectedField, obj *model.Translation) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Translation_locale(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Locale, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Translation_locale(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Translation",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Translation_field(ctx context.Context, field graphql.CollectedField, obj *model.Translation) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Translation_field(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Field, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Translation_field(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Translation",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
 		},
 	}
 	return fc, nil
@@ -3296,6 +3804,94 @@ func (ec *executionContext) fieldContext_User_accessToken(ctx context.Context, f
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _User_roleId(ctx context.Context, field graphql.CollectedField, obj *model.User) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_User_roleId(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.RoleID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_User_roleId(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "User",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _User_role(ctx context.Context, field graphql.CollectedField, obj *model.User) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_User_role(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Role, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(model.Role)
+	fc.Result = res
+	return ec.marshalNRole2portfolioᚋgraphᚋmodelᚐRole(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_User_role(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "User",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Role does not have child fields")
 		},
 	}
 	return fc, nil
@@ -5258,6 +5854,37 @@ func (ec *executionContext) unmarshalInputDeleteWorkInput(ctx context.Context, o
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputTranslationInput(ctx context.Context, obj interface{}) (model.TranslationInput, error) {
+	var it model.TranslationInput
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	for k, v := range asMap {
+		switch k {
+		case "locale":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("locale"))
+			it.Locale, err = ec.unmarshalNLocales2portfolioᚋgraphᚋmodelᚐLocales(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "field":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("field"))
+			it.Field, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputUpdateDescInput(ctx context.Context, obj interface{}) (model.UpdateDescInput, error) {
 	var it model.UpdateDescInput
 	asMap := map[string]interface{}{}
@@ -5367,6 +5994,37 @@ func (ec *executionContext) unmarshalInputUpdateInfoInput(ctx context.Context, o
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("githubLink"))
 			it.GithubLink, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputUpdateTranslationInput(ctx context.Context, obj interface{}) (model.UpdateTranslationInput, error) {
+	var it model.UpdateTranslationInput
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	for k, v := range asMap {
+		switch k {
+		case "id":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+			it.ID, err = ec.unmarshalNInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "translations":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("translations"))
+			it.Translations, err = ec.unmarshalNTranslationInput2ᚕᚖportfolioᚋgraphᚋmodelᚐTranslationInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -5940,6 +6598,34 @@ func (ec *executionContext) _GetTag(ctx context.Context, sel ast.SelectionSet, o
 	return out
 }
 
+var getTranslateImplementors = []string{"GetTranslate"}
+
+func (ec *executionContext) _GetTranslate(ctx context.Context, sel ast.SelectionSet, obj *model.GetTranslate) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, getTranslateImplementors)
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("GetTranslate")
+		case "translations":
+
+			out.Values[i] = ec._GetTranslate_translations(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
 var getWorkImplementors = []string{"GetWork", "UpdateWorkOutput"}
 
 func (ec *executionContext) _GetWork(ctx context.Context, sel ast.SelectionSet, obj *model.GetWork) graphql.Marshaler {
@@ -6297,6 +6983,29 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 			out.Concurrently(i, func() graphql.Marshaler {
 				return rrm(innerCtx)
 			})
+		case "getOneUser":
+			field := field
+
+			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_getOneUser(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx, innerFunc)
+			}
+
+			out.Concurrently(i, func() graphql.Marshaler {
+				return rrm(innerCtx)
+			})
 		case "__type":
 
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
@@ -6309,6 +7018,41 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				return ec._Query___schema(ctx, field)
 			})
 
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var translationImplementors = []string{"Translation"}
+
+func (ec *executionContext) _Translation(ctx context.Context, sel ast.SelectionSet, obj *model.Translation) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, translationImplementors)
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Translation")
+		case "locale":
+
+			out.Values[i] = ec._Translation_locale(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "field":
+
+			out.Values[i] = ec._Translation_field(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -6354,6 +7098,20 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 		case "accessToken":
 
 			out.Values[i] = ec._User_accessToken(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "roleId":
+
+			out.Values[i] = ec._User_roleId(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "role":
+
+			out.Values[i] = ec._User_role(ctx, field, obj)
 
 			if out.Values[i] == graphql.Null {
 				invalids++
@@ -6983,6 +7741,26 @@ func (ec *executionContext) marshalNInt2ᚕᚖint(ctx context.Context, sel ast.S
 	return ret
 }
 
+func (ec *executionContext) unmarshalNLocales2portfolioᚋgraphᚋmodelᚐLocales(ctx context.Context, v interface{}) (model.Locales, error) {
+	var res model.Locales
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNLocales2portfolioᚋgraphᚋmodelᚐLocales(ctx context.Context, sel ast.SelectionSet, v model.Locales) graphql.Marshaler {
+	return v
+}
+
+func (ec *executionContext) unmarshalNRole2portfolioᚋgraphᚋmodelᚐRole(ctx context.Context, v interface{}) (model.Role, error) {
+	var res model.Role
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNRole2portfolioᚋgraphᚋmodelᚐRole(ctx context.Context, sel ast.SelectionSet, v model.Role) graphql.Marshaler {
+	return v
+}
+
 func (ec *executionContext) unmarshalNString2string(ctx context.Context, v interface{}) (string, error) {
 	res, err := graphql.UnmarshalString(v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -6996,6 +7774,61 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 		}
 	}
 	return res
+}
+
+func (ec *executionContext) marshalNTranslation2ᚕᚖportfolioᚋgraphᚋmodelᚐTranslation(ctx context.Context, sel ast.SelectionSet, v []*model.Translation) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalOTranslation2ᚖportfolioᚋgraphᚋmodelᚐTranslation(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	return ret
+}
+
+func (ec *executionContext) unmarshalNTranslationInput2ᚕᚖportfolioᚋgraphᚋmodelᚐTranslationInput(ctx context.Context, v interface{}) ([]*model.TranslationInput, error) {
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*model.TranslationInput, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalOTranslationInput2ᚖportfolioᚋgraphᚋmodelᚐTranslationInput(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
 }
 
 func (ec *executionContext) unmarshalNUpdateDescInput2portfolioᚋgraphᚋmodelᚐUpdateDescInput(ctx context.Context, v interface{}) (model.UpdateDescInput, error) {
@@ -7031,6 +7864,20 @@ func (ec *executionContext) marshalNUpdateWorkOutput2portfolioᚋgraphᚋmodel�
 		return graphql.Null
 	}
 	return ec._UpdateWorkOutput(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNUser2portfolioᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v model.User) graphql.Marshaler {
+	return ec._User(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNUser2ᚖportfolioᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v *model.User) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._User(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNUserInput2portfolioᚋgraphᚋmodelᚐUserInput(ctx context.Context, v interface{}) (model.UserInput, error) {
@@ -7419,6 +8266,21 @@ func (ec *executionContext) marshalOString2ᚖstring(ctx context.Context, sel as
 	}
 	res := graphql.MarshalString(*v)
 	return res
+}
+
+func (ec *executionContext) marshalOTranslation2ᚖportfolioᚋgraphᚋmodelᚐTranslation(ctx context.Context, sel ast.SelectionSet, v *model.Translation) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._Translation(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalOTranslationInput2ᚖportfolioᚋgraphᚋmodelᚐTranslationInput(ctx context.Context, v interface{}) (*model.TranslationInput, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputTranslationInput(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) marshalO__EnumValue2ᚕgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐEnumValueᚄ(ctx context.Context, sel ast.SelectionSet, v []introspection.EnumValue) graphql.Marshaler {

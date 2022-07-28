@@ -7,23 +7,21 @@
   position: relative;
 
   &__edit {
-    @include button-edit();
+    @include button-icon();
     left: 50%;
     top: -75px;
     transform: translateX(-50%);
     position: absolute;
-    display: grid;
-    justify-content: center;
 
     &__icon {
       @include icon('edit.svg');
-      width: 30px;
-      height: 30px;
     }
+
     @include screen-lg {
       top: -20px;
     }
   }
+
   &__title {
     @include font(32px, 34px, 700, 2.5px);
     margin-bottom: 27px;
@@ -43,6 +41,7 @@
     grid-column-gap: 8px;
     padding: 0 21px;
     justify-content: center;
+
     &__item {
       @include font(12px, 24px, 400, 1px);
       color: #2a00a2;
@@ -98,6 +97,7 @@
           left: 0;
         }
       }
+
       @include screen-lg {
         margin-bottom: 25px;
         padding: 0;

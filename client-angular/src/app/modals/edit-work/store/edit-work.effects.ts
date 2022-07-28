@@ -20,6 +20,7 @@ import { setEditWorkVisible } from '../../login/store/login-modal.actions';
 import { deleteWork } from '../../edit-info/store/edit-info.actions';
 import { selectCurrentWorkID } from '../../login/store/login-modal.selectors';
 import { NotificationService } from '../../../services/notification.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 export class EditWorkEffects extends GraphqlService {
@@ -27,9 +28,10 @@ export class EditWorkEffects extends GraphqlService {
     private actions$: Actions,
     public store$: Store,
     public notificationService: NotificationService,
-    override httpClient: HttpClient
+    override httpClient: HttpClient,
+    override cookieService: CookieService
   ) {
-    super(httpClient);
+    super(httpClient, cookieService);
   }
 
   deleteWork$ = createEffect(() =>

@@ -52,39 +52,31 @@
 
   &__buttons {
     right: 24px;
-    top: 14px;
+    top: 8px;
     position: absolute;
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-column-gap: 10px;
     z-index: 2;
+
     &__add {
-      display: grid;
-      justify-content: center;
-      @include button-edit();
+      @include button-icon();
 
       &__icon {
         @include icon('add.svg');
-        width: 30px;
-        height: 30px;
       }
     }
 
     &__edit {
-      @include button-edit();
-
-      display: grid;
-      justify-content: center;
+      @include button-icon();
 
       &__icon {
         @include icon('edit.svg');
-        width: 30px;
-        height: 30px;
       }
     }
     @include screen-lg {
       right: auto;
-      top: -25px;
+      top: -20px;
       left: 50%;
       transform: translateX(-50%);
     }

@@ -3,6 +3,8 @@ type User {
   login: String!
   password: String!
   accessToken: String!
+  roleId: Int!
+  role: Role!
 }
 
 type WrongPassword implements ServiceErrorInterface {

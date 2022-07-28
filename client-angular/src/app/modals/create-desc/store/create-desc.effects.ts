@@ -15,6 +15,7 @@ import { submitCreateDescForm } from './create-desc.actions';
 import { selectEditInfoFormInput } from './create-desc.selectors';
 import { setCreateDescVisible } from '../../login/store/login-modal.actions';
 import { NotificationService } from '../../../services/notification.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 export class CreateDescEffects extends GraphqlService {
@@ -22,9 +23,10 @@ export class CreateDescEffects extends GraphqlService {
     private actions$: Actions,
     public notificationService: NotificationService,
     public store$: Store,
-    override httpClient: HttpClient
+    override httpClient: HttpClient,
+    override cookieService: CookieService
   ) {
-    super(httpClient);
+    super(httpClient, cookieService);
   }
 
   submitCreateDescForm$ = createEffect(() =>

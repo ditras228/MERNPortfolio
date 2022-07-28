@@ -1,3 +1,5 @@
+@import '../variables';
+
 @mixin button-fill($size: 16px, $height: 28px, $weight: 600, $spacing: 0.75px) {
   height: 64px;
   align-items: center;
@@ -8,7 +10,7 @@
   line-height: $height;
   letter-spacing: $spacing;
   font-family: 'Poppins', sans-serif;
-  background-color: #5f2eea;
+  background-color: $button;
   border-color: transparent;
   color: #ffffff;
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out,
@@ -17,13 +19,13 @@
 
   &:hover {
     cursor: pointer;
-    background-color: #2a00a2;
+    background-color: $button-hover;
   }
 
   &:disabled {
     opacity: 0.5;
     cursor: default;
-    background-color: #5f2eea;
+    background-color: $button;
   }
 }
 
@@ -39,12 +41,12 @@
 @mixin button($size: 16px, $height: 28px, $weight: 600, $spacing: 0.75px) {
   @include button-fill($size, $height, $weight, $spacing);
   background-color: transparent;
-  color: #5f2eea;
-  border: 2px solid #5f2eea;
+  color: $button;
+  border: 2px solid $button;
 
   &:hover {
-    border-color: #2a00a2;
-    color: #2a00a2;
+    border-color: $button-hover;
+    color: $button-hover;
     background-color: transparent;
   }
 }
@@ -60,8 +62,26 @@
   height: auto;
 }
 
-@mixin button-edit($size: 14px, $height: 24px, $weight: 600, $spacing: 0.75px) {
-  @include button-fill($size, $height, $weight, $spacing);
-  width: 50px;
-  height: 50px;
+@mixin button-icon() {
+  display: grid;
+  background-color: $button;
+  border-radius: 50%;
+  justify-content: center;
+  align-content: center;
+  width: 40px;
+  height: 40px;
+  border-color: transparent;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out,
+    border 0.2s ease-in-out;
+
+  &__icon {
+    width: 25px;
+    height: 25px;
+    background-size: cover;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: $button-hover;
+  }
 }

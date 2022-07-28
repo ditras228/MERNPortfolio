@@ -2,6 +2,12 @@
 
 package model
 
+import (
+	"fmt"
+	"io"
+	"strconv"
+)
+
 type CreateDescOutput interface {
 	IsCreateDescOutput()
 }
@@ -104,6 +110,10 @@ type GetTag struct {
 	Title string `json:"title"`
 }
 
+type GetTranslate struct {
+	Translations []*Translation `json:"translations"`
+}
+
 type GetWork struct {
 	ID          int       `json:"id"`
 	Name        string    `json:"name"`
@@ -135,6 +145,16 @@ func (NotFoundError) IsDeleteDescOutput()      {}
 func (NotFoundError) IsUpdateDescOutput()      {}
 func (NotFoundError) IsGetDescOutput()         {}
 
+type Translation struct {
+	Locale int    `json:"locale"`
+	Field  string `json:"field"`
+}
+
+type TranslationInput struct {
+	Locale Locales `json:"locale"`
+	Field  string  `json:"field"`
+}
+
 type UpdateDescInput struct {
 	ID   int    `json:"id"`
 	Text string `json:"text"`
@@ -152,6 +172,11 @@ type UpdateInfoInput struct {
 	GithubLink    string `json:"githubLink"`
 }
 
+type UpdateTranslationInput struct {
+	ID           int                 `json:"id"`
+	Translations []*TranslationInput `json:"translations"`
+}
+
 type UpdateWorkInput struct {
 	ID          int     `json:"id"`
 	Name        string  `json:"name"`
@@ -167,6 +192,8 @@ type User struct {
 	Login       string `json:"login"`
 	Password    string `json:"password"`
 	AccessToken string `json:"accessToken"`
+	RoleID      int    `json:"roleId"`
+	Role        Role   `json:"role"`
 }
 
 func (User) IsUserOutput() {}
@@ -182,3 +209,126 @@ type WrongPassword struct {
 
 func (WrongPassword) IsServiceErrorInterface() {}
 func (WrongPassword) IsUserOutput()            {}
+
+type Locales string
+
+const (
+	LocalesEn Locales = "EN"
+	LocalesRu Locales = "RU"
+)
+
+var AllLocales = []Locales{
+	LocalesEn,
+	LocalesRu,
+}
+
+func (e Locales) IsValid() bool {
+	switch e {
+	case LocalesEn, LocalesRu:
+		return true
+	}
+	return false
+}
+
+func (e Locales) String() string {
+	return string(e)
+}
+
+func (e *Locales) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = Locales(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid Locales", str)
+	}
+	return nil
+}
+
+func (e Locales) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+type Role string
+
+const (
+	RoleAdmin Role = "ADMIN"
+	RoleUser  Role = "USER"
+)
+
+var AllRole = []Role{
+	RoleAdmin,
+	RoleUser,
+}
+
+func (e Role) IsValid() bool {
+	switch e {
+	case RoleAdmin, RoleUser:
+		return true
+	}
+	return false
+}
+
+func (e Role) String() string {
+	return string(e)
+}
+
+func (e *Role) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = Role(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid Role", str)
+	}
+	return nil
+}
+
+func (e Role) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+type TranslationEntities string
+
+const (
+	TranslationEntitiesWork TranslationEntities = "WORK"
+	TranslationEntitiesInfo TranslationEntities = "INFO"
+)
+
+var AllTranslationEntities = []TranslationEntities{
+	TranslationEntitiesWork,
+	TranslationEntitiesInfo,
+}
+
+func (e TranslationEntities) IsValid() bool {
+	switch e {
+	case TranslationEntitiesWork, TranslationEntitiesInfo:
+		return true
+	}
+	return false
+}
+
+func (e TranslationEntities) String() string {
+	return string(e)
+}
+
+func (e *TranslationEntities) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = TranslationEntities(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid TranslationEntities", str)
+	}
+	return nil
+}
+
+func (e TranslationEntities) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}

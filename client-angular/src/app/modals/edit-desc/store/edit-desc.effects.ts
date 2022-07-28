@@ -20,6 +20,7 @@ import {
 } from './edit-desc.selectors';
 import { setEditDescVisible } from '../../login/store/login-modal.actions';
 import { NotificationService } from '../../../services/notification.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 export class EditDescEffects extends GraphqlService {
@@ -27,9 +28,10 @@ export class EditDescEffects extends GraphqlService {
     private actions$: Actions,
     public notificationService: NotificationService,
     public store$: Store,
-    override httpClient: HttpClient
+    override httpClient: HttpClient,
+    override cookieService: CookieService
   ) {
-    super(httpClient);
+    super(httpClient, cookieService);
   }
 
   deleteDesc$ = createEffect(() =>

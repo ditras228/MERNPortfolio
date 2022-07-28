@@ -11,11 +11,16 @@ import { HttpClient } from '@angular/common/http';
 import { getInfo, getWorks, setInfo, setWorks } from './app.actions';
 import { switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 export class AppEffects extends GraphqlService {
-  constructor(private actions$: Actions, override httpClient: HttpClient) {
-    super(httpClient);
+  constructor(
+    private actions$: Actions,
+    override httpClient: HttpClient,
+    override cookieService: CookieService
+  ) {
+    super(httpClient, cookieService);
   }
 
   getWorks$ = createEffect(() =>

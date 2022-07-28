@@ -1,1 +1,1 @@
-drop table public.desc
+DROP TABLE public.desc

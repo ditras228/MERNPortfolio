@@ -1,0 +1,14 @@
+input UpdateTranslationInput {
+  id: Int!
+  translations: [TranslationInput]!
+}
+
+input TranslationInput {
+  locale: Locales!
+  field: String!
+}
+
+enum Locales {
+  EN
+  RU
+}

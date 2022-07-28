@@ -1,0 +1,8 @@
+type GetTranslate {
+  translations: [Translation]!
+}
+
+type Translation {
+  locale: Int!
+  field: String!
+}

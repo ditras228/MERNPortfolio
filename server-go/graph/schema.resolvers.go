@@ -5,9 +5,11 @@ package graph
 
 import (
 	"context"
+	"fmt"
 	"portfolio/container"
 	"portfolio/graph/generated"
 	"portfolio/graph/model"
+	"portfolio/middlewares"
 )
 
 func (r *mutationResolver) Auth(ctx context.Context, input model.UserInput) (model.UserOutput, error) {
@@ -27,6 +29,7 @@ func (r *mutationResolver) UpdateInfo(ctx context.Context, input model.UpdateInf
 }
 
 func (r *mutationResolver) CreateWork(ctx context.Context, input model.CreateWorkInput) (*model.GetWork, error) {
+	fmt.Println(middlewares.ForContext(ctx).Login)
 	res, err := container.WorkRepository.CreateWork(ctx, input)
 	if err != nil {
 		return nil, err
@@ -77,8 +80,14 @@ func (r *mutationResolver) DeleteDesc(ctx context.Context, input model.DeleteDes
 func (r *queryResolver) GetInfo(ctx context.Context) (*model.GetInfo, error) {
 	one, err := container.InfoRepository.FindOne(ctx)
 	if err != nil {
-		return nil, nil
+		return nil, err
 	}
+	res, err := container.TranslateRepository.FindOne(ctx)
+	if err != nil {
+		return nil, err
+	}
+	one.Name = res.Translations[0].Field
+	fmt.Println(len(res.Translations))
 	return &one, nil
 }
 
@@ -104,6 +113,14 @@ func (r *queryResolver) GetDesc(ctx context.Context) (model.GetDescOutput, error
 		return nil, err
 	}
 	return res, nil
+}
+
+func (r *queryResolver) GetOneUser(ctx context.Context, id int) (*model.User, error) {
+	res, err := container.UserRepository.GetOne(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	return &res, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.

@@ -10,6 +10,9 @@ type Query {
 
   # Получить описание
   getDesc: GetDescOutput!
+
+  # Получить пользователя по id
+  getOneUser(id: Int!): User!
 }
 
 type Mutation {
@@ -17,23 +20,23 @@ type Mutation {
   auth(input: UserInput!): UserOutput!
 
   # Обновить инфу
-  updateInfo(input: UpdateInfoInput!): GetInfo!
+  updateInfo(input: UpdateInfoInput!): GetInfo! @hasRole(role: ADMIN)
 
   # Создать работу
-  createWork(input: CreateWorkInput!): GetWork!
+  createWork(input: CreateWorkInput!): GetWork! @hasRole(role: ADMIN)
 
   # Обновить работу
-  updateWork(input: UpdateWorkInput!): UpdateWorkOutput!
+  updateWork(input: UpdateWorkInput!): UpdateWorkOutput! @hasRole(role: ADMIN)
 
   # Удалить работу
-  deleteWork(input: DeleteWorkInput!): DeleteWorkOutput!
+  deleteWork(input: DeleteWorkInput!): DeleteWorkOutput! @hasRole(role: ADMIN)
 
   # Обновить описание
-  updateDesc(input: UpdateDescInput!): UpdateDescOutput!
+  updateDesc(input: UpdateDescInput!): UpdateDescOutput! @hasRole(role: ADMIN)
 
   # Создать описание
-  createDesc(input: CreateDescInput!): CreateDescOutput!
+  createDesc(input: CreateDescInput!): CreateDescOutput! @hasRole(role: ADMIN)
 
   # Удалить описание
-  deleteDesc(input: DeleteDescInput!): DeleteDescOutput!
+  deleteDesc(input: DeleteDescInput!): DeleteDescOutput! @hasRole(role: ADMIN)
 }

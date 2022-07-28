@@ -15,6 +15,7 @@ import { submitCreateWorkForm } from './create-work.actions';
 import { setCreateWorkVisible } from '../../login/store/login-modal.actions';
 import { selectCreateFormInput } from './create-work.selectors';
 import { NotificationService } from '../../../services/notification.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 export class CreateWorkEffects extends GraphqlService {
@@ -22,9 +23,10 @@ export class CreateWorkEffects extends GraphqlService {
     private actions$: Actions,
     public notificationService: NotificationService,
     public store$: Store,
-    override httpClient: HttpClient
+    override httpClient: HttpClient,
+    override cookieService: CookieService
   ) {
-    super(httpClient);
+    super(httpClient, cookieService);
   }
 
   submitCreateWorkForm$ = createEffect(() =>

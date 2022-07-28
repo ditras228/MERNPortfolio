@@ -83,17 +83,13 @@
     border-radius: 50%;
     position: relative;
     &__edit {
-      @include button-edit();
+      @include button-icon();
       right: -15px;
       bottom: -15px;
       position: absolute;
-      display: grid;
-      justify-content: center;
 
       &__icon {
         @include icon('edit.svg');
-        width: 30px;
-        height: 30px;
       }
     }
   }

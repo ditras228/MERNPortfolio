@@ -24,6 +24,7 @@ import {
 import { AuthService } from '../../../services/auth.service';
 import { LoginErrors } from './login-modal.reducer';
 import { NotificationService } from '../../../services/notification.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 export class LoginEffects extends GraphqlService {
@@ -34,9 +35,10 @@ export class LoginEffects extends GraphqlService {
     public store$: Store,
     public authService: AuthService,
     public notificationService: NotificationService,
-    override httpClient: HttpClient
+    override httpClient: HttpClient,
+    override cookieService: CookieService
   ) {
-    super(httpClient);
+    super(httpClient, cookieService);
   }
 
   getTags$ = createEffect(() =>

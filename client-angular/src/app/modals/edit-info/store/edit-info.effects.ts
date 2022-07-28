@@ -15,6 +15,7 @@ import { submitEditInfoForm } from './edit-info.actions';
 import { selectEditInfoFormInput } from './edit-info.selectors';
 import { setEditInfoVisible } from '../../login/store/login-modal.actions';
 import { NotificationService } from '../../../services/notification.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 export class EditInfoEffects extends GraphqlService {
@@ -22,9 +23,10 @@ export class EditInfoEffects extends GraphqlService {
     private actions$: Actions,
     public notificationService: NotificationService,
     public store$: Store,
-    override httpClient: HttpClient
+    override httpClient: HttpClient,
+    override cookieService: CookieService
   ) {
-    super(httpClient);
+    super(httpClient, cookieService);
   }
 
   submitEditInfoForm$ = createEffect(() =>

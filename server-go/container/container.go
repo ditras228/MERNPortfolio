@@ -7,6 +7,7 @@ import (
 	desc "portfolio/internal/desc/db"
 	info "portfolio/internal/info/db"
 	tag "portfolio/internal/tag/db"
+	translation "portfolio/internal/translation/db"
 	user "portfolio/internal/user/db"
 	work "portfolio/internal/work/db"
 )
@@ -19,3 +20,4 @@ var WorkRepository = work.NewRepository(client)
 var UserRepository = user.NewRepository(client)
 var TagRepository = tag.NewRepository(client)
 var DescRepository = desc.NewRepository(client)
+var TranslateRepository = translation.NewRepository(client)

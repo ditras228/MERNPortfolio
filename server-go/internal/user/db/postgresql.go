@@ -24,6 +24,7 @@ func (r *repository) Auth(ctx context.Context, input model.UserInput) (model.Use
 	}
 
 	q := `
+
 		SELECT 
 			login, password
 
@@ -32,6 +33,7 @@ func (r *repository) Auth(ctx context.Context, input model.UserInput) (model.Use
 
 		WHERE 
 			login = $1
+
 		`
 
 	var usr model.User
@@ -61,6 +63,44 @@ func (r *repository) Auth(ctx context.Context, input model.UserInput) (model.Use
 		usr.AccessToken = signingString
 	}
 
+	return usr, nil
+}
+func (r *repository) GetOne(ctx context.Context, id int) (model.User, error) {
+	qUser := `
+
+				SELECT 
+					id, login, role
+				
+				FROM 
+					public.user 
+				
+				WHERE 
+					id = $1
+
+			 `
+	var usr model.User
+	err := r.client.QueryRow(ctx, qUser, id).Scan(&usr.ID, &usr.Login, &usr.RoleID)
+	if err != nil {
+		return model.User{}, err
+	}
+
+	qRole := `
+
+				SELECT 
+					 name
+				
+				FROM 
+					public.role 
+				
+				WHERE 
+					id = $1
+
+			 `
+
+	err = r.client.QueryRow(ctx, qRole, &usr.RoleID).Scan(&usr.Role)
+	if err != nil {
+		return model.User{}, err
+	}
 	return usr, nil
 }
 func NewRepository(client postgres.Client) user.Repository {
