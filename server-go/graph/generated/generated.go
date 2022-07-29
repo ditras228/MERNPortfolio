@@ -161,7 +161,7 @@ type QueryResolver interface {
 	GetInfo(ctx context.Context) (*model.GetInfo, error)
 	GetWorks(ctx context.Context) ([]*model.GetWork, error)
 	GetTags(ctx context.Context) ([]*model.GetTag, error)
-	GetDesc(ctx context.Context) (model.GetDescOutput, error)
+	GetDesc(ctx context.Context) ([]*model.GetDesc, error)
 	GetOneUser(ctx context.Context, id int) (*model.User, error)
 }
 
@@ -816,34 +816,35 @@ union GetDescOutput = GetDescResult | NotFoundError
 	{Name: "../schema/directives/role.graphqls", Input: `directive @hasRole(role: Role!) on FIELD_DEFINITION
 
 enum Role {
-    ADMIN
-    USER
+  ADMIN
+  USER
 }
 
-
 enum TranslationEntities {
-    WORK
-    INFO
-}`, BuiltIn: false},
+  WORK
+  INFO
+}
+`, BuiltIn: false},
 	{Name: "../schema/translation/mutation_translation.graphqls", Input: `input UpdateTranslationInput {
   id: Int!
   translations: [TranslationInput]!
 }
 
-input TranslationInput{
+input TranslationInput {
   locale: Locales!
   field: String!
 }
 
-enum Locales{
+enum Locales {
   EN
   RU
-}`, BuiltIn: false},
-	{Name: "../schema/translation/query_translation.graphqls", Input: `type GetTranslate{
+}
+`, BuiltIn: false},
+	{Name: "../schema/translation/query_translation.graphqls", Input: `type GetTranslate {
   translations: [Translation]!
 }
 
-type Translation{
+type Translation {
   locale: Int!
   field: String!
 }
@@ -859,7 +860,7 @@ type Translation{
   getTags: [GetTag]!
 
   # Получить описание
-  getDesc: GetDescOutput!
+  getDesc: [GetDesc]!
 
   # Получить пользователя по id
   getOneUser(id: Int!): User!
@@ -3329,9 +3330,9 @@ func (ec *executionContext) _Query_getDesc(ctx context.Context, field graphql.Co
 		}
 		return graphql.Null
 	}
-	res := resTmp.(model.GetDescOutput)
+	res := resTmp.([]*model.GetDesc)
 	fc.Result = res
-	return ec.marshalNGetDescOutput2portfolioᚋgraphᚋmodelᚐGetDescOutput(ctx, field.Selections, res)
+	return ec.marshalNGetDesc2ᚕᚖportfolioᚋgraphᚋmodelᚐGetDesc(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_getDesc(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -3341,7 +3342,15 @@ func (ec *executionContext) fieldContext_Query_getDesc(ctx context.Context, fiel
 		IsMethod:   true,
 		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type GetDescOutput does not have child fields")
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_GetDesc_id(ctx, field)
+			case "text":
+				return ec.fieldContext_GetDesc_text(ctx, field)
+			case "img":
+				return ec.fieldContext_GetDesc_img(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type GetDesc", field.Name)
 		},
 	}
 	return fc, nil
@@ -7584,16 +7593,6 @@ func (ec *executionContext) marshalNGetDesc2ᚕᚖportfolioᚋgraphᚋmodelᚐGe
 	wg.Wait()
 
 	return ret
-}
-
-func (ec *executionContext) marshalNGetDescOutput2portfolioᚋgraphᚋmodelᚐGetDescOutput(ctx context.Context, sel ast.SelectionSet, v model.GetDescOutput) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
-		}
-		return graphql.Null
-	}
-	return ec._GetDescOutput(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalNGetInfo2portfolioᚋgraphᚋmodelᚐGetInfo(ctx context.Context, sel ast.SelectionSet, v model.GetInfo) graphql.Marshaler {

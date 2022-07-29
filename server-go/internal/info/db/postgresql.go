@@ -3,14 +3,19 @@ package info
 import (
 	"context"
 	"os"
+	"portfolio/enitity"
 	"portfolio/graph/model"
 	"portfolio/infrastructure/postgresql"
+	"portfolio/internal/desc"
 	"portfolio/internal/info"
+	"portfolio/internal/translation"
 	"portfolio/pkg/utils"
 )
 
 type repository struct {
-	client postgres.Client
+	client          postgres.Client
+	translationRepo translation.Repository
+	descRepo        desc.Repository
 }
 
 func (r *repository) UpdateInfo(ctx context.Context, input model.UpdateInfoInput) (model.GetInfo, error) {
@@ -93,14 +98,18 @@ func (r *repository) UpdateInfo(ctx context.Context, input model.UpdateInfoInput
 
 	return inf, nil
 }
+
 func (r *repository) FindOne(ctx context.Context) (model.GetInfo, error) {
 	q := `
 
 		SELECT 
-			name, job,  experience,
-			telegramTitle, telegramLink, githubTitle, githubLink, img
+			name, job, 
+			experience, telegramTitle,
+			telegramLink, githubTitle,
+			githubLink, img
 
-		FROM public.info 
+		FROM 
+			public.info 
 
 		WHERE 
 			id = 1
@@ -118,38 +127,33 @@ func (r *repository) FindOne(ctx context.Context) (model.GetInfo, error) {
 		return model.GetInfo{}, err
 	}
 
-	qDesc := `
-
-			SELECT 
-				id, text, img
-
-			FROM public.desc
-
-			ORDER BY id ASC
-
-
-		 `
-	descRows, err := r.client.Query(ctx, qDesc)
+	res, err := r.descRepo.FindAll(ctx)
 	if err != nil {
 		return model.GetInfo{}, err
 	}
-	descs := make([]*model.GetDesc, 0)
-	for descRows.Next() {
-		var dsc model.GetDesc
-		err := descRows.Scan(&dsc.ID, &dsc.Text, &dsc.Img)
-		if err != nil {
-			return model.GetInfo{}, nil
-		}
-		descs = append(descs, &dsc)
-	}
-	inf.Desc = descs
-
+	inf.Desc = res
 	inf.Contacts = &con
-	inf.Experience = utils.FormatHTML(inf.Experience)
+
+	infoNameTranslate, err := r.translationRepo.FindOne(ctx, 1, enitity.InfoTitle, inf.Name)
+	if err != nil {
+		return model.GetInfo{}, err
+	}
+
+	inf.Name = infoNameTranslate
+
+	infExperienceTranslate, err := r.translationRepo.FindOne(ctx, 1, enitity.InfoExperience, inf.Experience)
+	if err != nil {
+		return model.GetInfo{}, err
+	}
+
+	inf.Experience = utils.FormatHTML(infExperienceTranslate)
+
 	return inf, nil
 }
-func NewRepository(client postgres.Client) info.Repository {
+func NewRepository(client postgres.Client, translationRepo translation.Repository, descRepo desc.Repository) info.Repository {
 	return &repository{
-		client: client,
+		client:          client,
+		translationRepo: translationRepo,
+		descRepo:        descRepo,
 	}
 }

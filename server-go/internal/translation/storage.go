@@ -2,9 +2,8 @@ package translation
 
 import (
 	"context"
-	"portfolio/graph/model"
 )
 
 type Repository interface {
-	FindOne(ctx context.Context) (model.GetTranslate, error)
+	FindOne(ctx context.Context, translateId, entity int, origValue string) (string, error)
 }

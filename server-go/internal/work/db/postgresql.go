@@ -2,15 +2,18 @@ package work
 
 import (
 	"context"
+	"portfolio/enitity"
 	"portfolio/graph/model"
 	"portfolio/infrastructure/postgresql"
+	"portfolio/internal/translation"
 	"portfolio/internal/work"
 	"portfolio/pkg/utils"
 	"strconv"
 )
 
 type repository struct {
-	client postgres.Client
+	client          postgres.Client
+	translationRepo translation.Repository
 }
 
 func (r *repository) FindAll(ctx context.Context) ([]*model.GetWork, error) {
@@ -98,6 +101,19 @@ func (r *repository) FindAll(ctx context.Context) ([]*model.GetWork, error) {
 			}
 			wrk.Tags = tags
 		}
+
+		wrkNameTranslate, err := r.translationRepo.FindOne(ctx, wrk.ID, enitity.WorkTitle, wrk.Name)
+		if err != nil {
+			return nil, err
+		}
+		wrk.Name = wrkNameTranslate
+
+		wrkDescTranslate, err := r.translationRepo.FindOne(ctx, wrk.ID, enitity.WorkFunctional, wrk.Description)
+		if err != nil {
+			return nil, err
+		}
+		wrk.Description = wrkDescTranslate
+
 		works = append(works, &wrk)
 	}
 	if err != nil {
@@ -161,8 +177,8 @@ func (r *repository) CreateWork(ctx context.Context, input model.CreateWorkInput
 func (r *repository) UpdateWork(ctx context.Context, input model.UpdateWorkInput) (model.UpdateWorkOutput, error) {
 	qDeleteTags := `
 
-					DELETE 
-						FROM public.worktag
+					DELETE FROM
+						public.worktag
 			
 					WHERE 
 						workid = $1
@@ -264,8 +280,9 @@ func (r *repository) DeleteWork(ctx context.Context, input model.DeleteWorkInput
 	return res, nil
 }
 
-func NewRepository(client postgres.Client) work.Repository {
+func NewRepository(client postgres.Client, translationRepo translation.Repository) work.Repository {
 	return &repository{
-		client: client,
+		client:          client,
+		translationRepo: translationRepo,
 	}
 }

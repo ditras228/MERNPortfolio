@@ -82,12 +82,12 @@ func (r *queryResolver) GetInfo(ctx context.Context) (*model.GetInfo, error) {
 	if err != nil {
 		return nil, err
 	}
-	res, err := container.TranslateRepository.FindOne(ctx)
-	if err != nil {
-		return nil, err
-	}
-	one.Name = res.Translations[0].Field
-	fmt.Println(len(res.Translations))
+	//res, err := container.TranslateRepository.FindOne(ctx, 1)
+	//if err != nil {
+	//	return nil, err
+	//}
+	//one.Name = res.Translations[0].Field
+	//fmt.Println(len(res.Translations))
 	return &one, nil
 }
 
@@ -107,7 +107,7 @@ func (r *queryResolver) GetTags(ctx context.Context) ([]*model.GetTag, error) {
 	return tags, nil
 }
 
-func (r *queryResolver) GetDesc(ctx context.Context) (model.GetDescOutput, error) {
+func (r *queryResolver) GetDesc(ctx context.Context) ([]*model.GetDesc, error) {
 	res, err := container.DescRepository.FindAll(ctx)
 	if err != nil {
 		return nil, err

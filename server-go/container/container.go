@@ -12,12 +12,13 @@ import (
 	work "portfolio/internal/work/db"
 )
 
-var cfg = config.GetConfig()
-var client, _ = postgres.NewClient(context.TODO(), 3, cfg.Storage)
-
-var InfoRepository = info.NewRepository(client)
-var WorkRepository = work.NewRepository(client)
-var UserRepository = user.NewRepository(client)
-var TagRepository = tag.NewRepository(client)
-var DescRepository = desc.NewRepository(client)
-var TranslateRepository = translation.NewRepository(client)
+var (
+	cfg                 = config.GetConfig()
+	client, _           = postgres.NewClient(context.TODO(), 3, cfg.Storage)
+	TranslateRepository = translation.NewRepository(client)
+	InfoRepository      = info.NewRepository(client, TranslateRepository, DescRepository)
+	WorkRepository      = work.NewRepository(client, TranslateRepository)
+	UserRepository      = user.NewRepository(client)
+	TagRepository       = tag.NewRepository(client)
+	DescRepository      = desc.NewRepository(client, TranslateRepository)
+)

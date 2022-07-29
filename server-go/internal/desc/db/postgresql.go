@@ -4,17 +4,20 @@ import (
 	"context"
 	"github.com/ztrue/tracerr"
 	"os"
+	"portfolio/enitity"
 	"portfolio/graph/model"
 	postgres "portfolio/infrastructure/postgresql"
 	"portfolio/internal/desc"
+	"portfolio/internal/translation"
 	"portfolio/pkg/utils"
 )
 
 type repository struct {
-	client postgres.Client
+	client          postgres.Client
+	translationRepo translation.Repository
 }
 
-func (r *repository) FindAll(ctx context.Context) (model.GetDescOutput, error) {
+func (r *repository) FindAll(ctx context.Context) ([]*model.GetDesc, error) {
 	q := `
 
 			SELECT 
@@ -29,7 +32,7 @@ func (r *repository) FindAll(ctx context.Context) (model.GetDescOutput, error) {
 	if err != nil {
 		return nil, tracerr.Errorf("failed to find all descs: %w", err)
 	}
-	var res model.GetDescResult
+	var res []*model.GetDesc
 	descs := make([]*model.GetDesc, 0)
 	for rows.Next() {
 		var dsc model.GetDesc
@@ -37,9 +40,15 @@ func (r *repository) FindAll(ctx context.Context) (model.GetDescOutput, error) {
 		if err != nil {
 			return nil, nil
 		}
+
+		dscTextTranslate, err := r.translationRepo.FindOne(ctx, dsc.ID, enitity.InfoDesc, dsc.Text)
+		if err != nil {
+			return nil, err
+		}
+		dsc.Text = dscTextTranslate
 		descs = append(descs, &dsc)
 	}
-	res.Desc = descs
+	res = descs
 	return res, nil
 }
 
@@ -157,8 +166,9 @@ func (r *repository) DeleteDesc(ctx context.Context, input model.DeleteDescInput
 	}
 	return res, nil
 }
-func NewRepository(client postgres.Client) desc.Repository {
+func NewRepository(client postgres.Client, translationRepo translation.Repository) desc.Repository {
 	return &repository{
-		client: client,
+		client:          client,
+		translationRepo: translationRepo,
 	}
 }

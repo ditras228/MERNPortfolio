@@ -9,7 +9,7 @@ type Query {
   getTags: [GetTag]!
 
   # Получить описание
-  getDesc: GetDescOutput!
+  getDesc: [GetDesc]!
 
   # Получить пользователя по id
   getOneUser(id: Int!): User!
