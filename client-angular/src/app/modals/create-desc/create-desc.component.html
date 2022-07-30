@@ -1,5 +1,5 @@
 <div class="create-desc">
-  <div class="create-desc__title" i18n="@@cd.t1">Создать описание</div>
+  <div class="create-desc__title" i18n="@@cd.t1">Create description</div>
   <div class="create-desc__close" (click)="closeModalHandler()"></div>
   <app-image-input
     class="create-desc__img"
@@ -9,7 +9,15 @@
     i18n-placeholder="@@cd.t2"
     class="create-desc__field"
     [error]="errors?.['text']"
-    placeholder="Текст"
+    placeholder="Text"
+    [rows]="3"
+    [internalValue]="text.value"
+    (valueChange)="text.patchValue($event)"></app-text-area>
+  <app-text-area
+    i18n-placeholder="@@cd.t2.1"
+    class="create-desc__field"
+    [error]="errors?.['text']"
+    placeholder="Text RU"
     [rows]="3"
     [internalValue]="text.value"
     (valueChange)="text.patchValue($event)"></app-text-area>
@@ -18,6 +26,6 @@
     class="create-desc__button"
     (click)="submitFormHandler()"
     i18n="@@cd.t3">
-    Создать
+    Create
   </button>
 </div>

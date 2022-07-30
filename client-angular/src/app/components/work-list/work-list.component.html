@@ -2,8 +2,9 @@
   <button
     *ngIf="isAuth"
     class="work-list__button"
-    (click)="createWorkHandler()">
-    Создать работу
+    (click)="createWorkHandler()"
+    i18n="@@wl.t1">
+    CreateWork
   </button>
   <ng-container *ngFor="let work of works$">
     <app-work [isAuth]="isAuth" [work]="work"></app-work>

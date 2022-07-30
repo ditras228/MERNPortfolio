@@ -18,6 +18,7 @@ import (
 	"portfolio/graph/generated"
 	"portfolio/graph/model"
 	"portfolio/middlewares"
+	"portfolio/middlewares/keys"
 )
 
 const defaultPort = "8080"
@@ -33,7 +34,7 @@ func main() {
 
 	c := generated.Config{Resolvers: &graph.Resolver{}}
 	c.Directives.HasRole = func(ctx context.Context, obj interface{}, next graphql.Resolver, role model.Role) (interface{}, error) {
-		if middlewares.ForContext(ctx).Role != role {
+		if keys.ForContext(ctx).Role != role {
 			// block calling the next resolver
 			return nil, fmt.Errorf("Access denied")
 		}

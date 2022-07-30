@@ -11,11 +11,13 @@ import { existsSync } from 'fs';
 import { join } from 'path';
 
 import { AppServerModule } from './src/main.server';
+import { LOCALE_ID } from '@angular/core';
 
 // The Express app is exported so that it can be used by serverless Functions.
-export function app(): express.Express {
+export function app(lang: string): express.Express {
   const server = express();
-  const distFolder = join(process.cwd(), 'dist/client-angular/browser');
+  const rootFolder = join(process.cwd(), `dist/client-angular/browser`);
+  const distFolder = join(process.cwd(), `dist/client-angular/browser/${lang}`);
   const indexHtml = existsSync(join(distFolder, 'index.original.html'))
     ? 'index.original.html'
     : 'index';
@@ -25,7 +27,8 @@ export function app(): express.Express {
     'html',
     ngExpressEngine({
       bootstrap: AppServerModule,
-    })
+      extraProviders: [{ provide: LOCALE_ID, useValue: lang }],
+    } as any)
   );
 
   server.set('view engine', 'html');
@@ -34,9 +37,10 @@ export function app(): express.Express {
   // Example Express Rest API endpoints
   // server.get('/api/**', (req, res) => { });
   // Serve static files from /browser
+
   server.get(
     '*.*',
-    express.static(distFolder, {
+    express.static(rootFolder, {
       maxAge: '1y',
     })
   );
@@ -56,7 +60,13 @@ function run(): void {
   const port = process.env['PORT'] || 4000;
 
   // Start up the Node server
-  const server = app();
+  const server = express();
+  const appEn = app('en-US');
+  const appRu = app('ru');
+
+  server.use('/ru', appRu);
+  server.use('', appEn);
+
   server.listen(port, () => {
     console.log(`Node Express server listening on http://localhost:${port}`);
   });

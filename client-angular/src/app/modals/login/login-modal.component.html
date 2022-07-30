@@ -1,5 +1,5 @@
 <div class="login">
-  <div class="login__title" i18n="@@lm.t1">Админка</div>
+  <div class="login__title" i18n="@@lm.t1">Admin</div>
   <div class="login__close" (click)="closeModalHandler()"></div>
 
   <div class="login__form">
@@ -7,7 +7,7 @@
       i18n-placeholder="@@lm.t2"
       class="login__form__input"
       [error]="errors?.['login'] || serverError?.type === loginErrors.NOT_FOUND &&  serverError?.message"
-      placeholder="Логин"
+      placeholder="Login"
       [internalValue]="login.value"
       (valueChange)="login.patchValue($event)"></app-input-field>
     <app-input-field
@@ -15,11 +15,11 @@
       class="login__form__input"
       [type]="'password'"
       [error]="errors?.['password'] || serverError?.type === loginErrors.WRONG_PASSWORD &&  serverError?.message"
-      placeholder="Пароль"
+      placeholder="Password"
       [internalValue]="password.value"
       (valueChange)="password.patchValue($event)"></app-input-field>
     <button class="login__btn" (click)="sendForm()" i18n="@@lm.t4">
-      Войти
+      Login
     </button>
   </div>
 </div>

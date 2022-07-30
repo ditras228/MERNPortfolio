@@ -13,11 +13,12 @@ export class GraphqlService {
   ) {}
   doRequest<T>(query: string, variables: any): Observable<T> {
     const token = this.cookieService.get('token');
+    const locale = this.cookieService.get('locale');
     return this.httpClient
       .post<{ data: T }>(
         appConfig.baseUrl,
         { query, variables },
-        { headers: { Authorization: token } }
+        { headers: { Authorization: token, Locale: locale } }
       )
       .pipe(map(response => response.data));
   }

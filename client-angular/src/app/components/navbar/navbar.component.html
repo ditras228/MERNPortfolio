@@ -7,7 +7,7 @@
       (click)="showLoginHandler()"
       *ngIf="!isAuth">
       <span class="navbar__container__admin-btn__icon"></span>
-      <span i18n="@@nb.t1">Вход</span>
+      <span i18n="@@nb.t1">Login</span>
     </button>
     <div
       class="navbar__container__admin-btn-mobile"
@@ -17,7 +17,7 @@
       class="navbar__container__logout"
       (click)="authService.logout()"
       *ngIf="isAuth">
-      <span i18n="@@nb.t2">Выйти</span>
+      <span i18n="@@nb.t2">Logout</span>
     </button>
     <div
       class="navbar__container__logout-mobile"

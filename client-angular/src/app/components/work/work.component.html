@@ -14,13 +14,15 @@
       <button
         class="work__buttons__group__item"
         *ngIf="work?.github"
-        (click)="openLinkHandler(work?.github)">
+        (click)="openLinkHandler(work?.github)"
+        i18n="@@wс.t1">
         GitHub
       </button>
       <button
         class="work__buttons__group__item"
         *ngIf="work?.figma"
-        (click)="openLinkHandler(work?.figma)">
+        (click)="openLinkHandler(work?.figma)"
+        i18n="@@wс.t2">
         Figma
       </button>
     </div>
@@ -29,8 +31,8 @@
       *ngIf="work?.demo"
       (click)="openLinkHandler(work?.demo)"
       [disabled]="isOurLink">
-      <span *ngIf="isNotOurLink">Демо</span>
-      <span *ngIf="isOurLink">Вы здесь</span>
+      <span *ngIf="isNotOurLink" i18n="@@wс.t3">Demo</span>
+      <span *ngIf="isOurLink" i18n="@@wс.t4">You are here</span>
     </button>
   </div>
 </div>

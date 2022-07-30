@@ -5,35 +5,26 @@ import (
 	"fmt"
 	"net/http"
 	"portfolio/container"
-	"portfolio/graph/model"
+	"portfolio/middlewares/keys"
 )
-
-var userCtxKey = &contextKey{"user"}
-
-type contextKey struct {
-	name string
-}
 
 func MiddleWare() func(handler http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 			token := request.Header.Get("Authorization")
+			locale := request.Header.Get("Locale")
 			fmt.Println(token)
 			res, err := container.UserRepository.GetOne(request.Context(), 1)
 			if err != nil {
 				fmt.Errorf(err.Error())
 			}
-			fmt.Println(res.Login)
-			fmt.Println(res.Login)
-			ctx := context.WithValue(request.Context(), userCtxKey, res)
+
+			ctx := context.WithValue(request.Context(), keys.UserCtxKey, res)
+			localeCtx := context.WithValue(request.Context(), keys.LocaleCtxKey, locale)
 
 			request = request.WithContext(ctx)
+			request = request.WithContext(localeCtx)
 			next.ServeHTTP(writer, request)
 		})
 	}
-}
-
-func ForContext(ctx context.Context) model.User {
-	raw := ctx.Value(userCtxKey).(model.User)
-	return raw
 }

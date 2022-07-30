@@ -5,11 +5,9 @@ package graph
 
 import (
 	"context"
-	"fmt"
 	"portfolio/container"
 	"portfolio/graph/generated"
 	"portfolio/graph/model"
-	"portfolio/middlewares"
 )
 
 func (r *mutationResolver) Auth(ctx context.Context, input model.UserInput) (model.UserOutput, error) {
@@ -29,7 +27,6 @@ func (r *mutationResolver) UpdateInfo(ctx context.Context, input model.UpdateInf
 }
 
 func (r *mutationResolver) CreateWork(ctx context.Context, input model.CreateWorkInput) (*model.GetWork, error) {
-	fmt.Println(middlewares.ForContext(ctx).Login)
 	res, err := container.WorkRepository.CreateWork(ctx, input)
 	if err != nil {
 		return nil, err

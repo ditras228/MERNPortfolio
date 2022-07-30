@@ -1,6 +1,7 @@
 import {
   Component,
   Inject,
+  LOCALE_ID,
   OnInit,
   PLATFORM_ID,
   Renderer2,
@@ -38,7 +39,8 @@ export class AppComponent implements OnInit {
     private store$: Store,
     private renderer: Renderer2,
     public cookieService: CookieService,
-    @Inject(PLATFORM_ID) private platformId
+    @Inject(PLATFORM_ID) private platformId,
+    @Inject(LOCALE_ID) public locale: string
   ) {}
   public isLoginVisible: boolean | undefined;
   public isEditInfoVisible: boolean | undefined;
@@ -50,6 +52,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       if (this.cookieService.get('token')) {
+        this.cookieService.set('locale', this.locale);
         this.store$.dispatch(setAuth(true));
       }
       this.store$

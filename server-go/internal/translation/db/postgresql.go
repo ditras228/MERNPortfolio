@@ -2,8 +2,10 @@ package translation
 
 import (
 	"context"
+	"fmt"
 	"portfolio/infrastructure/postgresql"
 	"portfolio/internal/translation"
+	"portfolio/middlewares/keys"
 )
 
 type repository struct {
@@ -52,12 +54,14 @@ func (r *repository) FindOne(ctx context.Context, translateId, entity int, origV
 			public.translation
 
 		WHERE 
-			translateId = $1 AND entityId = $2
+			translateId = $1 AND entityId = $2 AND locale = $3
 
 		`
 
 	var translate string
-	row := r.client.QueryRow(ctx, qTranslate, translateId, entity)
+	row := r.client.QueryRow(ctx, qTranslate, translateId, entity, keys.LocaleForContext(ctx))
+	fmt.Println(keys.LocaleForContext(ctx))
+	fmt.Println("123")
 	err := row.Scan(&translate)
 
 	if translate == "" {

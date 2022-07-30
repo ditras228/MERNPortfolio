@@ -1,7 +1,7 @@
 .PHONY: dev
 dev:
 	$(call _info, "\nСтарт сервера");
-	npm run start
+	npm run dev:ssr
 
 .PHONY: gen
 gen:
