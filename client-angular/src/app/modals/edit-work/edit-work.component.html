@@ -1,15 +1,16 @@
 <div class="edit-work">
-  <div class="edit-work__title">Изменить работу</div>
+  <div class="edit-work__title" i18n="@@ew.t1">Изменить работу</div>
   <div class="edit-work__close" (click)="closeModalHandler()"></div>
 
   <app-input-field
+    i18n-placeholder="@@ew.t2"
     class="edit-work__field"
     [error]="errors?.['name']"
-    [placeholder]="'Название'"
+    placeholder="Название"
     [internalValue]="name.value"
     (valueChange)="name.patchValue($event)"></app-input-field>
   <div>
-    <div class="edit-work__grid__title">Теги работы</div>
+    <div class="edit-work__grid__title" i18n="@@ew.t3">Теги работы</div>
     <div class="edit-work__grid__tags">
       <div
         class="edit-work__grid__tags__item"
@@ -20,7 +21,7 @@
     </div>
   </div>
   <div>
-    <div class="edit-work__grid__title">Все теги</div>
+    <div class="edit-work__grid__title" i18n="@@ew.t4">Все теги</div>
     <div class="edit-work__grid__tags">
       <div
         class="edit-work__grid__tags__item"
@@ -31,32 +32,38 @@
     </div>
   </div>
   <app-text-area
+    i18n-placeholder="@@ew.t5"
     class="edit-work__field"
     [error]="errors?.['description']"
-    [placeholder]="'Описание'"
+    placeholder="Описание"
     [internalValue]="description.value"
     [rows]="13"
     (valueChange)="description.patchValue($event)"></app-text-area>
 
   <div class="edit-work__grid">
     <app-input-field
+      i18n-placeholder="@@ew.t6"
       class="edit-work__grid__field"
       [error]="errors?.['github']"
-      [placeholder]="'Гитхаб'"
+      placeholder="Гитхаб"
       [internalValue]="github.value"
       (valueChange)="github.patchValue($event)"></app-input-field>
     <app-input-field
+      i18n-placeholder="@@ew.t7"
       class="edit-work__grid__field"
       [error]="errors?.['demo']"
-      [placeholder]="'Демо'"
+      placeholder="Демо"
       [internalValue]="demo.value"
       (valueChange)="demo.patchValue($event)"></app-input-field>
   </div>
 
   <button
     class="edit-work__button edit-work__button__delete"
-    (click)="deleteWorkHandler()">
+    (click)="deleteWorkHandler()"
+    i18n="@@ew.t8">
     Удалить
   </button>
-  <button class="edit-work__button" (click)="submitForm()">Применить</button>
+  <button class="edit-work__button" (click)="submitForm()" i18n="@@ew.t9">
+    Применить
+  </button>
 </div>

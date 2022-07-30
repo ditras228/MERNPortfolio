@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en-US" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="nb.t1" datatype="html">
+        <source>Вход</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/navbar/navbar.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="nb.t2" datatype="html">
+        <source>Выйти</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/navbar/navbar.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cd.t1" datatype="html">
+        <source>Создать описание</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/create-desc/create-desc.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cd.t2" datatype="html">
+        <source>Текст</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/create-desc/create-desc.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cd.t3" datatype="html">
+        <source> Создать </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/create-desc/create-desc.component.html</context>
+          <context context-type="linenumber">16,18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cw.t1" datatype="html">
+        <source>Создать работу</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/create-work/create-work.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cw.t2" datatype="html">
+        <source>Название</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/create-work/create-work.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cw.t3" datatype="html">
+        <source>Теги работы</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/create-work/create-work.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cw.t4" datatype="html">
+        <source>Все теги</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/create-work/create-work.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cd.t5" datatype="html">
+        <source>Описание</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/create-work/create-work.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cw.t8" datatype="html">
+        <source>Применить</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/create-work/create-work.component.html</context>
+          <context context-type="linenumber">56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ed.t1" datatype="html">
+        <source>Изменить описание</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-desc/edit-desc.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ed.t2" datatype="html">
+        <source>Текст</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-desc/edit-desc.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ed.t3" datatype="html">
+        <source> Удалить </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-desc/edit-desc.component.html</context>
+          <context context-type="linenumber">17,19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ed.t4" datatype="html">
+        <source> Применить </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-desc/edit-desc.component.html</context>
+          <context context-type="linenumber">20,22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ei.t1" datatype="html">
+        <source>Изменить инфу</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-info/edit-info.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ei.t2" datatype="html">
+        <source>Имя</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-info/edit-info.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ei.t3" datatype="html">
+        <source>Грейд</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-info/edit-info.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ei.t4" datatype="html">
+        <source>Навыки</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-info/edit-info.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ei.t5" datatype="html">
+        <source>Телеграм тайтл</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-info/edit-info.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ei.t6" datatype="html">
+        <source>Телеграм ссылка</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-info/edit-info.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ei.t7" datatype="html">
+        <source>Гитхаб тайтл</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-info/edit-info.component.html</context>
+          <context context-type="linenumber">48</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ei.t8" datatype="html">
+        <source>Гитхаб ссылка</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-info/edit-info.component.html</context>
+          <context context-type="linenumber">54</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ei.t9" datatype="html">
+        <source>Применить</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-info/edit-info.component.html</context>
+          <context context-type="linenumber">58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ew.t1" datatype="html">
+        <source>Изменить работу</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-work/edit-work.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ew.t2" datatype="html">
+        <source>Название</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-work/edit-work.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ew.t3" datatype="html">
+        <source>Теги работы</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-work/edit-work.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ew.t4" datatype="html">
+        <source>Все теги</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-work/edit-work.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ew.t5" datatype="html">
+        <source>Описание</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-work/edit-work.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ew.t6" datatype="html">
+        <source>Гитхаб</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-work/edit-work.component.html</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ew.t7" datatype="html">
+        <source>Демо</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-work/edit-work.component.html</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ew.t8" datatype="html">
+        <source> Удалить </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-work/edit-work.component.html</context>
+          <context context-type="linenumber">58,60</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ew.t9" datatype="html">
+        <source>Применить</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-work/edit-work.component.html</context>
+          <context context-type="linenumber">61</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="lm.t1" datatype="html">
+        <source>Админка</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/login/login-modal.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="lm.t2" datatype="html">
+        <source>Логин</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/login/login-modal.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="lm.t3" datatype="html">
+        <source>Пароль</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/login/login-modal.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="lm.t4" datatype="html">
+        <source>Войти</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/login/login-modal.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

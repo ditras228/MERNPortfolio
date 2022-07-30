@@ -1,5 +1,5 @@
 <div class="edit-info">
-  <div class="edit-info__title">Изменить инфу</div>
+  <div class="edit-info__title" i18n="@@ei.t1">Изменить инфу</div>
   <div class="edit-info__close" (click)="closeModalHandler()"></div>
 
   <app-image-input
@@ -8,52 +8,61 @@
     (setFormImageUrl)="setImgUrlValue($event)"></app-image-input>
 
   <app-input-field
+    i18n-placeholder="@@ei.t2"
     class="edit-info__field"
     [error]="errors?.['name']"
-    [placeholder]="'Имя'"
+    placeholder="Имя"
     [internalValue]="name.value"
     (valueChange)="name.patchValue($event)"></app-input-field>
   <app-input-field
+    i18n-placeholder="@@ei.t3"
     class="edit-info__field"
     [error]="errors?.['job']"
-    [placeholder]="'Грейд'"
+    placeholder="Грейд"
     [internalValue]="job.value"
     (valueChange)="job.patchValue($event)"></app-input-field>
   <app-text-area
+    i18n-placeholder="@@ei.t4"
     class="edit-info__field"
     [error]="errors?.['experience']"
-    [placeholder]="'Навыки'"
+    placeholder="Навыки"
     [internalValue]="experience.value"
     [rows]="13"
     (valueChange)="experience.patchValue($event)"></app-text-area>
 
   <div class="edit-info__grid">
     <app-input-field
+      i18n-placeholder="@@ei.t5"
       class="edit-info__grid__field"
       [error]="errors?.['telegramTitle']"
-      [placeholder]="'Телеграм тайтл'"
+      placeholder="Телеграм тайтл"
       [internalValue]="telegramTitle.value"
       (valueChange)="telegramTitle.patchValue($event)"></app-input-field>
     <app-input-field
+      i18n-placeholder="@@ei.t6"
       class="edit-info__grid__field"
       [error]="errors?.['telegramLink']"
-      [placeholder]="'Телеграм ссылка'"
+      placeholder="Телеграм ссылка"
       [internalValue]="telegramLink.value"
       (valueChange)="telegramLink.patchValue($event)"></app-input-field>
   </div>
   <div class="edit-info__grid">
     <app-input-field
+      i18n-placeholder="@@ei.t7"
       class="edit-info__grid__field"
       [error]="errors?.['githubTitle']"
-      [placeholder]="'Гитхаб тайтл'"
+      placeholder="Гитхаб тайтл"
       [internalValue]="githubTitle.value"
       (valueChange)="githubTitle.patchValue($event)"></app-input-field>
     <app-input-field
+      i18n-placeholder="@@ei.t8"
       class="edit-info__grid__field"
       [error]="errors?.['githubLink']"
-      [placeholder]="'Гитхаб ссылка'"
+      placeholder="Гитхаб ссылка"
       [internalValue]="githubLink.value"
       (valueChange)="githubLink.patchValue($event)"></app-input-field>
   </div>
-  <button class="edit-info__button" (click)="submitForm()">Применить</button>
+  <button class="edit-info__button" (click)="submitForm()" i18n="@@ei.t9">
+    Применить
+  </button>
 </div>

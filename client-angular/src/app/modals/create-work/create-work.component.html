@@ -1,15 +1,16 @@
 <div class="create-work">
-  <div class="create-work__title">Создать работу</div>
+  <div class="create-work__title" i18n="@@cw.t1">Создать работу</div>
   <div class="create-work__close" (click)="closeModalHandler()"></div>
 
   <app-input-field
+    i18n-placeholder="@@cw.t2"
     class="create-work__field"
     [error]="errors?.['name']"
-    [placeholder]="'Название'"
+    placeholder="Название"
     [internalValue]="name.value"
     (valueChange)="name.patchValue($event)"></app-input-field>
   <div>
-    <div class="create-work__grid__title">Теги работы</div>
+    <div class="create-work__grid__title" i18n="@@cw.t3">Теги работы</div>
     <div class="create-work__grid__tags">
       <div
         class="create-work__grid__tags__item"
@@ -20,7 +21,7 @@
     </div>
   </div>
   <div>
-    <div class="create-work__grid__title">Все теги</div>
+    <div class="create-work__grid__title" i18n="@@cw.t4">Все теги</div>
     <div class="create-work__grid__tags">
       <div
         class="create-work__grid__tags__item"
@@ -31,27 +32,32 @@
     </div>
   </div>
   <app-text-area
+    i18n-placeholder="@@cd.t5"
     class="create-work__field"
     [error]="errors?.['description']"
-    [placeholder]="'Описание'"
+    placeholder="Описание"
     [internalValue]="description.value"
     [rows]="13"
     (valueChange)="description.patchValue($event)"></app-text-area>
 
   <div class="create-work__grid">
     <app-input-field
+      i18n="@@cd.t6"
       class="create-work__grid__field"
       [error]="errors?.['github']"
-      [placeholder]="'Гитхаб'"
+      placeholder="Гитхаб"
       [internalValue]="github.value"
       (valueChange)="github.patchValue($event)"></app-input-field>
     <app-input-field
+      i18n="@@cd.t7"
       class="create-work__grid__field"
       [error]="errors?.['demo']"
-      [placeholder]="'Демо'"
+      placeholder="Демо"
       [internalValue]="demo.value"
       (valueChange)="demo.patchValue($event)"></app-input-field>
   </div>
 
-  <button class="create-work__button" (click)="submitForm()">Применить</button>
+  <button class="create-work__button" (click)="submitForm()" i18n="@@cw.t8">
+    Применить
+  </button>
 </div>

@@ -1,19 +1,23 @@
 <div class="create-desc">
-  <div class="create-desc__title">Создать описание</div>
+  <div class="create-desc__title" i18n="@@cd.t1">Создать описание</div>
   <div class="create-desc__close" (click)="closeModalHandler()"></div>
   <app-image-input
     class="create-desc__img"
     [imgUrlValue]="img.value"
     (setFormImageUrl)="setImgUrlValue($event)"></app-image-input>
   <app-text-area
+    i18n-placeholder="@@cd.t2"
     class="create-desc__field"
     [error]="errors?.['text']"
-    [placeholder]="'Текст'"
+    placeholder="Текст"
     [rows]="3"
     [internalValue]="text.value"
     (valueChange)="text.patchValue($event)"></app-text-area>
 
-  <button class="create-desc__button" (click)="submitFormHandler()">
+  <button
+    class="create-desc__button"
+    (click)="submitFormHandler()"
+    i18n="@@cd.t3">
     Создать
   </button>
 </div>

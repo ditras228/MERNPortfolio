@@ -13,6 +13,15 @@
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
+      "i18n": {
+        "sourceLocale": "en-US",
+        "locales": {
+          "en": {
+            "translation": "src/locale/messages.en.xlf",
+            "baseHref": ""
+          }
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -28,6 +37,9 @@
             "scripts": []
           },
           "configurations": {
+            "en": {
+              "localize": ["en"]
+            },
             "production": {
               "budgets": [
                 {
@@ -68,6 +80,9 @@
             },
             "development": {
               "browserTarget": "client-angular:build:development"
+            },
+            "en": {
+              "browserTarget": "client-angular:build:en"
             }
           },
           "defaultConfiguration": "development"
@@ -127,6 +142,9 @@
             "production": {
               "browserTarget": "client-angular:build:production",
               "serverTarget": "client-angular:server:production"
+            },
+            "en": {
+              "browserTarget": "client-angular:build:en"
             }
           },
           "defaultConfiguration": "development"
