@@ -9,9 +9,21 @@ export const getInfoQuery = gql`
         text
         img
       }
-      experience
+      experience {
+        field
+        translations {
+          locale
+          field
+        }
+      }
       job
-      name
+      name {
+        field
+        translations {
+          locale
+          field
+        }
+      }
       img
       contacts {
         telegramTitle

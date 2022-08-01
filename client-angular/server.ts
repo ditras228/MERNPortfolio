@@ -44,7 +44,12 @@ export function app(lang: string): express.Express {
       maxAge: '1y',
     })
   );
-
+  server.get(
+    '*.*',
+    express.static(distFolder, {
+      maxAge: '1y',
+    })
+  );
   // All regular routes use the Universal engine
   server.get('*', (req, res) => {
     res.render(indexHtml, {

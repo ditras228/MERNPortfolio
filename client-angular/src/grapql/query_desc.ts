@@ -4,12 +4,10 @@ export const DescQuery = gql`
   query getDesc {
     result: getDesc {
       __typename
-      ... on GetDescResult {
-        desc {
-          id
-          text
-          img
-        }
+      ... on GetDesc {
+        id
+        text
+        img
       }
     }
   }

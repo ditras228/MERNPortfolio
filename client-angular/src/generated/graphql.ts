@@ -85,16 +85,22 @@ export type GetInfo = {
   __typename?: 'GetInfo';
   contacts: Contacts;
   desc: Array<Maybe<GetDesc>>;
-  experience: Scalars['String'];
+  experience: GetTranslations;
   img: Scalars['String'];
   job: Scalars['String'];
-  name: Scalars['String'];
+  name: GetTranslations;
 };
 
 export type GetTag = {
   __typename?: 'GetTag';
   id: Scalars['Int'];
   title: Scalars['String'];
+};
+
+export type GetTranslations = {
+  __typename?: 'GetTranslations';
+  field: Scalars['String'];
+  translations: Array<Maybe<Translation>>;
 };
 
 export type GetWork = {
@@ -114,6 +120,11 @@ export type GetWorkTag = {
   tagId: Scalars['Int'];
   workId: Scalars['Int'];
 };
+
+export enum Locales {
+  EN = 'EN',
+  RU = 'RU',
+}
 
 export type Mutation = {
   __typename?: 'Mutation';
@@ -167,15 +178,36 @@ export type NotFoundError = ServiceErrorInterface & {
 
 export type Query = {
   __typename?: 'Query';
-  getDesc: GetDescOutput;
+  getDesc: Array<Maybe<GetDesc>>;
   getInfo: GetInfo;
+  getOneUser: User;
   getTags: Array<Maybe<GetTag>>;
   getWorks: Array<Maybe<GetWork>>;
 };
 
+export type QueryGetOneUserArgs = {
+  id: Scalars['Int'];
+};
+
+export enum Role {
+  ADMIN = 'ADMIN',
+  USER = 'USER',
+}
+
 export type ServiceErrorInterface = {
   message: Scalars['String'];
 };
+
+export type Translation = {
+  __typename?: 'Translation';
+  field: Scalars['String'];
+  locale: Scalars['Int'];
+};
+
+export enum TranslationEntities {
+  INFO = 'INFO',
+  WORK = 'WORK',
+}
 
 export type UpdateDescInput = {
   id: Scalars['Int'];
@@ -186,14 +218,19 @@ export type UpdateDescInput = {
 export type UpdateDescOutput = GetDesc | NotFoundError;
 
 export type UpdateInfoInput = {
-  experience: Scalars['String'];
+  experience: UpdateTranslationInput;
   githubLink: Scalars['String'];
   githubTitle: Scalars['String'];
   img: Scalars['String'];
   job: Scalars['String'];
-  name: Scalars['String'];
+  name: UpdateTranslationInput;
   telegramLink: Scalars['String'];
   telegramTitle: Scalars['String'];
+};
+
+export type UpdateTranslationInput = {
+  translationId: Scalars['Int'];
+  translations: Array<InputMaybe<TranslationInput>>;
 };
 
 export type UpdateWorkInput = {
@@ -214,6 +251,8 @@ export type User = {
   id: Scalars['Int'];
   login: Scalars['String'];
   password: Scalars['String'];
+  role: Role;
+  roleId: Scalars['Int'];
 };
 
 export type UserInput = {
@@ -226,6 +265,11 @@ export type UserOutput = NotFoundError | User | WrongPassword;
 export type WrongPassword = ServiceErrorInterface & {
   __typename?: 'WrongPassword';
   message: Scalars['String'];
+};
+
+export type TranslationInput = {
+  field: Scalars['String'];
+  locale: Scalars['Int'];
 };
 
 export type DeleteDescMutationVariables = Exact<{
@@ -267,10 +311,26 @@ export type UpdateInfoMutation = {
   __typename?: 'Mutation';
   result: {
     __typename: 'GetInfo';
-    experience: string;
     job: string;
-    name: string;
     img: string;
+    experience: {
+      __typename?: 'GetTranslations';
+      field: string;
+      translations: Array<{
+        __typename?: 'Translation';
+        locale: number;
+        field: string;
+      } | null>;
+    };
+    name: {
+      __typename?: 'GetTranslations';
+      field: string;
+      translations: Array<{
+        __typename?: 'Translation';
+        locale: number;
+        field: string;
+      } | null>;
+    };
     contacts: {
       __typename?: 'Contacts';
       telegramTitle: string;
@@ -355,17 +415,12 @@ export type GetDescQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetDescQuery = {
   __typename?: 'Query';
-  result:
-    | {
-        __typename: 'GetDescResult';
-        desc?: Array<{
-          __typename?: 'GetDesc';
-          id: number;
-          text: string;
-          img: string;
-        } | null> | null;
-      }
-    | { __typename: 'NotFoundError' };
+  result: Array<{
+    __typename: 'GetDesc';
+    id: number;
+    text: string;
+    img: string;
+  } | null>;
 };
 
 export type GetInfoQueryVariables = Exact<{ [key: string]: never }>;
@@ -374,9 +429,7 @@ export type GetInfoQuery = {
   __typename?: 'Query';
   result: {
     __typename: 'GetInfo';
-    experience: string;
     job: string;
-    name: string;
     img: string;
     desc: Array<{
       __typename?: 'GetDesc';
@@ -384,6 +437,24 @@ export type GetInfoQuery = {
       text: string;
       img: string;
     } | null>;
+    experience: {
+      __typename?: 'GetTranslations';
+      field: string;
+      translations: Array<{
+        __typename?: 'Translation';
+        locale: number;
+        field: string;
+      } | null>;
+    };
+    name: {
+      __typename?: 'GetTranslations';
+      field: string;
+      translations: Array<{
+        __typename?: 'Translation';
+        locale: number;
+        field: string;
+      } | null>;
+    };
     contacts: {
       __typename?: 'Contacts';
       telegramTitle: string;
@@ -463,9 +534,21 @@ export const UpdateInfoDocument = `
     mutation updateInfo($input: UpdateInfoInput!) {
   result: updateInfo(input: $input) {
     __typename
-    experience
+    experience {
+      field
+      translations {
+        locale
+        field
+      }
+    }
     job
-    name
+    name {
+      field
+      translations {
+        locale
+        field
+      }
+    }
     img
     contacts {
       telegramTitle
@@ -550,12 +633,10 @@ export const GetDescDocument = `
     query getDesc {
   result: getDesc {
     __typename
-    ... on GetDescResult {
-      desc {
-        id
-        text
-        img
-      }
+    ... on GetDesc {
+      id
+      text
+      img
     }
   }
 }
@@ -569,9 +650,21 @@ export const GetInfoDocument = `
       text
       img
     }
-    experience
+    experience {
+      field
+      translations {
+        locale
+        field
+      }
+    }
     job
-    name
+    name {
+      field
+      translations {
+        locale
+        field
+      }
+    }
     img
     contacts {
       telegramTitle

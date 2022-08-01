@@ -1,11 +1,15 @@
 import { createAction } from '@ngrx/store';
+import {
+  UpdateInfoInput,
+  UpdateTranslationInput,
+} from '../../../../generated/graphql';
 
 export type EditInfoInputs = {
-  experience: string;
+  experience: UpdateTranslationInput;
   githubTitle: string;
   githubLink: string;
   job: string;
-  name: string;
+  name: UpdateTranslationInput;
   img: string;
   telegramTitle: string;
   telegramLink: string;

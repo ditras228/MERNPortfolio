@@ -5,8 +5,10 @@ import (
 	"portfolio/graph/model"
 )
 
-var UserCtxKey = &contextKey{"user"}
-var LocaleCtxKey = &contextKey{"locale"}
+var (
+	UserCtxKey   = &contextKey{"user"}
+	LocaleCtxKey = &contextKey{"locale"}
+)
 
 type contextKey struct {
 	name string
@@ -18,16 +20,15 @@ func ForContext(ctx context.Context) model.User {
 }
 func LocaleForContext(ctx context.Context) int {
 	raw := ctx.Value(LocaleCtxKey).(string)
-	switch raw {
-	case "en-US":
-		{
-			return 1
-		}
-	case "ru":
-		{
-			return 2
-		}
+	return GetLocaleId(raw)
+}
 
+func GetLocaleId(locale string) int {
+	switch locale {
+	case "en-US":
+		return 1
+	case "ru":
+		return 2
 	}
 	return 1
 }

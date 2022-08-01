@@ -4,7 +4,9 @@ import (
 	"encoding/base64"
 	"errors"
 	uuid2 "github.com/gofrs/uuid"
+	"github.com/ztrue/tracerr"
 	"os"
+	"portfolio/graph/model"
 	"regexp"
 	"strings"
 	"time"
@@ -23,16 +25,37 @@ func DoWithTries(fn func() error, attemtps int, delay time.Duration) (err error)
 	return
 }
 
-func FormatHTML(html string) string {
+func FormatHTML(html model.GetTranslations) *model.GetTranslations {
 	liRegex := regexp.MustCompile("<li>")
 	ulRegex := regexp.MustCompile("</ul>")
 	brRegex := regexp.MustCompile("<br/>")
 
-	html = liRegex.ReplaceAllString(html, "\n\t<li>")
-	html = ulRegex.ReplaceAllString(html, "\n</ul>")
-	html = brRegex.ReplaceAllString(html, "\n\t<br/>")
+	var translations []*model.Translation
+	for i := 0; i < len(html.Translations); i++ {
+		var translateItem = html.Translations[i]
+		translateItem.Field = liRegex.ReplaceAllString(translateItem.Field, "\n\t<li>")
+		translateItem.Field = ulRegex.ReplaceAllString(translateItem.Field, "\n</ul>")
+		translateItem.Field = brRegex.ReplaceAllString(translateItem.Field, "\n\t<br/>")
+		translations = append(translations, translateItem)
+	}
 
-	return html
+	return &model.GetTranslations{Field: html.Field, Translations: translations}
+}
+
+func ReplaceImage(oldLink, inputImg string) (newLink string, err error) {
+	if oldLink != inputImg {
+		err = os.Remove(oldLink)
+		if err != nil {
+			return "", tracerr.Errorf("Не удалось удалить изображение: ", err)
+		}
+		newLink, err = SaveImage(inputImg)
+		if err != nil {
+			return "", tracerr.Errorf("Не удалось сохранить изображение ", err)
+		}
+	} else {
+		newLink = inputImg
+	}
+	return newLink, nil
 }
 
 func SaveImage(imgBase64 string) (imgLink string, err error) {

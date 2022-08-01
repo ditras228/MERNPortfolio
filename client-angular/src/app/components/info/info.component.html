@@ -4,6 +4,6 @@
     *ngIf="info$?.desc?.length"
     [info$]="info$"
     [isAuth]="isAuth"></app-desc-carousel>
-  <app-info-skills [experience]="info$?.experience"></app-info-skills>
+  <app-info-skills [experience]="info$?.experience?.field"></app-info-skills>
   <app-info-contacts [contacts]="info$?.contacts"></app-info-contacts>
 </div>

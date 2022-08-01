@@ -4,9 +4,21 @@ export const getInfoQuery = gql`
   mutation updateInfo($input: UpdateInfoInput!) {
     result: updateInfo(input: $input) {
       __typename
-      experience
+      experience {
+        field
+        translations {
+          locale
+          field
+        }
+      }
       job
-      name
+      name {
+        field
+        translations {
+          locale
+          field
+        }
+      }
       img
       contacts {
         telegramTitle

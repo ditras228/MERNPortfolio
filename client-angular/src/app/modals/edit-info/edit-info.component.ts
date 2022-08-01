@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { selectInfo } from '../../store/app.selectors';
 import { setEditInfoForm, submitEditInfoForm } from './store/edit-info.actions';
 import { ValidationService } from '../../services/validation.service';
+import { GetInfo } from '../../../generated/graphql';
 
 @Component({
   selector: 'app-edit-info',
@@ -12,15 +13,18 @@ import { ValidationService } from '../../services/validation.service';
   styleUrls: ['./edit-info.component.scss'],
 })
 export class EditInfoComponent implements OnInit {
+  public info = {} as GetInfo;
   public errors: { [key: string]: string } = {};
   public img = new FormControl();
   public name = new FormControl();
+  public nameRu = new FormControl();
   public job = new FormControl();
   public telegramTitle = new FormControl();
   public telegramLink = new FormControl();
   public githubTitle = new FormControl();
   public githubLink = new FormControl();
   public experience = new FormControl();
+  public experienceRu = new FormControl();
   public form:
     | FormGroup<{
         githubTitle: FormControl<string>;
@@ -56,13 +60,37 @@ export class EditInfoComponent implements OnInit {
       this.store$.dispatch(
         setEditInfoForm({
           img: this.img.value,
-          name: this.name.value,
+          name: {
+            translationId: 1,
+            translations: [
+              {
+                field: this.name.value,
+                locale: 1,
+              },
+              {
+                field: this.nameRu.value,
+                locale: 2,
+              },
+            ],
+          },
           job: this.job.value,
           telegramTitle: this.telegramTitle.value,
           telegramLink: this.telegramLink.value,
           githubTitle: this.githubTitle.value,
           githubLink: this.githubLink.value,
-          experience: this.experience.value,
+          experience: {
+            translationId: 1,
+            translations: [
+              {
+                field: this.experience.value,
+                locale: 1,
+              },
+              {
+                field: this.experienceRu.value,
+                locale: 2,
+              },
+            ],
+          },
         })
       );
 
@@ -80,13 +108,18 @@ export class EditInfoComponent implements OnInit {
     this.experience = new FormControl(null, [Validators.required]);
 
     this.store$.select(selectInfo).subscribe(info => {
-      this.name.setValue(info.name);
+      this.info = info;
+      this.name.setValue(info.name.translations[0]?.field);
+      this.nameRu.setValue(info.name.translations[1]?.field || info.name.field);
       this.job.setValue(info.job);
       this.telegramTitle.setValue(info.contacts.telegramTitle);
       this.telegramLink.setValue(info.contacts.telegramLink);
       this.githubTitle.setValue(info.contacts.githubTitle);
       this.githubLink.setValue(info.contacts.githubLink);
-      this.experience.setValue(info.experience);
+      this.experience.setValue(info.experience.translations[0]?.field);
+      this.experienceRu.setValue(
+        info.experience.translations[1]?.field || info.experience.field
+      );
       this.img.setValue(info.img);
     });
 

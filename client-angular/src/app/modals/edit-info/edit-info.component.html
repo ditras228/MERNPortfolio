@@ -19,8 +19,8 @@
       class="edit-info__field"
       [error]="errors?.['name']"
       placeholder="Name RU"
-      [internalValue]="name.value"
-      (valueChange)="name.patchValue($event)"></app-input-field>
+      [internalValue]="nameRu.value"
+      (valueChange)="nameRu.patchValue($event)"></app-input-field>
   </div>
   <div class="edit-info__grid">
     <app-input-field
@@ -52,9 +52,9 @@
       class="edit-info__field"
       [error]="errors?.['experience']"
       placeholder="Skills RU"
-      [internalValue]="experience.value"
+      [internalValue]="experienceRu.value"
       [rows]="13"
-      (valueChange)="experience.patchValue($event)"></app-text-area>
+      (valueChange)="experienceRu.patchValue($event)"></app-text-area>
   </div>
 
   <div class="edit-info__grid">

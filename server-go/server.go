@@ -31,15 +31,11 @@ func init() {
 	}
 }
 func main() {
-
 	c := generated.Config{Resolvers: &graph.Resolver{}}
 	c.Directives.HasRole = func(ctx context.Context, obj interface{}, next graphql.Resolver, role model.Role) (interface{}, error) {
 		if keys.ForContext(ctx).Role != role {
-			// block calling the next resolver
-			return nil, fmt.Errorf("Access denied")
+			return nil, fmt.Errorf("access denied")
 		}
-
-		// or let it pass through
 		return next(ctx)
 	}
 

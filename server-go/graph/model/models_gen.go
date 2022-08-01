@@ -97,12 +97,12 @@ type GetDescResult struct {
 func (GetDescResult) IsGetDescOutput() {}
 
 type GetInfo struct {
-	Name       string     `json:"name"`
-	Img        string     `json:"img"`
-	Job        string     `json:"job"`
-	Desc       []*GetDesc `json:"desc"`
-	Experience string     `json:"experience"`
-	Contacts   *Contacts  `json:"contacts"`
+	Name       *GetTranslations `json:"name"`
+	Img        string           `json:"img"`
+	Job        string           `json:"job"`
+	Desc       []*GetDesc       `json:"desc"`
+	Experience *GetTranslations `json:"experience"`
+	Contacts   *Contacts        `json:"contacts"`
 }
 
 type GetTag struct {
@@ -110,7 +110,8 @@ type GetTag struct {
 	Title string `json:"title"`
 }
 
-type GetTranslate struct {
+type GetTranslations struct {
+	Field        string         `json:"field"`
 	Translations []*Translation `json:"translations"`
 }
 
@@ -150,11 +151,6 @@ type Translation struct {
 	Field  string `json:"field"`
 }
 
-type TranslationInput struct {
-	Locale Locales `json:"locale"`
-	Field  string  `json:"field"`
-}
-
 type UpdateDescInput struct {
 	ID   int    `json:"id"`
 	Text string `json:"text"`
@@ -162,19 +158,19 @@ type UpdateDescInput struct {
 }
 
 type UpdateInfoInput struct {
-	Img           string `json:"img"`
-	Name          string `json:"name"`
-	Job           string `json:"job"`
-	Experience    string `json:"experience"`
-	TelegramTitle string `json:"telegramTitle"`
-	TelegramLink  string `json:"telegramLink"`
-	GithubTitle   string `json:"githubTitle"`
-	GithubLink    string `json:"githubLink"`
+	Img           string                  `json:"img"`
+	Name          *UpdateTranslationInput `json:"name"`
+	Job           string                  `json:"job"`
+	Experience    *UpdateTranslationInput `json:"experience"`
+	TelegramTitle string                  `json:"telegramTitle"`
+	TelegramLink  string                  `json:"telegramLink"`
+	GithubTitle   string                  `json:"githubTitle"`
+	GithubLink    string                  `json:"githubLink"`
 }
 
 type UpdateTranslationInput struct {
-	ID           int                 `json:"id"`
-	Translations []*TranslationInput `json:"translations"`
+	TranslationID int                 `json:"translationId"`
+	Translations  []*TranslationInput `json:"translations"`
 }
 
 type UpdateWorkInput struct {
@@ -209,6 +205,11 @@ type WrongPassword struct {
 
 func (WrongPassword) IsServiceErrorInterface() {}
 func (WrongPassword) IsUserOutput()            {}
+
+type TranslationInput struct {
+	Locale int    `json:"locale"`
+	Field  string `json:"field"`
+}
 
 type Locales string
 

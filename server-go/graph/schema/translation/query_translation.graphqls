@@ -1,4 +1,5 @@
-type GetTranslate {
+type GetTranslations {
+  field: String!
   translations: [Translation]!
 }
 

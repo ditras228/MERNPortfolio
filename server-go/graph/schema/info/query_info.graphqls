@@ -1,9 +1,9 @@
 type GetInfo {
-  name: String!
+  name: GetTranslations!
   img: String!
   job: String!
   desc: [GetDesc]!
-  experience: String!
+  experience: GetTranslations!
   contacts: Contacts!
 }
 

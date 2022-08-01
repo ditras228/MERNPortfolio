@@ -78,6 +78,7 @@ func (r *repository) GetOne(ctx context.Context, id int) (model.User, error) {
 					id = $1
 
 			 `
+
 	var usr model.User
 	err := r.client.QueryRow(ctx, qUser, id).Scan(&usr.ID, &usr.Login, &usr.RoleID)
 	if err != nil {

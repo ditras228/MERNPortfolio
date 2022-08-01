@@ -45,7 +45,7 @@ func (r *repository) FindAll(ctx context.Context) ([]*model.GetDesc, error) {
 		if err != nil {
 			return nil, err
 		}
-		dsc.Text = dscTextTranslate
+		dsc.Text = dscTextTranslate.Field
 		descs = append(descs, &dsc)
 	}
 	res = descs

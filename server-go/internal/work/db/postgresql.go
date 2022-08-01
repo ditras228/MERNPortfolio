@@ -7,7 +7,6 @@ import (
 	"portfolio/infrastructure/postgresql"
 	"portfolio/internal/translation"
 	"portfolio/internal/work"
-	"portfolio/pkg/utils"
 	"strconv"
 )
 
@@ -44,7 +43,7 @@ func (r *repository) FindAll(ctx context.Context) ([]*model.GetWork, error) {
 			return nil, err
 		}
 
-		wrk.Description = utils.FormatHTML(wrk.Description)
+		//wrk.Description = utils.FormatHTML(wrk.Description)
 
 		qWorkTag := `
 
@@ -106,13 +105,13 @@ func (r *repository) FindAll(ctx context.Context) ([]*model.GetWork, error) {
 		if err != nil {
 			return nil, err
 		}
-		wrk.Name = wrkNameTranslate
+		wrk.Name = wrkNameTranslate.Field
 
 		wrkDescTranslate, err := r.translationRepo.FindOne(ctx, wrk.ID, enitity.WorkFunctional, wrk.Description)
 		if err != nil {
 			return nil, err
 		}
-		wrk.Description = wrkDescTranslate
+		wrk.Description = wrkDescTranslate.Field
 
 		works = append(works, &wrk)
 	}

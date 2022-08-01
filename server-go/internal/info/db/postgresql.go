@@ -2,13 +2,14 @@ package info
 
 import (
 	"context"
-	"os"
+	"github.com/ztrue/tracerr"
 	"portfolio/enitity"
 	"portfolio/graph/model"
 	"portfolio/infrastructure/postgresql"
 	"portfolio/internal/desc"
 	"portfolio/internal/info"
 	"portfolio/internal/translation"
+	"portfolio/middlewares/keys"
 	"portfolio/pkg/utils"
 )
 
@@ -26,8 +27,17 @@ func (r *repository) UpdateInfo(ctx context.Context, input model.UpdateInfoInput
 				FROM 
 					public.info
 
-				WHERE id = 1
-`
+				WHERE 
+					id = 1
+			`
+
+	var oldLink string
+	var newLink string
+
+	err := r.client.
+		QueryRow(ctx, qImg).
+		Scan(&oldLink)
+
 	q := `
 
 		UPDATE
@@ -45,57 +55,39 @@ func (r *repository) UpdateInfo(ctx context.Context, input model.UpdateInfoInput
 			telegramtitle, telegramlink, githubtitle, githublink
 
 		`
-	qDesc := `
-
-			SELECT 
-				id, text, img
-
-			FROM public.desc
-
-		 `
 
 	var inf model.GetInfo
 	var con model.Contacts
 
-	var oldLink string
-	var newLink string
-
-	err := r.client.
-		QueryRow(ctx, qImg).
-		Scan(&oldLink)
-
-	if oldLink != input.Img {
-		err = os.Remove(oldLink)
-		newLink, err = utils.SaveImage(input.Img)
-		if err != nil {
-			return model.GetInfo{}, err
-		}
-	} else {
-		newLink = input.Img
-	}
-
-	err = r.client.QueryRow(ctx, q, input.Name, input.Job, input.Experience, input.TelegramTitle, input.TelegramLink, input.GithubTitle, input.GithubLink, newLink).
-		Scan(&inf.Name, &inf.Job, &inf.Experience, &con.TelegramTitle, &con.TelegramLink, &con.GithubTitle, &con.GithubLink)
-
-	rows, err := r.client.Query(ctx, qDesc)
 	if err != nil {
 		return model.GetInfo{}, err
 	}
-	descs := make([]*model.GetDesc, 0)
-	for rows.Next() {
-		var dsc model.GetDesc
-		err := rows.Scan(&dsc.ID, &dsc.Text, &dsc.Img)
-		if err != nil {
-			return model.GetInfo{}, nil
-		}
-		descs = append(descs, &dsc)
-	}
-	inf.Desc = descs
-	inf.Contacts = &con
+	newLink, err = utils.ReplaceImage(oldLink, input.Img)
 	if err != nil {
 		return model.GetInfo{}, err
 	}
 
+	var name model.GetTranslations
+	var exp model.GetTranslations
+
+	var locale = keys.LocaleForContext(ctx) - 1
+	err = r.client.QueryRow(ctx, q, input.Name.Translations[locale].Field, input.Job, input.Experience.Translations[locale].Field, input.TelegramTitle, input.TelegramLink, input.GithubTitle, input.GithubLink, newLink).
+		Scan(&name.Field, &inf.Job, &exp.Field, &con.TelegramTitle, &con.TelegramLink, &con.GithubTitle, &con.GithubLink)
+
+	nameUpd, err := r.translationRepo.UpdateOne(ctx, input.Name, enitity.InfoTitle, name.Field)
+	if err != nil {
+		return model.GetInfo{}, err
+	}
+	expUpd, err := r.translationRepo.UpdateOne(ctx, input.Experience, enitity.InfoExperience, name.Field)
+	if err != nil {
+		return model.GetInfo{}, err
+	}
+
+	descs, err := r.descRepo.FindAll(ctx)
+	if err != nil {
+		return model.GetInfo{}, err
+	}
+	inf = info.GetInfoForDTO(nameUpd, expUpd, descs, con, inf.Img, inf.Job)
 	return inf, nil
 }
 
@@ -119,34 +111,32 @@ func (r *repository) FindOne(ctx context.Context) (model.GetInfo, error) {
 	var inf model.GetInfo
 	var con model.Contacts
 
+	var name model.GetTranslations
+	var exp model.GetTranslations
 	err := r.client.QueryRow(ctx, q).Scan(
-		&inf.Name, &inf.Job, &inf.Experience,
+		&name.Field, &inf.Job, &exp.Field,
 		&con.TelegramTitle, &con.TelegramLink, &con.GithubTitle, &con.GithubLink, &inf.Img,
 	)
 	if err != nil {
 		return model.GetInfo{}, err
 	}
 
-	res, err := r.descRepo.FindAll(ctx)
+	descs, err := r.descRepo.FindAll(ctx)
 	if err != nil {
-		return model.GetInfo{}, err
-	}
-	inf.Desc = res
-	inf.Contacts = &con
-
-	infoNameTranslate, err := r.translationRepo.FindOne(ctx, 1, enitity.InfoTitle, inf.Name)
-	if err != nil {
-		return model.GetInfo{}, err
+		return model.GetInfo{}, tracerr.Errorf("Ошибка получения описаний: ", err)
 	}
 
-	inf.Name = infoNameTranslate
-
-	infExperienceTranslate, err := r.translationRepo.FindOne(ctx, 1, enitity.InfoExperience, inf.Experience)
+	infoNameTranslate, err := r.translationRepo.FindOne(ctx, 1, enitity.InfoTitle, name.Field)
 	if err != nil {
-		return model.GetInfo{}, err
+		return model.GetInfo{}, tracerr.Errorf("Ошибка получения перевода имени: ", err)
 	}
 
-	inf.Experience = utils.FormatHTML(infExperienceTranslate)
+	infExperienceTranslate, err := r.translationRepo.FindOne(ctx, 1, enitity.InfoExperience, exp.Field)
+	if err != nil {
+		return model.GetInfo{}, tracerr.Errorf("Ошибка получения перевода опыта: ", err)
+	}
+
+	inf = info.GetInfoForDTO(infoNameTranslate, infExperienceTranslate, descs, con, inf.Img, inf.Job)
 
 	return inf, nil
 }
