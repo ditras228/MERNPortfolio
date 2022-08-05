@@ -23,7 +23,7 @@ VALUES
        (1, 2, 1, '<ul> <li>commercial experience <br/> early development </li> <li>usage and development<br/>functionality in Angular </li> <li>API development with <br/>using GraphQl </li> <li> developed server-side<br/> logic in Golang </li> </ul>'),
 
 --     Карусель
-       (1, 3, 1, '<b>I"ve been creating</b> websites for more than <b>three</b> years'),
+       (1, 3, 1, '<b>I''ve been creating</b> websites for more than <b>three</b> years'),
        (2, 3, 1, 'Worked with <b>many</b> front-end frameworks <br/> <b>Angular</b>, <b>Next</b>, <b>Vue</b>'),
        (3, 3, 1, 'At work, <b>besides</b> server and client logic, I also <b>practiced layout</b>'),
        (4, 3, 1, 'On the back end I use <b>Golang</b>. <br/> Worked with <b>different</b> types of database'),

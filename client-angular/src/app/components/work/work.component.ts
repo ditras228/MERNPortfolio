@@ -1,9 +1,9 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { GetWork } from '../../../generated/graphql';
-import { setEditWorkVisible } from '../../modals/login/store/login-modal.actions';
 import { Store } from '@ngrx/store';
 import { setEditWorkTags } from '../../modals/edit-work/store/edit-work.actions';
 import { WindowService } from '../../services/window.service';
+import { setEditWorkVisible } from '../../modals/modal/store/modal.actions';
 
 @Component({
   selector: 'app-work',

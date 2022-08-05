@@ -1,20 +1,20 @@
 input UpdateDescInput {
-    id: Int!
-    text: String!
-    img: String!
+  id: Int!
+  text: UpdateTranslationInput!
+  img: String!
 }
 
 input CreateDescInput {
-    text: String!
-    img: String!
+  text: UpdateTranslationInput!
+  img: String!
 }
 
 input DeleteDescInput {
-    id: Int!
+  id: Int!
 }
 
-type DeleteDescResult  {
-    id: Int!
+type DeleteDescResult {
+  id: Int!
 }
 
 union DeleteDescOutput = DeleteDescResult | NotFoundError

@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { setInfo, setLock, setWorks } from './app.actions';
+import { setInfo, setWorks } from './app.actions';
 import { GetInfo, GetWork } from '../../generated/graphql';
 
 export interface State {
@@ -13,7 +13,5 @@ const initialState: State = {
 export const appReducer = createReducer(
   initialState,
   on(setInfo, (state, { info }) => ({ ...state, info: info })),
-  on(setWorks, (state, { works }) => ({ ...state, works: works })),
-  on(setLock, (state, { value }) => ({ ...state, isLock: value })),
-  on(setLock, (state, { value }) => ({ ...state, isLock: value }))
+  on(setWorks, (state, { works }) => ({ ...state, works: works }))
 );

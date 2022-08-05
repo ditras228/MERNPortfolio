@@ -49,6 +49,9 @@ import { NotificationService } from './services/notification.service';
 import { ValidationService } from './services/validation.service';
 import { GraphqlService } from './services/graphql.service';
 import { WindowService } from './services/window.service';
+import { NavLanguageComponent } from './components/nav-language/nav-language.component';
+import { modalReducer } from './modals/modal/store/modal.reducer';
+import { navbarReducer } from './components/navbar/store/navbar.reducer';
 
 @NgModule({
   declarations: [
@@ -72,6 +75,7 @@ import { WindowService } from './services/window.service';
     ImageInputComponent,
     CreateWorkComponent,
     CreateDescComponent,
+    NavLanguageComponent,
   ],
   imports: [
     SwiperModule,
@@ -87,6 +91,8 @@ import { WindowService } from './services/window.service';
         createWork: createWorkReducer,
         createDesc: createDescReducer,
         notification: notificationReducer,
+        modal: modalReducer,
+        language: navbarReducer,
       },
       {}
     ),

@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { UrlService } from '../../services/url.service';
 import { GetInfo } from '../../../generated/graphql';
-import { setEditInfoVisible } from '../../modals/login/store/login-modal.actions';
 import { Store } from '@ngrx/store';
+import { setEditInfoVisible } from '../../modals/modal/store/modal.actions';
 
 @Component({
   selector: 'app-info-profile',

@@ -17,4 +17,7 @@ export class WindowService {
       window.open(url);
     }
   }
+  public changeLang(url: string): void {
+    location.href = url;
+  }
 }

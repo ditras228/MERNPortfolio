@@ -13,9 +13,9 @@ import { getInfo, okay } from '../../../store/app.actions';
 import { Store } from '@ngrx/store';
 import { submitEditInfoForm } from './edit-info.actions';
 import { selectEditInfoFormInput } from './edit-info.selectors';
-import { setEditInfoVisible } from '../../login/store/login-modal.actions';
 import { NotificationService } from '../../../services/notification.service';
 import { CookieService } from 'ngx-cookie-service';
+import { setEditInfoVisible } from '../../modal/store/modal.actions';
 
 @Injectable()
 export class EditInfoEffects extends GraphqlService {

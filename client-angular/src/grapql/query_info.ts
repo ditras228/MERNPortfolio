@@ -6,7 +6,13 @@ export const getInfoQuery = gql`
       __typename
       desc {
         id
-        text
+        text {
+          field
+          translations {
+            locale
+            field
+          }
+        }
         img
       }
       experience {

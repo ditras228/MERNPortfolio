@@ -18,9 +18,9 @@ import {
   selectDeleteDescID,
   selectEditInfoFormInput,
 } from './edit-desc.selectors';
-import { setEditDescVisible } from '../../login/store/login-modal.actions';
 import { NotificationService } from '../../../services/notification.service';
 import { CookieService } from 'ngx-cookie-service';
+import { setEditDescVisible } from '../../modal/store/modal.actions';
 
 @Injectable()
 export class EditDescEffects extends GraphqlService {

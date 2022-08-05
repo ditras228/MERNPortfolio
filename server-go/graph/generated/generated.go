@@ -729,7 +729,7 @@ input UpdateWorkInput {
   figma: String
 }
 
-union UpdateWorkOutput = GetWork  | NotFoundError
+union UpdateWorkOutput = GetWork | NotFoundError
 
 input DeleteWorkInput {
   id: Int!
@@ -790,12 +790,12 @@ type GetWorkTag {
 `, BuiltIn: false},
 	{Name: "../schema/desc/mutation_desc.graphqls", Input: `input UpdateDescInput {
     id: Int!
-    text: String!
+    text: UpdateTranslationInput!
     img: String!
 }
 
 input CreateDescInput {
-    text: String!
+    text: UpdateTranslationInput!
     img: String!
 }
 
@@ -813,7 +813,7 @@ union CreateDescOutput = GetDesc
 `, BuiltIn: false},
 	{Name: "../schema/desc/query_desc.graphqls", Input: `type GetDesc {
   id: Int!
-  text: String!
+  text: GetTranslations!
   img: String!
 }
 type GetDescResult {
@@ -1444,9 +1444,9 @@ func (ec *executionContext) _GetDesc_text(ctx context.Context, field graphql.Col
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(*model.GetTranslations)
 	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
+	return ec.marshalNGetTranslations2ᚖportfolioᚋgraphᚋmodelᚐGetTranslations(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_GetDesc_text(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1456,7 +1456,13 @@ func (ec *executionContext) fieldContext_GetDesc_text(ctx context.Context, field
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
+			switch field.Name {
+			case "field":
+				return ec.fieldContext_GetTranslations_field(ctx, field)
+			case "translations":
+				return ec.fieldContext_GetTranslations_translations(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type GetTranslations", field.Name)
 		},
 	}
 	return fc, nil
@@ -5818,7 +5824,7 @@ func (ec *executionContext) unmarshalInputCreateDescInput(ctx context.Context, o
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("text"))
-			it.Text, err = ec.unmarshalNString2string(ctx, v)
+			it.Text, err = ec.unmarshalNUpdateTranslationInput2ᚖportfolioᚋgraphᚋmodelᚐUpdateTranslationInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -5966,7 +5972,7 @@ func (ec *executionContext) unmarshalInputUpdateDescInput(ctx context.Context, o
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("text"))
-			it.Text, err = ec.unmarshalNString2string(ctx, v)
+			it.Text, err = ec.unmarshalNUpdateTranslationInput2ᚖportfolioᚋgraphᚋmodelᚐUpdateTranslationInput(ctx, v)
 			if err != nil {
 				return it, err
 			}

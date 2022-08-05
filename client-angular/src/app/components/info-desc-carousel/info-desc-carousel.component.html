@@ -15,7 +15,7 @@
     [pagination]="{ type: 'progressbar' }">
     <ng-template swiperSlide *ngFor="let desc of info$?.desc">
       <div class="swiper-slide__item">
-        <span [innerHTML]="desc?.text"></span>
+        <span [innerHTML]="desc?.text?.field"></span>
         <img
           class="swiper-slide__item__img"
           [src]="urlService.formImgUrl(desc?.img)"

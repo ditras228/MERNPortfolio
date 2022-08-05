@@ -6,7 +6,7 @@ import {
   NotificationTypes,
 } from './store/notification.reducer';
 import { listAnimation } from '../../app.animation';
-import { selectLock } from '../../modals/login/store/login-modal.selectors';
+import { selectLock } from '../../modals/modal/store/modal.selectors';
 
 @Component({
   selector: 'app-notification',

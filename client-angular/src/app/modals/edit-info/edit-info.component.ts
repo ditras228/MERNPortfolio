@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { setEditInfoVisible } from '../login/store/login-modal.actions';
 import { Store } from '@ngrx/store';
 import { selectInfo } from '../../store/app.selectors';
 import { setEditInfoForm, submitEditInfoForm } from './store/edit-info.actions';
 import { ValidationService } from '../../services/validation.service';
 import { GetInfo } from '../../../generated/graphql';
+import { setEditInfoVisible } from '../modal/store/modal.actions';
 
 @Component({
   selector: 'app-edit-info',

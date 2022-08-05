@@ -3,11 +3,12 @@ package work
 import (
 	"context"
 	"portfolio/graph/model"
+	"portfolio/pkg/utils"
 )
 
 func GetWorkToDTO(work model.GetWork, name, desc model.GetTranslations, tags []*model.GetTag) model.GetWork {
 	work.Name = &name
-	work.Description = &desc
+	work.Description = utils.FormatHTML(desc)
 	work.Tags = tags
 	return work
 }

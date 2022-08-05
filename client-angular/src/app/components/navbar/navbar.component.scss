@@ -2,6 +2,7 @@
 @import '../../../styles/mixins/button';
 @import '../../../styles/mixins/screen';
 @import '../../../styles/mixins/icon';
+@import '../../../styles/mixins/navbar';
 
 .navbar {
   @include font(22px, 34px, 400, 0.1px);
@@ -10,15 +11,7 @@
   background: #ffffff;
 
   &__container {
-    padding: 0 20px;
-    align-items: center;
-    max-width: 1200px;
-    display: grid;
-    grid-template-columns: 30px 1fr auto;
-    margin: 0 auto;
-    width: 100%;
-    grid-column-gap: 7px;
-    min-height: 48px;
+    @include navbar();
     &__logo {
       height: 30px;
       background-size: contain;
@@ -41,7 +34,16 @@
         display: none;
       }
     }
-    &__admin-btn {
+    &__language {
+      display: none;
+      @include screen-lg {
+        @include button-small();
+        display: grid;
+        text-transform: uppercase;
+      }
+    }
+    &__admin-btn,
+    &__language-btn {
       display: none;
 
       @include screen-lg {
@@ -59,7 +61,15 @@
         display: none;
       }
     }
-
+    &__lang-btn-mobile {
+      @include icon('translate.svg');
+      background-size: contain;
+      width: 30px;
+      height: 30px;
+      @include screen-lg {
+        display: none;
+      }
+    }
     @include screen-lg {
       padding: 10px 0;
     }

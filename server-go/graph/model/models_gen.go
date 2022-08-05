@@ -48,8 +48,8 @@ type Contacts struct {
 }
 
 type CreateDescInput struct {
-	Text string `json:"text"`
-	Img  string `json:"img"`
+	Text *UpdateTranslationInput `json:"text"`
+	Img  string                  `json:"img"`
 }
 
 type CreateWorkInput struct {
@@ -82,9 +82,9 @@ type DeleteWorkResult struct {
 func (DeleteWorkResult) IsDeleteWorkOutput() {}
 
 type GetDesc struct {
-	ID   int    `json:"id"`
-	Text string `json:"text"`
-	Img  string `json:"img"`
+	ID   int              `json:"id"`
+	Text *GetTranslations `json:"text"`
+	Img  string           `json:"img"`
 }
 
 func (GetDesc) IsUpdateDescOutput() {}
@@ -152,9 +152,9 @@ type Translation struct {
 }
 
 type UpdateDescInput struct {
-	ID   int    `json:"id"`
-	Text string `json:"text"`
-	Img  string `json:"img"`
+	ID   int                     `json:"id"`
+	Text *UpdateTranslationInput `json:"text"`
+	Img  string                  `json:"img"`
 }
 
 type UpdateInfoInput struct {

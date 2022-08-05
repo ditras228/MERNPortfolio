@@ -16,11 +16,11 @@ import { getWorks, okay } from '../../../store/app.actions';
 import { Store } from '@ngrx/store';
 import { submitEditWorkForm } from './edit-work.actions';
 import { selectEditFormInput } from './edit-work.selectors';
-import { setEditWorkVisible } from '../../login/store/login-modal.actions';
 import { deleteWork } from '../../edit-info/store/edit-info.actions';
-import { selectCurrentWorkID } from '../../login/store/login-modal.selectors';
 import { NotificationService } from '../../../services/notification.service';
 import { CookieService } from 'ngx-cookie-service';
+import { selectCurrentWorkID } from '../../modal/store/modal.selectors';
+import { setEditWorkVisible } from '../../modal/store/modal.actions';
 
 @Injectable()
 export class EditWorkEffects extends GraphqlService {

@@ -20,7 +20,13 @@ export const createDescMutation = gql`
       __typename
       ... on GetDesc {
         id
-        text
+        text {
+          field
+          translations {
+            locale
+            field
+          }
+        }
         img
       }
     }
@@ -33,7 +39,13 @@ export const updateDescMutation = gql`
       __typename
       ... on GetDesc {
         id
-        text
+        text {
+          field
+          translations {
+            locale
+            field
+          }
+        }
         img
       }
       ... on NotFoundError {

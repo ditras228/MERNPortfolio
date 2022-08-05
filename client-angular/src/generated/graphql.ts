@@ -31,7 +31,7 @@ export type Contacts = {
 
 export type CreateDescInput = {
   img: Scalars['String'];
-  text: Scalars['String'];
+  text: UpdateTranslationInput;
 };
 
 export type CreateDescOutput = GetDesc;
@@ -71,7 +71,7 @@ export type GetDesc = {
   __typename?: 'GetDesc';
   id: Scalars['Int'];
   img: Scalars['String'];
-  text: Scalars['String'];
+  text: GetTranslations;
 };
 
 export type GetDescOutput = GetDescResult | NotFoundError;
@@ -212,7 +212,7 @@ export enum TranslationEntities {
 export type UpdateDescInput = {
   id: Scalars['Int'];
   img: Scalars['String'];
-  text: Scalars['String'];
+  text: UpdateTranslationInput;
 };
 
 export type UpdateDescOutput = GetDesc | NotFoundError;
@@ -288,7 +288,20 @@ export type CreateDescMutationVariables = Exact<{
 
 export type CreateDescMutation = {
   __typename?: 'Mutation';
-  result: { __typename: 'GetDesc'; id: number; text: string; img: string };
+  result: {
+    __typename: 'GetDesc';
+    id: number;
+    img: string;
+    text: {
+      __typename?: 'GetTranslations';
+      field: string;
+      translations: Array<{
+        __typename?: 'Translation';
+        locale: number;
+        field: string;
+      } | null>;
+    };
+  };
 };
 
 export type UpdateDescMutationVariables = Exact<{
@@ -298,7 +311,20 @@ export type UpdateDescMutationVariables = Exact<{
 export type UpdateDescMutation = {
   __typename?: 'Mutation';
   result:
-    | { __typename: 'GetDesc'; id: number; text: string; img: string }
+    | {
+        __typename: 'GetDesc';
+        id: number;
+        img: string;
+        text: {
+          __typename?: 'GetTranslations';
+          field: string;
+          translations: Array<{
+            __typename?: 'Translation';
+            locale: number;
+            field: string;
+          } | null>;
+        };
+      }
     | { __typename: 'NotFoundError'; message: string; id: number };
 };
 
@@ -439,8 +465,16 @@ export type GetDescQuery = {
   result: Array<{
     __typename: 'GetDesc';
     id: number;
-    text: string;
     img: string;
+    text: {
+      __typename?: 'GetTranslations';
+      field: string;
+      translations: Array<{
+        __typename?: 'Translation';
+        locale: number;
+        field: string;
+      } | null>;
+    };
   } | null>;
 };
 
@@ -455,8 +489,16 @@ export type GetInfoQuery = {
     desc: Array<{
       __typename?: 'GetDesc';
       id: number;
-      text: string;
       img: string;
+      text: {
+        __typename?: 'GetTranslations';
+        field: string;
+        translations: Array<{
+          __typename?: 'Translation';
+          locale: number;
+          field: string;
+        } | null>;
+      };
     }>;
     experience: {
       __typename?: 'GetTranslations';
@@ -545,7 +587,13 @@ export const CreateDescDocument = `
     __typename
     ... on GetDesc {
       id
-      text
+      text {
+        field
+        translations {
+          locale
+          field
+        }
+      }
       img
     }
   }
@@ -557,7 +605,13 @@ export const UpdateDescDocument = `
     __typename
     ... on GetDesc {
       id
-      text
+      text {
+        field
+        translations {
+          locale
+          field
+        }
+      }
       img
     }
     ... on NotFoundError {
@@ -690,7 +744,13 @@ export const GetDescDocument = `
     __typename
     ... on GetDesc {
       id
-      text
+      text {
+        field
+        translations {
+          locale
+          field
+        }
+      }
       img
     }
   }
@@ -702,7 +762,13 @@ export const GetInfoDocument = `
     __typename
     desc {
       id
-      text
+      text {
+        field
+        translations {
+          locale
+          field
+        }
+      }
       img
     }
     experience {

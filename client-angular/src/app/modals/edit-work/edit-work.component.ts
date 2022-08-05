@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { selectWorks } from '../../store/app.selectors';
 import { Store } from '@ngrx/store';
-import { setEditWorkVisible } from '../login/store/login-modal.actions';
-import { selectCurrentWorkID } from '../login/store/login-modal.selectors';
 import { GetTag, GetWork } from '../../../generated/graphql';
 import {
   addTag,
@@ -18,6 +16,8 @@ import {
   selectFilterTags,
 } from './store/edit-work.selectors';
 import { deleteWork } from '../edit-info/store/edit-info.actions';
+import { setEditWorkVisible } from '../modal/store/modal.actions';
+import { selectCurrentWorkID } from '../modal/store/modal.selectors';
 
 @Component({
   selector: 'app-edit-work',

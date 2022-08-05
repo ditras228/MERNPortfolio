@@ -6,7 +6,7 @@ import {
 } from './store/create-desc.actions';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ValidationService } from '../../services/validation.service';
-import { setCreateDescVisible } from '../login/store/login-modal.actions';
+import { setCreateDescVisible } from '../modal/store/modal.actions';
 
 @Component({
   selector: 'app-create-desc',

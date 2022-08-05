@@ -3,7 +3,6 @@ import { Store } from '@ngrx/store';
 import { selectInfo } from '../../store/app.selectors';
 import { GetInfo } from '../../../generated/graphql';
 import { fadeAnimation } from '../../app.animation';
-import { setEditInfoVisible } from '../../modals/login/store/login-modal.actions';
 
 @Component({
   selector: 'app-sidebar-info',

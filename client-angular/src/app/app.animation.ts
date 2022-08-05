@@ -14,6 +14,13 @@ export const modalAnimation = trigger('modalAnimation', [
   ]),
 ]);
 
+export const languageAnimation = trigger('languageAnimation', [
+  transition(':enter', [
+    style({ transform: 'translateY(-5px)' }),
+    animate('150ms', style({ transform: 'translateY(0)' })),
+  ]),
+]);
+
 export const fadeAnimation = trigger('fadeAnimation', [
   transition(':enter', [
     style({ opacity: 0 }),

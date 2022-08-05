@@ -6,7 +6,13 @@ export const DescQuery = gql`
       __typename
       ... on GetDesc {
         id
-        text
+        text {
+          field
+          translations {
+            locale
+            field
+          }
+        }
         img
       }
     }

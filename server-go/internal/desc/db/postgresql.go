@@ -2,12 +2,14 @@ package desc
 
 import (
 	"context"
+	"fmt"
 	"github.com/ztrue/tracerr"
 	"portfolio/enitity"
 	"portfolio/graph/model"
 	postgres "portfolio/infrastructure/postgresql"
 	"portfolio/internal/desc"
 	"portfolio/internal/translation"
+	"portfolio/middlewares/keys"
 	"portfolio/pkg/utils"
 )
 
@@ -35,17 +37,19 @@ func (r *repository) FindAll(ctx context.Context) ([]*model.GetDesc, error) {
 	descs := make([]*model.GetDesc, 0)
 	for rows.Next() {
 		var dsc model.GetDesc
-		err := rows.Scan(&dsc.ID, &dsc.Text, &dsc.Img)
+		var text model.GetTranslations
+		err := rows.Scan(&dsc.ID, &text.Field, &dsc.Img)
 		if err != nil {
 			return nil, nil
 		}
 
-		dscTextTranslate, err := r.translationRepo.FindOne(ctx, dsc.ID, enitity.InfoDesc, dsc.Text)
+		dscTextTranslate, err := r.translationRepo.FindOne(ctx, dsc.ID, enitity.InfoDesc, text.Field)
 		if err != nil {
 			return nil, err
 		}
-		dsc.Text = dscTextTranslate.Field
+		dsc.Text = &dscTextTranslate
 		descs = append(descs, &dsc)
+		fmt.Println(dsc)
 	}
 	res = descs
 	return res, nil
@@ -75,6 +79,7 @@ func (r *repository) UpdateDesc(ctx context.Context, input model.UpdateDescInput
 	}
 
 	var dsc model.GetDesc
+	var text model.GetTranslations
 
 	qDesc := `
 
@@ -97,12 +102,20 @@ func (r *repository) UpdateDesc(ctx context.Context, input model.UpdateDescInput
 		return nil, tracerr.Errorf("Не удалось заменить изображение: %s", err)
 	}
 
+	var locale = keys.LocaleForContext(ctx) - 1
 	err = r.client.
-		QueryRow(ctx, qDesc, input.ID, input.Text, newLink).
-		Scan(&dsc.ID, &dsc.Text, &dsc.Img)
+		QueryRow(ctx, qDesc, input.ID, input.Text.Translations[locale].Field, newLink).
+		Scan(&dsc.ID, &text.Field, &dsc.Img)
 	if err != nil {
 		return nil, tracerr.Errorf("Не удалось обновить описание: %s", err)
 	}
+
+	text, err = r.translationRepo.Update(ctx, input.Text, dsc.ID, enitity.InfoDesc, text.Field)
+	if err != nil {
+		return nil, err
+	}
+
+	dsc.Text = &text
 
 	return dsc, nil
 }
@@ -120,18 +133,30 @@ func (r *repository) CreateDesc(ctx context.Context, input model.CreateDescInput
 					ID, text, img
 
 			 `
+
 	var dsc model.GetDesc
+	var text model.Translation
+
 	link, err := utils.SaveImage(input.Img)
 	if err != nil {
 		return nil, tracerr.Errorf("Не удалось сохранить картинку: %s", err)
 	}
+	var locale = keys.LocaleForContext(ctx) - 1
 	err = r.client.
-		QueryRow(ctx, qDesc, input.Text, link).
-		Scan(&dsc.ID, &dsc.Text, &dsc.Img)
+		QueryRow(ctx, qDesc, &input.Text.Translations[locale].Field, link).
+		Scan(&dsc.ID, &text.Field, &dsc.Img)
 
 	if err != nil {
 		return nil, tracerr.Errorf("Не удалось создать описание: %s", err)
 	}
+
+	textUpd, err := r.translationRepo.Update(ctx, input.Text, dsc.ID, enitity.InfoDesc, text.Field)
+	if err != nil {
+		return nil, err
+	}
+
+	dsc.Text = &textUpd
+
 	return dsc, nil
 }
 

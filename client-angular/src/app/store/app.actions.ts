@@ -15,6 +15,3 @@ export const setWorks = createAction(
 );
 
 export const okay = createAction('[App] Okay');
-export const setLock = createAction('[App] IsLock', (value: boolean) => ({
-  value,
-}));

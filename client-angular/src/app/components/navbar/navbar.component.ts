@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { selectIsAuth } from '../../modals/login/store/login-modal.selectors';
-import { setLoginVisible } from '../../modals/login/store/login-modal.actions';
 import { AuthService } from '../../services/auth.service';
+import {
+  setLock,
+  setLoginVisible,
+} from '../../modals/modal/store/modal.actions';
+import { selectIsLanguage } from './store/navbar.selectors';
+import { setLanguageVisible } from './store/navbar.actions';
 
 @Component({
   selector: 'app-navbar',
@@ -11,13 +16,20 @@ import { AuthService } from '../../services/auth.service';
 })
 export class NavbarComponent implements OnInit {
   public isAuth: boolean | undefined;
+  public isLanguageVisible: boolean | undefined;
 
   constructor(public store$: Store, public authService: AuthService) {}
 
   ngOnInit() {
     this.store$.select(selectIsAuth).subscribe(value => (this.isAuth = value));
+    this.store$
+      .select(selectIsLanguage)
+      .subscribe(value => (this.isLanguageVisible = value));
   }
-
+  showLangHandler(): void {
+    this.store$.dispatch(setLanguageVisible());
+    this.store$.dispatch(setLock());
+  }
   showLoginHandler(): void {
     this.store$.dispatch(setLoginVisible());
   }

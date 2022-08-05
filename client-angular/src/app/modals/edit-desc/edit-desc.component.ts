@@ -8,8 +8,9 @@ import {
 } from './store/edit-desc.actions';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ValidationService } from '../../services/validation.service';
-import { setEditDescVisible } from '../login/store/login-modal.actions';
-import { selectCurrentDesc } from '../login/store/login-modal.selectors';
+import { GetDesc, GetWork } from '../../../generated/graphql';
+import { selectCurrentDesc } from '../modal/store/modal.selectors';
+import { setEditDescVisible } from '../modal/store/modal.actions';
 
 @Component({
   selector: 'app-edit-desc',
@@ -19,15 +20,17 @@ import { selectCurrentDesc } from '../login/store/login-modal.selectors';
 export class EditDescComponent implements OnInit {
   public errors: { [key: string]: string } = {};
   public text = new FormControl();
+  public textRu = new FormControl();
   public img = new FormControl();
-  public id;
   public form:
     | FormGroup<{
-        id: FormControl<number>;
         text: FormControl<string>;
+        textRu: FormControl<string>;
         imgUrl: FormControl<string>;
       }>
     | undefined;
+
+  public currentDesc = {} as GetDesc | undefined;
 
   constructor(
     public store$: Store,
@@ -42,7 +45,7 @@ export class EditDescComponent implements OnInit {
     this.img.setValue(e);
   }
   deleteDescHandler(): void {
-    this.store$.dispatch(setDeleteDesc(this.id));
+    this.store$.dispatch(setDeleteDesc(this.currentDesc?.id || 0));
     this.store$.dispatch(submitDeleteDesc());
   }
   submitFormHandler(): void {
@@ -55,8 +58,20 @@ export class EditDescComponent implements OnInit {
       this.errors = {};
       this.store$.dispatch(
         setEditDescForm({
-          id: this.id,
-          text: this.text.value,
+          id: this.currentDesc?.id || 0,
+          text: {
+            translations: [
+              {
+                field: this.text.value,
+                locale: 1,
+              },
+              {
+                field: this.textRu.value,
+                locale: 2,
+              },
+            ],
+          },
+
           img: this.img.value,
         })
       );
@@ -65,19 +80,19 @@ export class EditDescComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.id = new FormControl(null, [Validators.required]);
     this.text = new FormControl(null, [Validators.required]);
     this.img = new FormControl(null, [Validators.required]);
 
     this.store$.select(selectCurrentDesc).subscribe(info => {
-      this.id = info?.id;
-      this.text.setValue(info?.text);
+      this.currentDesc = info;
+      this.text.setValue(this.currentDesc?.text.translations[0]?.field);
+      this.textRu.setValue(this.currentDesc?.text.translations[1]?.field);
       this.img.setValue(info?.img);
     });
 
     this.form = new FormGroup({
-      id: this.id,
       text: this.text,
+      textRu: this.text,
       imgUrl: this.img,
     });
   }

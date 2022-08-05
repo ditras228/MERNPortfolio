@@ -11,18 +11,18 @@ import { getInfo, getWorks } from './store/app.actions';
 import { Store } from '@ngrx/store';
 
 import { isPlatformBrowser } from '@angular/common';
+import { selectIsAuth } from './modals/login/store/login-modal.selectors';
+import { CookieService } from 'ngx-cookie-service';
+import { setAuth } from './modals/login/store/login-modal.actions';
 import {
   selectCreateDescVisible,
   selectCreateWorkVisible,
   selectEditDescVisible,
   selectEditInfoVisible,
   selectEditWorkVisible,
-  selectIsAuth,
   selectIsLoginVisible,
   selectLock,
-} from './modals/login/store/login-modal.selectors';
-import { CookieService } from 'ngx-cookie-service';
-import { setAuth } from './modals/login/store/login-modal.actions';
+} from './modals/modal/store/modal.selectors';
 
 @Component({
   selector: 'app-root',

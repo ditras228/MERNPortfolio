@@ -1,6 +1,6 @@
 type GetDesc {
   id: Int!
-  text: String!
+  text: GetTranslations!
   img: String!
 }
 type GetDescResult {

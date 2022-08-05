@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { selectWorks } from '../../store/app.selectors';
 import { GetWork } from '../../../generated/graphql';
 import { Store } from '@ngrx/store';
-import { setCreateWorkVisible } from '../../modals/login/store/login-modal.actions';
+import { setCreateWorkVisible } from '../../modals/modal/store/modal.actions';
 
 @Component({
   selector: 'app-work-list',

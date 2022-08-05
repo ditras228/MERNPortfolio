@@ -3,11 +3,12 @@ import { SwiperComponent } from 'swiper/angular';
 import SwiperCore, { Autoplay, Navigation, Pagination } from 'swiper';
 import { GetInfo } from '../../../generated/graphql';
 import { Store } from '@ngrx/store';
+
+import { UrlService } from '../../services/url.service';
 import {
   setCreateDescVisible,
   setEditDescVisible,
-} from '../../modals/login/store/login-modal.actions';
-import { UrlService } from '../../services/url.service';
+} from '../../modals/modal/store/modal.actions';
 
 SwiperCore.use([Pagination, Navigation, Autoplay]);
 

@@ -12,10 +12,10 @@ import { map } from 'rxjs/operators';
 import { getWorks, okay } from '../../../store/app.actions';
 import { Store } from '@ngrx/store';
 import { submitCreateWorkForm } from './create-work.actions';
-import { setCreateWorkVisible } from '../../login/store/login-modal.actions';
 import { selectCreateFormInput } from './create-work.selectors';
 import { NotificationService } from '../../../services/notification.service';
 import { CookieService } from 'ngx-cookie-service';
+import { setCreateWorkVisible } from '../../modal/store/modal.actions';
 
 @Injectable()
 export class CreateWorkEffects extends GraphqlService {

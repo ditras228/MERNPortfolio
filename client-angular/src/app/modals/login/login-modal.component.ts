@@ -1,14 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import {
-  setLoginForm,
-  setLoginVisible,
-  submitLoginForm,
-} from './store/login-modal.actions';
+import { setLoginForm, submitLoginForm } from './store/login-modal.actions';
 import { selectLoginError } from './store/login-modal.selectors';
 import { ValidationService } from '../../services/validation.service';
 import { errorInputs, LoginErrors } from './store/login-modal.reducer';
+import { setLoginVisible } from '../modal/store/modal.actions';
 
 @Component({
   selector: 'app-login-modal',

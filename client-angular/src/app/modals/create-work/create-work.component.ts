@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { setCreateWorkVisible } from '../login/store/login-modal.actions';
 import { GetTag } from '../../../generated/graphql';
 import { ValidationService } from '../../services/validation.service';
 import {
@@ -17,6 +16,7 @@ import {
   selectEditFormTags,
   selectFilterTags,
 } from '../edit-work/store/edit-work.selectors';
+import { setCreateWorkVisible } from '../modal/store/modal.actions';
 
 @Component({
   selector: 'app-create-work',

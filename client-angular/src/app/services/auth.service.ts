@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import {
-  setAuth,
-  setLoginVisible,
-} from '../modals/login/store/login-modal.actions';
+import { setAuth } from '../modals/login/store/login-modal.actions';
 import { CookieService } from 'ngx-cookie-service';
 import { NotificationService } from './notification.service';
+import { setLoginVisible } from '../modals/modal/store/modal.actions';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {

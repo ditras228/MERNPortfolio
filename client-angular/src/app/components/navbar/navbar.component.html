@@ -2,12 +2,18 @@
   <div class="navbar__container">
     <div class="navbar__container__logo"></div>
     MERNPortfolio
+    <button class="navbar__container__language-btn" (click)="showLangHandler()">
+      RUS
+    </button>
+    <div
+      class="navbar__container__lang-btn-mobile"
+      (click)="showLangHandler()"></div>
     <button
       class="navbar__container__admin-btn"
       (click)="showLoginHandler()"
-      *ngIf="!isAuth">
-      <span class="navbar__container__admin-btn__icon"></span>
-      <span i18n="@@nb.t1">Login</span>
+      *ngIf="!isAuth"
+      i18n="@@nb.t1">
+      Login
     </button>
     <div
       class="navbar__container__admin-btn-mobile"
@@ -16,8 +22,9 @@
     <button
       class="navbar__container__logout"
       (click)="authService.logout()"
-      *ngIf="isAuth">
-      <span i18n="@@nb.t2">Logout</span>
+      *ngIf="isAuth"
+      i18n="@@nb.t2">
+      Logout
     </button>
     <div
       class="navbar__container__logout-mobile"
@@ -25,3 +32,5 @@
       *ngIf="isAuth"></div>
   </div>
 </div>
+
+<app-nav-language *ngIf="isLanguageVisible"></app-nav-language>

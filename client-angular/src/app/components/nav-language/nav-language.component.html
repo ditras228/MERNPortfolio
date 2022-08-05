@@ -1,0 +1,21 @@
+<div class="backdrop" @fadeAnimation (click)="showLangHandler()"></div>
+
+<div class="nav-language">
+  <div class="nav-language__container">
+    <div class="nav-language__icon" (click)="showLangHandler()"></div>
+  </div>
+  <div class="nav-language__content" @languageAnimation>
+    <div class="nav-language__content__item" (click)="setLanguageHandler('ru')">
+      <div
+        class="nav-language__content__item__icon nav-language__content__item__icon--RU"></div>
+      Russian
+    </div>
+    <div
+      class="nav-language__content__item"
+      (click)="setLanguageHandler('en-US')">
+      <div
+        class="nav-language__content__item__icon nav-language__content__item__icon--GB"></div>
+      English
+    </div>
+  </div>
+</div>

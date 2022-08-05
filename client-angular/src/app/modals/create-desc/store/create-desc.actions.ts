@@ -1,7 +1,8 @@
 import { createAction } from '@ngrx/store';
+import { UpdateTranslationInput } from '../../../../generated/graphql';
 
 export type CreateDescInputs = {
-  text: string;
+  text: UpdateTranslationInput;
   img: string;
 };
 
