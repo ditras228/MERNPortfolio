@@ -17,7 +17,7 @@ var (
 	client, _           = postgres.NewClient(context.TODO(), 3, cfg.Storage)
 	TranslateRepository = translation.NewRepository(client)
 	InfoRepository      = info.NewRepository(client, TranslateRepository, DescRepository)
-	WorkRepository      = work.NewRepository(client, TranslateRepository)
+	WorkRepository      = work.NewRepository(client, TranslateRepository, TagRepository)
 	UserRepository      = user.NewRepository(client)
 	TagRepository       = tag.NewRepository(client)
 	DescRepository      = desc.NewRepository(client, TranslateRepository)

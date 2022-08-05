@@ -1,6 +1,5 @@
 input UpdateTranslationInput {
-  translationId: Int!
-  translations: [translationInput]!
+  translations: [translationInput!]!
 }
 
 input translationInput {

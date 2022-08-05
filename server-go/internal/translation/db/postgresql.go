@@ -2,13 +2,14 @@ package translation
 
 import (
 	"context"
-	"fmt"
 	"github.com/ztrue/tracerr"
 	"portfolio/graph/model"
 	"portfolio/infrastructure/postgresql"
 	"portfolio/internal/translation"
 	"portfolio/middlewares/keys"
+	"regexp"
 	"strconv"
+	"strings"
 )
 
 type repository struct {
@@ -25,7 +26,7 @@ func (r *repository) FindOne(ctx context.Context, translateId, entityId int, ori
 			public.translation
 
 		WHERE 
-			translateId = $1 AND entityId = $2 
+			translateID = $1 AND entityID = $2 
 
 		`
 
@@ -51,6 +52,7 @@ func (r *repository) FindOne(ctx context.Context, translateId, entityId int, ori
 			newField = origValue
 		}
 	}
+
 	// На тот случай, если нужно выводить все переводы, а орига в базе нет
 	if len(translations) == 1 {
 		var mockTranslation model.Translation
@@ -60,42 +62,32 @@ func (r *repository) FindOne(ctx context.Context, translateId, entityId int, ori
 	}
 	return model.GetTranslations{Field: newField, Translations: translations}, err
 }
-
-func (r *repository) UpdateOne(ctx context.Context, input *model.UpdateTranslationInput, entityId int, origValue string) (model.GetTranslations, error) {
-	qDelete := `
-				DELETE FROM 
-					public.translation
-
-				WHERE 
-					translateId = $1 AND entityId = $2
-
-				RETURNING
-					translateId
-  			 `
-
-	var id int
-	err := r.client.QueryRow(ctx, qDelete, input.TranslationID, entityId).Scan(&id)
-
-	if err != nil {
-		return model.GetTranslations{}, tracerr.Errorf(`Не удалось удалить: `, err)
-	}
+func (r *repository) Create(ctx context.Context, input *model.UpdateTranslationInput, translationId, entityId int, origValue string) (model.GetTranslations, error) {
 	qAddTranslations := `
-			INSERT INTO 
-				public.translation (translateId, entityId, locale, field)
 
-			VALUES
-
-`
+						INSERT INTO 
+							public.translation (translateID, entityID, locale, field)
+			
+						VALUES
+			
+						`
 
 	for i := 0; i < len(input.Translations); i++ {
-		var qAddTranslationItem = "(" + strconv.Itoa(input.TranslationID) + "," + strconv.Itoa(entityId) + "," + strconv.Itoa(input.Translations[i].Locale) + ", '" + input.Translations[i].Field + "') "
+		fieldRegex := regexp.MustCompile("\n")
+		cleanTranslation := fieldRegex.ReplaceAllString(input.Translations[i].Field, "")
+		var values []string
+		values = append(values,
+			strconv.Itoa(translationId),
+			strconv.Itoa(entityId),
+			strconv.Itoa(input.Translations[i].Locale),
+			cleanTranslation)
 
-		if i != len(input.Translations)-1 {
-			qAddTranslationItem = qAddTranslationItem + ","
-		}
+		valuesStr := strings.Join(values, "', '")
+		var qAddTranslationItem = "('" + valuesStr + "'),"
 		qAddTranslations = qAddTranslations + qAddTranslationItem
-		fmt.Println(qAddTranslations)
 	}
+
+	qAddTranslations = qAddTranslations[0 : len(qAddTranslations)-1]
 
 	rows, err := r.client.Query(ctx, qAddTranslations)
 	if err != nil {
@@ -115,6 +107,37 @@ func (r *repository) UpdateOne(ctx context.Context, input *model.UpdateTranslati
 	}
 
 	return model.GetTranslations{Field: origValue, Translations: translations}, err
+}
+func (r *repository) Delete(ctx context.Context, translationId, entityId int) (int, error) {
+	qDelete := `
+				DELETE FROM 
+					public.translation
+
+				WHERE 
+					translateID = $1 AND entityID = $2
+
+				RETURNING
+					translateID
+  			 `
+
+	var id int
+	err := r.client.QueryRow(ctx, qDelete, translationId, entityId).Scan(&id)
+	if err != nil {
+		return 0, tracerr.Errorf(`Не удалось удалить перевод: %s`, err)
+	}
+	return id, nil
+}
+func (r *repository) Update(ctx context.Context, input *model.UpdateTranslationInput, translationId, entityId int, origValue string) (model.GetTranslations, error) {
+	_, err := r.Delete(ctx, translationId, entityId)
+	if err != nil {
+		return model.GetTranslations{}, err
+	}
+	translations, err := r.Create(ctx, input, translationId, entityId, origValue)
+	if err != nil {
+		return model.GetTranslations{}, err
+	}
+	return translations, nil
+
 }
 func NewRepository(client postgres.Client) translation.Repository {
 	return &repository{

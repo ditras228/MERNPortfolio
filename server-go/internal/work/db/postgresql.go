@@ -2,117 +2,70 @@ package work
 
 import (
 	"context"
+	"github.com/ztrue/tracerr"
 	"portfolio/enitity"
 	"portfolio/graph/model"
 	"portfolio/infrastructure/postgresql"
+	"portfolio/internal/tag"
 	"portfolio/internal/translation"
 	"portfolio/internal/work"
-	"strconv"
+	"portfolio/middlewares/keys"
 )
 
 type repository struct {
 	client          postgres.Client
 	translationRepo translation.Repository
+	tagRepo         tag.Repository
 }
 
 func (r *repository) FindAll(ctx context.Context) ([]*model.GetWork, error) {
 	qWork := `
 
 		SELECT 
-			id, name, description,
+			ID, name, description,
 			github, demo
 
 		FROM public.work 
 
 		ORDER
-			BY id  	
+			BY ID
 
 		`
+
 	workRows, err := r.client.Query(ctx, qWork)
 	if err != nil {
 		return nil, err
 	}
 
+	var nameTranslation model.GetTranslations
+	var descTranslation model.GetTranslations
+	var tags []*model.GetTag
+
 	works := make([]*model.GetWork, 0)
 	for workRows.Next() {
 		var wrk model.GetWork
 
-		err = workRows.Scan(&wrk.ID, &wrk.Name, &wrk.Description,
+		err = workRows.Scan(&wrk.ID, &nameTranslation.Field, &descTranslation.Field,
 			&wrk.Github, &wrk.Demo)
 		if err != nil {
 			return nil, err
 		}
-
-		//wrk.Description = utils.FormatHTML(wrk.Description)
-
-		qWorkTag := `
-
-					SELECT 
-						id, workid, tagid
-			
-					FROM 
-						public.worktag 
-
-					WHERE 
-						workid = $1
-
-					`
-		workTagRows, err := r.client.Query(ctx, qWorkTag, &wrk.ID)
+		tags, err = r.tagRepo.FindOne(ctx, wrk.ID)
 		if err != nil {
 			return nil, err
 		}
 
-		tags := make([]*model.GetTag, 0)
-		for workTagRows.Next() {
-			var wrkTg model.GetWorkTag
-			err = workTagRows.Scan(&wrkTg.ID, &wrkTg.WorkID, &wrkTg.TagID)
-			if err != nil {
-				return nil, err
-			}
-
-			qTag := `
-
-					SELECT
-						id, title
-		
-					FROM 
-						public.tag
-
-					WHERE 
-						id = $1
-
-					`
-
-			tagRows, err := r.client.Query(ctx, qTag, &wrkTg.TagID)
-			if err != nil {
-				return nil, err
-			}
-
-			for tagRows.Next() {
-				var tg model.GetTag
-				err = tagRows.Scan(&tg.ID, &tg.Title)
-
-				if err != nil {
-					return nil, err
-				}
-
-				tags = append(tags, &tg)
-			}
-			wrk.Tags = tags
-		}
-
-		wrkNameTranslate, err := r.translationRepo.FindOne(ctx, wrk.ID, enitity.WorkTitle, wrk.Name)
+		nameTranslation, err = r.translationRepo.FindOne(ctx, wrk.ID, enitity.WorkTitle, nameTranslation.Field)
 		if err != nil {
 			return nil, err
 		}
-		wrk.Name = wrkNameTranslate.Field
 
-		wrkDescTranslate, err := r.translationRepo.FindOne(ctx, wrk.ID, enitity.WorkFunctional, wrk.Description)
+		descTranslation, err = r.translationRepo.FindOne(ctx, wrk.ID, enitity.WorkFunctional, descTranslation.Field)
 		if err != nil {
 			return nil, err
 		}
-		wrk.Description = wrkDescTranslate.Field
 
+		wrk = work.GetWorkToDTO(wrk, nameTranslation, descTranslation, tags)
 		works = append(works, &wrk)
 	}
 	if err != nil {
@@ -123,7 +76,6 @@ func (r *repository) FindAll(ctx context.Context) ([]*model.GetWork, error) {
 }
 
 func (r *repository) CreateWork(ctx context.Context, input model.CreateWorkInput) (model.GetWork, error) {
-
 	qUpdWork := `
 
 				INSERT INTO
@@ -134,86 +86,44 @@ func (r *repository) CreateWork(ctx context.Context, input model.CreateWorkInput
 					($1,$2,$3,$4,$5)
 			
 				RETURNING
-					id, name, description, github, demo
+					ID, name, description, github, demo
 
 			   `
 
 	var wrk model.GetWork
+	var nameTranslation model.GetTranslations
+	var descTranslation model.GetTranslations
+	var tags []*model.GetTag
+	var locale = keys.LocaleForContext(ctx) - 1
 
 	err := r.client.
-		QueryRow(ctx, qUpdWork, input.Name, input.Description, input.Github, input.Demo, input.Figma).
-		Scan(&wrk.ID, &wrk.Name, &wrk.Description, &wrk.Github, &wrk.Demo)
+		QueryRow(ctx, qUpdWork,
+			input.Name.Translations[locale].Field,
+			input.Description.Translations[locale].Field,
+			input.Github, input.Demo, input.Figma).
+		Scan(&wrk.ID, &nameTranslation.Field, &descTranslation.Field, &wrk.Github, &wrk.Demo)
+	if err != nil {
+		return model.GetWork{}, err
+	}
+	nameTranslation, err = r.translationRepo.Create(ctx, input.Name, wrk.ID, enitity.WorkTitle, nameTranslation.Field)
 	if err != nil {
 		return model.GetWork{}, err
 	}
 
-	qAddTags := `
-
-				INSERT INTO 
-					public.worktag (workid, tagid) 
-				
-				VALUES 
-
-				`
-
-	for i := 0; i < len(input.Tags); i++ {
-		var qAddTagsItem = "(" + strconv.Itoa(wrk.ID) + "," + strconv.Itoa(*input.Tags[i]) + ") "
-
-		if i != len(input.Tags)-1 {
-			qAddTagsItem = qAddTagsItem + ","
-		}
-		qAddTags = qAddTags + qAddTagsItem
-	}
-
-	res, err := r.client.Query(ctx, qAddTags)
+	descTranslation, err = r.translationRepo.Create(ctx, input.Description, wrk.ID, enitity.WorkFunctional, descTranslation.Field)
 	if err != nil {
 		return model.GetWork{}, err
 	}
-	defer res.Close()
+	tags, err = r.tagRepo.Create(ctx, wrk.ID, input.Tags)
+	if err != nil {
+		return model.GetWork{}, err
+	}
+
+	wrk = work.GetWorkToDTO(wrk, nameTranslation, descTranslation, tags)
 
 	return wrk, nil
 }
 func (r *repository) UpdateWork(ctx context.Context, input model.UpdateWorkInput) (model.UpdateWorkOutput, error) {
-	qDeleteTags := `
-
-					DELETE FROM
-						public.worktag
-			
-					WHERE 
-						workid = $1
-
-					`
-
-	res, err := r.client.Query(ctx, qDeleteTags, input.ID)
-	if err != nil {
-		return model.GetWork{}, err
-	}
-
-	defer res.Close()
-
-	qAddTags := `
-
-				INSERT INTO 
-					public.worktag (workid, tagid) 
-				
-				VALUES 
-
-				`
-
-	for i := 0; i < len(input.Tags); i++ {
-		var qAddTagsItem = "(" + strconv.Itoa(input.ID) + "," + strconv.Itoa(*input.Tags[i]) + ") "
-
-		if i != len(input.Tags)-1 {
-			qAddTagsItem = qAddTagsItem + ","
-		}
-		qAddTags = qAddTags + qAddTagsItem
-	}
-
-	res, err = r.client.Query(ctx, qAddTags)
-	if err != nil {
-		return model.GetWork{}, err
-	}
-	defer res.Close()
 
 	qUpdWork := `
 
@@ -225,53 +135,67 @@ func (r *repository) UpdateWork(ctx context.Context, input model.UpdateWorkInput
 			github = $4, demo = $5, figma = $6
 
 		WHERE 
-			id = $1
+			ID = $1
 
 		RETURNING 
-			id, name, description, github, demo, figma
+			ID, name, description, github, demo, figma
 
 		`
 
 	var wrk model.GetWork
+	var nameTranslation model.GetTranslations
+	var descTranslation model.GetTranslations
+	var tags []*model.GetTag
 
-	err = r.client.
-		QueryRow(ctx, qUpdWork, input.ID, input.Name, input.Description, input.Github, input.Demo, input.Figma).
-		Scan(&wrk.ID, &wrk.Name, &wrk.Description, &wrk.Github, &wrk.Demo, &wrk.Figma)
-	if err == nil {
+	var locale = keys.LocaleForContext(ctx) - 1
+	err := r.client.
+		QueryRow(ctx, qUpdWork,
+			input.ID, input.Name.Translations[locale].Field,
+			input.Description.Translations[locale].Field, input.Github,
+			input.Demo, input.Figma).
+		Scan(&wrk.ID, &nameTranslation.Field, &descTranslation.Field, &wrk.Github, &wrk.Demo, &wrk.Figma)
+	if err != nil {
 		return model.NotFoundError{Message: "Работа не найдена", ID: input.ID}, nil
 	}
 
+	nameTranslation, err = r.translationRepo.Update(ctx, input.Name, wrk.ID, enitity.WorkTitle, nameTranslation.Field)
+	if err != nil {
+		return nil, err
+	}
+
+	descTranslation, err = r.translationRepo.Update(ctx, input.Description, wrk.ID, enitity.WorkFunctional, descTranslation.Field)
+	if err != nil {
+		return nil, err
+	}
+	tags, err = r.tagRepo.UpdateOne(ctx, input.ID, input.Tags)
+	if err != nil {
+		return nil, err
+	}
+	wrk = work.GetWorkToDTO(wrk, nameTranslation, descTranslation, tags)
 	return wrk, nil
 }
 
 func (r *repository) DeleteWork(ctx context.Context, input model.DeleteWorkInput) (model.DeleteWorkOutput, error) {
-	qWorkTag := `
-
-			DELETE FROM 
-				public.worktag
-
-			WHERE 
-				workid = $1
-
-		`
-
 	qWork := `
 
 			DELETE FROM 
 				public.work
 
 			WHERE 
-				id = $1
+				ID = $1
 
 			RETURNING 
-				id
+				ID
 
 		`
 
 	var res model.DeleteWorkResult
-	r.client.QueryRow(ctx, qWorkTag, input.ID)
+	_, err := r.tagRepo.Delete(ctx, input.ID)
+	if err != nil {
+		return nil, tracerr.Errorf("Не удалось удалить теги: %s", err)
+	}
 
-	err := r.client.QueryRow(ctx, qWork, input.ID).Scan(&res.ID)
+	err = r.client.QueryRow(ctx, qWork, input.ID).Scan(&res.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -279,9 +203,10 @@ func (r *repository) DeleteWork(ctx context.Context, input model.DeleteWorkInput
 	return res, nil
 }
 
-func NewRepository(client postgres.Client, translationRepo translation.Repository) work.Repository {
+func NewRepository(client postgres.Client, translationRepo translation.Repository, tagRepo tag.Repository) work.Repository {
 	return &repository{
 		client:          client,
 		translationRepo: translationRepo,
+		tagRepo:         tagRepo,
 	}
 }

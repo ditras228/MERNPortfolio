@@ -53,12 +53,12 @@ type CreateDescInput struct {
 }
 
 type CreateWorkInput struct {
-	Name        string  `json:"name"`
-	Tags        []*int  `json:"tags"`
-	Description string  `json:"description"`
-	Github      *string `json:"github"`
-	Demo        string  `json:"demo"`
-	Figma       *string `json:"figma"`
+	Name        *UpdateTranslationInput `json:"name"`
+	Tags        []int                   `json:"tags"`
+	Description *UpdateTranslationInput `json:"description"`
+	Github      string                  `json:"github"`
+	Demo        string                  `json:"demo"`
+	Figma       *string                 `json:"figma"`
 }
 
 type DeleteDescInput struct {
@@ -116,13 +116,13 @@ type GetTranslations struct {
 }
 
 type GetWork struct {
-	ID          int       `json:"id"`
-	Name        string    `json:"name"`
-	Tags        []*GetTag `json:"tags"`
-	Description string    `json:"description"`
-	Github      *string   `json:"github"`
-	Demo        string    `json:"demo"`
-	Figma       string    `json:"figma"`
+	ID          int              `json:"id"`
+	Name        *GetTranslations `json:"name"`
+	Tags        []*GetTag        `json:"tags"`
+	Description *GetTranslations `json:"description"`
+	Github      string           `json:"github"`
+	Demo        string           `json:"demo"`
+	Figma       string           `json:"figma"`
 }
 
 func (GetWork) IsUpdateWorkOutput() {}
@@ -169,18 +169,17 @@ type UpdateInfoInput struct {
 }
 
 type UpdateTranslationInput struct {
-	TranslationID int                 `json:"translationId"`
-	Translations  []*TranslationInput `json:"translations"`
+	Translations []*TranslationInput `json:"translations"`
 }
 
 type UpdateWorkInput struct {
-	ID          int     `json:"id"`
-	Name        string  `json:"name"`
-	Tags        []*int  `json:"tags"`
-	Description string  `json:"description"`
-	Github      *string `json:"github"`
-	Demo        string  `json:"demo"`
-	Figma       string  `json:"figma"`
+	ID          int                     `json:"id"`
+	Name        *UpdateTranslationInput `json:"name"`
+	Tags        []int                   `json:"tags"`
+	Description *UpdateTranslationInput `json:"description"`
+	Github      string                  `json:"github"`
+	Demo        string                  `json:"demo"`
+	Figma       *string                 `json:"figma"`
 }
 
 type User struct {

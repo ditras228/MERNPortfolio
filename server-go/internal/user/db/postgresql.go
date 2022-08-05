@@ -8,6 +8,7 @@ import (
 	"portfolio/graph/model"
 	"portfolio/infrastructure/postgresql"
 	"portfolio/internal/user"
+	"portfolio/pkg/utils"
 	"time"
 )
 
@@ -26,7 +27,7 @@ func (r *repository) Auth(ctx context.Context, input model.UserInput) (model.Use
 	q := `
 
 		SELECT 
-			login, password
+			id, login, password
 
 		FROM 
 			public.user
@@ -39,7 +40,7 @@ func (r *repository) Auth(ctx context.Context, input model.UserInput) (model.Use
 	var usr model.User
 	usrRow := r.client.QueryRow(ctx, q, input.Login)
 
-	err := usrRow.Scan(&usr.Login, &usr.Password)
+	err := usrRow.Scan(&usr.ID, &usr.Login, &usr.Password)
 	if err != nil {
 		return model.NotFoundError{Message: "Пользователь не найден"}, nil
 	}
@@ -48,10 +49,10 @@ func (r *repository) Auth(ctx context.Context, input model.UserInput) (model.Use
 		return model.WrongPassword{Message: "Неверный пароль"}, nil
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, utils.TokenClaims{StandardClaims: jwt.StandardClaims{
 		ExpiresAt: time.Now().Add(time.Hour).Unix(),
 		Subject:   usr.Login,
-	})
+	}, UserId: usr.ID})
 
 	jwtSecret, exists := os.LookupEnv("jwt_secret")
 
@@ -82,7 +83,7 @@ func (r *repository) GetOne(ctx context.Context, id int) (model.User, error) {
 	var usr model.User
 	err := r.client.QueryRow(ctx, qUser, id).Scan(&usr.ID, &usr.Login, &usr.RoleID)
 	if err != nil {
-		return model.User{}, err
+		return model.User{}, tracerr.Errorf("Не найти пользователя: %s", err)
 	}
 
 	qRole := `
@@ -100,7 +101,7 @@ func (r *repository) GetOne(ctx context.Context, id int) (model.User, error) {
 
 	err = r.client.QueryRow(ctx, qRole, &usr.RoleID).Scan(&usr.Role)
 	if err != nil {
-		return model.User{}, err
+		return model.User{}, tracerr.Errorf("Не найти роль пользователя: %s", err)
 	}
 	return usr, nil
 }

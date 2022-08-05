@@ -7,10 +7,20 @@ export const createWorkMutation = gql`
       ... on GetWork {
         id
         demo
-        description
+        description {
+          translations {
+            locale
+            field
+          }
+        }
         figma
         github
-        name
+        name {
+          translations {
+            locale
+            field
+          }
+        }
         tags {
           id
           title
@@ -31,10 +41,20 @@ export const updateWorkMutation = gql`
       ... on GetWork {
         id
         demo
-        description
+        description {
+          translations {
+            locale
+            field
+          }
+        }
         figma
         github
-        name
+        name {
+          translations {
+            locale
+            field
+          }
+        }
         tags {
           id
           title

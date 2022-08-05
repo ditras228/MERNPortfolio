@@ -3,6 +3,7 @@ package utils
 import (
 	"encoding/base64"
 	"errors"
+	"github.com/dgrijalva/jwt-go"
 	uuid2 "github.com/gofrs/uuid"
 	"github.com/ztrue/tracerr"
 	"os"
@@ -96,4 +97,32 @@ func SaveImage(imgBase64 string) (imgLink string, err error) {
 	}
 
 	return link, nil
+}
+
+type TokenClaims struct {
+	jwt.StandardClaims
+	UserId int `json:"user_id"`
+}
+
+func ParseToken(accessToken string) (int, error) {
+	jwtSecret, exists := os.LookupEnv("jwt_secret")
+	if !exists {
+		return 0, errors.New("")
+	}
+	token, err := jwt.ParseWithClaims(accessToken, &TokenClaims{}, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, errors.New("кк")
+		}
+		return []byte(jwtSecret), nil
+	})
+
+	if err != nil {
+		return 0, err
+	}
+
+	claims, ok := token.Claims.(*TokenClaims)
+	if !ok {
+		return 0, errors.New("ч")
+	}
+	return claims.UserId, nil
 }

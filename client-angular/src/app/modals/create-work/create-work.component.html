@@ -13,10 +13,10 @@
     <app-input-field
       i18n-placeholder="@@cw.t2.1"
       class="create-work__field"
-      [error]="errors?.['name']"
+      [error]="errors?.['nameRu']"
       placeholder="Name RU"
-      [internalValue]="name.value"
-      (valueChange)="name.patchValue($event)"></app-input-field>
+      [internalValue]="nameRu.value"
+      (valueChange)="nameRu.patchValue($event)"></app-input-field>
   </div>
 
   <div>
@@ -53,11 +53,11 @@
     <app-text-area
       i18n-placeholder="@@cd.t5.1"
       class="create-work__field"
-      [error]="errors?.['description']"
+      [error]="errors?.['descriptionRu']"
       placeholder="Description RU"
-      [internalValue]="description.value"
+      [internalValue]="descriptionRu.value"
       [rows]="13"
-      (valueChange)="description.patchValue($event)"></app-text-area>
+      (valueChange)="descriptionRu.patchValue($event)"></app-text-area>
   </div>
 
   <div class="create-work__grid">

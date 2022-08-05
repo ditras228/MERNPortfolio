@@ -697,7 +697,7 @@ var sources = []*ast.Source{
   name: GetTranslations!
   img: String!
   job: String!
-  desc: [GetDesc]!
+  desc: [GetDesc!]!
   experience: GetTranslations!
   contacts: Contacts!
 }
@@ -711,22 +711,22 @@ type Contacts {
 }
 `, BuiltIn: false},
 	{Name: "../schema/work/mutation_work.graphqls", Input: `input CreateWorkInput {
-  name: String!
-  tags: [Int]!
-  description: String!
-  github: String
+  name: UpdateTranslationInput!
+  tags: [Int!]!
+  description: UpdateTranslationInput!
+  github: String!
   demo: String!
   figma: String
 }
 
 input UpdateWorkInput {
   id: Int!
-  name: String!
-  tags: [Int]!
-  description: String!
-  github: String
+  name: UpdateTranslationInput!
+  tags: [Int!]!
+  description: UpdateTranslationInput!
+  github: String!
   demo: String!
-  figma: String!
+  figma: String
 }
 
 union UpdateWorkOutput = GetWork  | NotFoundError
@@ -742,10 +742,10 @@ union DeleteWorkOutput = DeleteWorkResult | NotFoundError
 `, BuiltIn: false},
 	{Name: "../schema/work/query_work.graphqls", Input: `type GetWork {
   id: Int!
-  name: String!
-  tags: [GetTag]!
-  description: String!
-  github: String
+  name: GetTranslations!
+  tags: [GetTag!]!
+  description: GetTranslations!
+  github: String!
   demo: String!
   figma: String!
 }
@@ -817,7 +817,7 @@ union CreateDescOutput = GetDesc
   img: String!
 }
 type GetDescResult {
-  desc: [GetDesc]
+  desc: [GetDesc!]!
 }
 union GetDescOutput = GetDescResult | NotFoundError
 `, BuiltIn: false},
@@ -834,8 +834,7 @@ enum TranslationEntities {
 }
 `, BuiltIn: false},
 	{Name: "../schema/translation/mutation_translation.graphqls", Input: `input UpdateTranslationInput {
-  translationId: Int!
-  translations: [translationInput]!
+  translations: [translationInput!]!
 }
 
 input translationInput {
@@ -1528,11 +1527,14 @@ func (ec *executionContext) _GetDescResult_desc(ctx context.Context, field graph
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
 	res := resTmp.([]*model.GetDesc)
 	fc.Result = res
-	return ec.marshalOGetDesc2ᚕᚖportfolioᚋgraphᚋmodelᚐGetDesc(ctx, field.Selections, res)
+	return ec.marshalNGetDesc2ᚕᚖportfolioᚋgraphᚋmodelᚐGetDescᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_GetDescResult_desc(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1722,7 +1724,7 @@ func (ec *executionContext) _GetInfo_desc(ctx context.Context, field graphql.Col
 	}
 	res := resTmp.([]*model.GetDesc)
 	fc.Result = res
-	return ec.marshalNGetDesc2ᚕᚖportfolioᚋgraphᚋmodelᚐGetDesc(ctx, field.Selections, res)
+	return ec.marshalNGetDesc2ᚕᚖportfolioᚋgraphᚋmodelᚐGetDescᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_GetInfo_desc(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -2102,9 +2104,9 @@ func (ec *executionContext) _GetWork_name(ctx context.Context, field graphql.Col
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(*model.GetTranslations)
 	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
+	return ec.marshalNGetTranslations2ᚖportfolioᚋgraphᚋmodelᚐGetTranslations(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_GetWork_name(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -2114,7 +2116,13 @@ func (ec *executionContext) fieldContext_GetWork_name(ctx context.Context, field
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
+			switch field.Name {
+			case "field":
+				return ec.fieldContext_GetTranslations_field(ctx, field)
+			case "translations":
+				return ec.fieldContext_GetTranslations_translations(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type GetTranslations", field.Name)
 		},
 	}
 	return fc, nil
@@ -2148,7 +2156,7 @@ func (ec *executionContext) _GetWork_tags(ctx context.Context, field graphql.Col
 	}
 	res := resTmp.([]*model.GetTag)
 	fc.Result = res
-	return ec.marshalNGetTag2ᚕᚖportfolioᚋgraphᚋmodelᚐGetTag(ctx, field.Selections, res)
+	return ec.marshalNGetTag2ᚕᚖportfolioᚋgraphᚋmodelᚐGetTagᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_GetWork_tags(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -2196,9 +2204,9 @@ func (ec *executionContext) _GetWork_description(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(*model.GetTranslations)
 	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
+	return ec.marshalNGetTranslations2ᚖportfolioᚋgraphᚋmodelᚐGetTranslations(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_GetWork_description(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -2208,7 +2216,13 @@ func (ec *executionContext) fieldContext_GetWork_description(ctx context.Context
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
+			switch field.Name {
+			case "field":
+				return ec.fieldContext_GetTranslations_field(ctx, field)
+			case "translations":
+				return ec.fieldContext_GetTranslations_translations(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type GetTranslations", field.Name)
 		},
 	}
 	return fc, nil
@@ -2235,11 +2249,14 @@ func (ec *executionContext) _GetWork_github(ctx context.Context, field graphql.C
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_GetWork_github(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -5832,7 +5849,7 @@ func (ec *executionContext) unmarshalInputCreateWorkInput(ctx context.Context, o
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
-			it.Name, err = ec.unmarshalNString2string(ctx, v)
+			it.Name, err = ec.unmarshalNUpdateTranslationInput2ᚖportfolioᚋgraphᚋmodelᚐUpdateTranslationInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -5840,7 +5857,7 @@ func (ec *executionContext) unmarshalInputCreateWorkInput(ctx context.Context, o
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tags"))
-			it.Tags, err = ec.unmarshalNInt2ᚕᚖint(ctx, v)
+			it.Tags, err = ec.unmarshalNInt2ᚕintᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -5848,7 +5865,7 @@ func (ec *executionContext) unmarshalInputCreateWorkInput(ctx context.Context, o
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
-			it.Description, err = ec.unmarshalNString2string(ctx, v)
+			it.Description, err = ec.unmarshalNUpdateTranslationInput2ᚖportfolioᚋgraphᚋmodelᚐUpdateTranslationInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -5856,7 +5873,7 @@ func (ec *executionContext) unmarshalInputCreateWorkInput(ctx context.Context, o
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("github"))
-			it.Github, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			it.Github, err = ec.unmarshalNString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -6055,19 +6072,11 @@ func (ec *executionContext) unmarshalInputUpdateTranslationInput(ctx context.Con
 
 	for k, v := range asMap {
 		switch k {
-		case "translationId":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("translationId"))
-			it.TranslationID, err = ec.unmarshalNInt2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
 		case "translations":
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("translations"))
-			it.Translations, err = ec.unmarshalNtranslationInput2ᚕᚖportfolioᚋgraphᚋmodelᚐTranslationInput(ctx, v)
+			it.Translations, err = ec.unmarshalNtranslationInput2ᚕᚖportfolioᚋgraphᚋmodelᚐTranslationInputᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -6098,7 +6107,7 @@ func (ec *executionContext) unmarshalInputUpdateWorkInput(ctx context.Context, o
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
-			it.Name, err = ec.unmarshalNString2string(ctx, v)
+			it.Name, err = ec.unmarshalNUpdateTranslationInput2ᚖportfolioᚋgraphᚋmodelᚐUpdateTranslationInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -6106,7 +6115,7 @@ func (ec *executionContext) unmarshalInputUpdateWorkInput(ctx context.Context, o
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tags"))
-			it.Tags, err = ec.unmarshalNInt2ᚕᚖint(ctx, v)
+			it.Tags, err = ec.unmarshalNInt2ᚕintᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -6114,7 +6123,7 @@ func (ec *executionContext) unmarshalInputUpdateWorkInput(ctx context.Context, o
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
-			it.Description, err = ec.unmarshalNString2string(ctx, v)
+			it.Description, err = ec.unmarshalNUpdateTranslationInput2ᚖportfolioᚋgraphᚋmodelᚐUpdateTranslationInput(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -6122,7 +6131,7 @@ func (ec *executionContext) unmarshalInputUpdateWorkInput(ctx context.Context, o
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("github"))
-			it.Github, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			it.Github, err = ec.unmarshalNString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -6138,7 +6147,7 @@ func (ec *executionContext) unmarshalInputUpdateWorkInput(ctx context.Context, o
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("figma"))
-			it.Figma, err = ec.unmarshalNString2string(ctx, v)
+			it.Figma, err = ec.unmarshalOString2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -6563,6 +6572,9 @@ func (ec *executionContext) _GetDescResult(ctx context.Context, sel ast.Selectio
 
 			out.Values[i] = ec._GetDescResult_desc(ctx, field, obj)
 
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -6749,6 +6761,9 @@ func (ec *executionContext) _GetWork(ctx context.Context, sel ast.SelectionSet, 
 
 			out.Values[i] = ec._GetWork_github(ctx, field, obj)
 
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "demo":
 
 			out.Values[i] = ec._GetWork_demo(ctx, field, obj)
@@ -7667,6 +7682,60 @@ func (ec *executionContext) marshalNGetDesc2ᚕᚖportfolioᚋgraphᚋmodelᚐGe
 	return ret
 }
 
+func (ec *executionContext) marshalNGetDesc2ᚕᚖportfolioᚋgraphᚋmodelᚐGetDescᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.GetDesc) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNGetDesc2ᚖportfolioᚋgraphᚋmodelᚐGetDesc(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
+func (ec *executionContext) marshalNGetDesc2ᚖportfolioᚋgraphᚋmodelᚐGetDesc(ctx context.Context, sel ast.SelectionSet, v *model.GetDesc) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._GetDesc(ctx, sel, v)
+}
+
 func (ec *executionContext) marshalNGetInfo2portfolioᚋgraphᚋmodelᚐGetInfo(ctx context.Context, sel ast.SelectionSet, v model.GetInfo) graphql.Marshaler {
 	return ec._GetInfo(ctx, sel, &v)
 }
@@ -7717,6 +7786,60 @@ func (ec *executionContext) marshalNGetTag2ᚕᚖportfolioᚋgraphᚋmodelᚐGet
 	wg.Wait()
 
 	return ret
+}
+
+func (ec *executionContext) marshalNGetTag2ᚕᚖportfolioᚋgraphᚋmodelᚐGetTagᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.GetTag) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNGetTag2ᚖportfolioᚋgraphᚋmodelᚐGetTag(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
+func (ec *executionContext) marshalNGetTag2ᚖportfolioᚋgraphᚋmodelᚐGetTag(ctx context.Context, sel ast.SelectionSet, v *model.GetTag) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._GetTag(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalNGetTranslations2ᚖportfolioᚋgraphᚋmodelᚐGetTranslations(ctx context.Context, sel ast.SelectionSet, v *model.GetTranslations) graphql.Marshaler {
@@ -7796,16 +7919,16 @@ func (ec *executionContext) marshalNInt2int(ctx context.Context, sel ast.Selecti
 	return res
 }
 
-func (ec *executionContext) unmarshalNInt2ᚕᚖint(ctx context.Context, v interface{}) ([]*int, error) {
+func (ec *executionContext) unmarshalNInt2ᚕintᚄ(ctx context.Context, v interface{}) ([]int, error) {
 	var vSlice []interface{}
 	if v != nil {
 		vSlice = graphql.CoerceList(v)
 	}
 	var err error
-	res := make([]*int, len(vSlice))
+	res := make([]int, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalOInt2ᚖint(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNInt2int(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -7813,10 +7936,16 @@ func (ec *executionContext) unmarshalNInt2ᚕᚖint(ctx context.Context, v inter
 	return res, nil
 }
 
-func (ec *executionContext) marshalNInt2ᚕᚖint(ctx context.Context, sel ast.SelectionSet, v []*int) graphql.Marshaler {
+func (ec *executionContext) marshalNInt2ᚕintᚄ(ctx context.Context, sel ast.SelectionSet, v []int) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	for i := range v {
-		ret[i] = ec.marshalOInt2ᚖint(ctx, sel, v[i])
+		ret[i] = ec.marshalNInt2int(ctx, sel, v[i])
+	}
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
 	}
 
 	return ret
@@ -8207,7 +8336,7 @@ func (ec *executionContext) marshalN__TypeKind2string(ctx context.Context, sel a
 	return res
 }
 
-func (ec *executionContext) unmarshalNtranslationInput2ᚕᚖportfolioᚋgraphᚋmodelᚐTranslationInput(ctx context.Context, v interface{}) ([]*model.TranslationInput, error) {
+func (ec *executionContext) unmarshalNtranslationInput2ᚕᚖportfolioᚋgraphᚋmodelᚐTranslationInputᚄ(ctx context.Context, v interface{}) ([]*model.TranslationInput, error) {
 	var vSlice []interface{}
 	if v != nil {
 		vSlice = graphql.CoerceList(v)
@@ -8216,12 +8345,17 @@ func (ec *executionContext) unmarshalNtranslationInput2ᚕᚖportfolioᚋgraph�
 	res := make([]*model.TranslationInput, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalOtranslationInput2ᚖportfolioᚋgraphᚋmodelᚐTranslationInput(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNtranslationInput2ᚖportfolioᚋgraphᚋmodelᚐTranslationInput(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
 	}
 	return res, nil
+}
+
+func (ec *executionContext) unmarshalNtranslationInput2ᚖportfolioᚋgraphᚋmodelᚐTranslationInput(ctx context.Context, v interface{}) (*model.TranslationInput, error) {
+	res, err := ec.unmarshalInputtranslationInput(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalOBoolean2bool(ctx context.Context, v interface{}) (bool, error) {
@@ -8250,47 +8384,6 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return res
 }
 
-func (ec *executionContext) marshalOGetDesc2ᚕᚖportfolioᚋgraphᚋmodelᚐGetDesc(ctx context.Context, sel ast.SelectionSet, v []*model.GetDesc) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalOGetDesc2ᚖportfolioᚋgraphᚋmodelᚐGetDesc(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	return ret
-}
-
 func (ec *executionContext) marshalOGetDesc2ᚖportfolioᚋgraphᚋmodelᚐGetDesc(ctx context.Context, sel ast.SelectionSet, v *model.GetDesc) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
@@ -8310,22 +8403,6 @@ func (ec *executionContext) marshalOGetWork2ᚖportfolioᚋgraphᚋmodelᚐGetWo
 		return graphql.Null
 	}
 	return ec._GetWork(ctx, sel, v)
-}
-
-func (ec *executionContext) unmarshalOInt2ᚖint(ctx context.Context, v interface{}) (*int, error) {
-	if v == nil {
-		return nil, nil
-	}
-	res, err := graphql.UnmarshalInt(v)
-	return &res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalOInt2ᚖint(ctx context.Context, sel ast.SelectionSet, v *int) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	res := graphql.MarshalInt(*v)
-	return res
 }
 
 func (ec *executionContext) unmarshalOString2ᚖstring(ctx context.Context, v interface{}) (*string, error) {
@@ -8551,14 +8628,6 @@ func (ec *executionContext) marshalO__Type2ᚖgithubᚗcomᚋ99designsᚋgqlgen�
 		return graphql.Null
 	}
 	return ec.___Type(ctx, sel, v)
-}
-
-func (ec *executionContext) unmarshalOtranslationInput2ᚖportfolioᚋgraphᚋmodelᚐTranslationInput(ctx context.Context, v interface{}) (*model.TranslationInput, error) {
-	if v == nil {
-		return nil, nil
-	}
-	res, err := ec.unmarshalInputtranslationInput(ctx, v)
-	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 // endregion ***************************** type.gotpl *****************************

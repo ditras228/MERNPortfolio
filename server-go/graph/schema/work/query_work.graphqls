@@ -1,9 +1,9 @@
 type GetWork {
   id: Int!
-  name: String!
-  tags: [GetTag]!
-  description: String!
-  github: String
+  name: GetTranslations!
+  tags: [GetTag!]!
+  description: GetTranslations!
+  github: String!
   demo: String!
   figma: String!
 }

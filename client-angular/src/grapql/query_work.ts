@@ -6,10 +6,22 @@ export const getWorksQuery = gql`
       __typename
       id
       demo
-      description
+      description {
+        field
+        translations {
+          locale
+          field
+        }
+      }
       figma
       github
-      name
+      name {
+        field
+        translations {
+          locale
+          field
+        }
+      }
       tags {
         id
         title

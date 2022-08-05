@@ -4,6 +4,6 @@ type GetDesc {
   img: String!
 }
 type GetDescResult {
-  desc: [GetDesc]
+  desc: [GetDesc!]!
 }
 union GetDescOutput = GetDescResult | NotFoundError

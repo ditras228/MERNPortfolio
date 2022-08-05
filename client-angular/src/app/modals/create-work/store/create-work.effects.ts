@@ -39,7 +39,7 @@ export class CreateWorkEffects extends GraphqlService {
         return this.doRequest<CreateWorkMutation>(CreateWorkDocument, {
           input: {
             name: createWorkInputs.name,
-            description: createWorkInputs.description.replace(/\r?\n/g, ''),
+            description: createWorkInputs.description,
             demo: createWorkInputs.demo,
             figma: createWorkInputs.figma,
             tags: createWorkInputs.tags,

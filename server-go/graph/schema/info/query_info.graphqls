@@ -2,7 +2,7 @@ type GetInfo {
   name: GetTranslations!
   img: String!
   job: String!
-  desc: [GetDesc]!
+  desc: [GetDesc!]!
   experience: GetTranslations!
   contacts: Contacts!
 }

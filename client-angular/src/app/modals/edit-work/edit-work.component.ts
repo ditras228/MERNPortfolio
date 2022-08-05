@@ -27,7 +27,9 @@ import { deleteWork } from '../edit-info/store/edit-info.actions';
 export class EditWorkComponent implements OnInit {
   public errors: { [key: string]: string } = {};
   public name = new FormControl();
+  public nameRu = new FormControl();
   public description = new FormControl();
+  public descriptionRu = new FormControl();
   public tags = [] as any;
   public allTags = [] as any;
   public github = new FormControl();
@@ -74,8 +76,30 @@ export class EditWorkComponent implements OnInit {
       this.store$.dispatch(
         setEditWorkForm({
           id: this.currentWork?.id,
-          name: this.name.value,
-          description: this.description.value,
+          name: {
+            translations: [
+              {
+                field: this.name.value,
+                locale: 1,
+              },
+              {
+                field: this.nameRu.value,
+                locale: 2,
+              },
+            ],
+          },
+          description: {
+            translations: [
+              {
+                field: this.description.value,
+                locale: 1,
+              },
+              {
+                field: this.descriptionRu.value,
+                locale: 2,
+              },
+            ],
+          },
           demo: this.demo.value,
           github: this.github.value,
           tags: this.tags.reduce((idArray, tagObj) => {
@@ -102,8 +126,14 @@ export class EditWorkComponent implements OnInit {
       .subscribe(work => (this.currentWork = work));
     this.store$.select(selectWorks).subscribe(works => {
       if (works?.length && this.currentWork) {
-        this.name.setValue(this.currentWork.name);
-        this.description.setValue(this.currentWork.description);
+        this.name.setValue(this.currentWork.name.translations[0]?.field);
+        this.nameRu.setValue(this.currentWork.name.translations[1]?.field);
+        this.description.setValue(
+          this.currentWork.description.translations[0]?.field
+        );
+        this.descriptionRu.setValue(
+          this.currentWork.description.translations[1]?.field
+        );
         this.github.setValue(this.currentWork.github);
         this.figma.setValue(this.currentWork.figma);
         this.demo.setValue(this.currentWork.demo);

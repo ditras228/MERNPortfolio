@@ -1,13 +1,19 @@
 import { createAction } from '@ngrx/store';
-import { GetTag } from '../../../../generated/graphql';
+import {
+  GetTag,
+  InputMaybe,
+  Scalars,
+  TranslationInput,
+  UpdateTranslationInput,
+} from '../../../../generated/graphql';
 
 export type EditWorkInputs = {
   id: number | undefined;
   demo: string;
-  description: string;
+  description: UpdateTranslationInput;
   figma: string;
   github: string;
-  name: string;
+  name: UpdateTranslationInput;
   tags: Array<number>;
 };
 

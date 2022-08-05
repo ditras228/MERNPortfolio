@@ -3,7 +3,6 @@ package desc
 import (
 	"context"
 	"github.com/ztrue/tracerr"
-	"os"
 	"portfolio/enitity"
 	"portfolio/graph/model"
 	postgres "portfolio/infrastructure/postgresql"
@@ -21,7 +20,7 @@ func (r *repository) FindAll(ctx context.Context) ([]*model.GetDesc, error) {
 	q := `
 
 			SELECT 
-				id, text, img
+				ID, text, img
 
 			FROM 
 				public.desc
@@ -30,7 +29,7 @@ func (r *repository) FindAll(ctx context.Context) ([]*model.GetDesc, error) {
 
 	rows, err := r.client.Query(ctx, q)
 	if err != nil {
-		return nil, tracerr.Errorf("failed to find all descs: %w", err)
+		return nil, tracerr.Errorf("Не удалось найти все описания: %s", err)
 	}
 	var res []*model.GetDesc
 	descs := make([]*model.GetDesc, 0)
@@ -62,7 +61,7 @@ func (r *repository) UpdateDesc(ctx context.Context, input model.UpdateDescInput
 					public.desc
 
 				WHERE 
-					id = $1
+					ID = $1
 
 				`
 	var oldLink string
@@ -86,28 +85,23 @@ func (r *repository) UpdateDesc(ctx context.Context, input model.UpdateDescInput
 					text = $2, img = $3
 
 				WHERE 
-					id = $1
+					ID = $1
 
 				RETURNING
-					id, text, img
+					ID, text, img
 
 			 `
 
-	if oldLink == input.Img {
-		newLink = input.Img
-	} else {
-		err = os.Remove(oldLink)
-		newLink, err = utils.SaveImage(input.Img)
-		if err != nil {
-			return nil, tracerr.Errorf("failed to save image: %w", err)
-		}
+	newLink, err = utils.ReplaceImage(oldLink, input.Img)
+	if err != nil {
+		return nil, tracerr.Errorf("Не удалось заменить изображение: %s", err)
 	}
 
 	err = r.client.
 		QueryRow(ctx, qDesc, input.ID, input.Text, newLink).
 		Scan(&dsc.ID, &dsc.Text, &dsc.Img)
 	if err != nil {
-		return nil, tracerr.Errorf("failed to update desc: %w", err)
+		return nil, tracerr.Errorf("Не удалось обновить описание: %s", err)
 	}
 
 	return dsc, nil
@@ -123,20 +117,20 @@ func (r *repository) CreateDesc(ctx context.Context, input model.CreateDescInput
 					($1, $2)
 
 				RETURNING
-					id, text, img
+					ID, text, img
 
 			 `
 	var dsc model.GetDesc
 	link, err := utils.SaveImage(input.Img)
 	if err != nil {
-		return nil, tracerr.Errorf("failed to save image: %w", err)
+		return nil, tracerr.Errorf("Не удалось сохранить картинку: %s", err)
 	}
 	err = r.client.
 		QueryRow(ctx, qDesc, input.Text, link).
 		Scan(&dsc.ID, &dsc.Text, &dsc.Img)
 
 	if err != nil {
-		return nil, tracerr.Errorf("failed to create desc: %w", err)
+		return nil, tracerr.Errorf("Не удалось создать описание: %s", err)
 	}
 	return dsc, nil
 }
@@ -148,10 +142,10 @@ func (r *repository) DeleteDesc(ctx context.Context, input model.DeleteDescInput
 				public.desc
 	
 			WHERE 
-				id = $1
+				ID = $1
 
 			RETURNING 
-				id
+				ID
 
 			`
 

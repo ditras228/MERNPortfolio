@@ -61,7 +61,6 @@ export class EditInfoComponent implements OnInit {
         setEditInfoForm({
           img: this.img.value,
           name: {
-            translationId: 1,
             translations: [
               {
                 field: this.name.value,
@@ -79,7 +78,6 @@ export class EditInfoComponent implements OnInit {
           githubTitle: this.githubTitle.value,
           githubLink: this.githubLink.value,
           experience: {
-            translationId: 1,
             translations: [
               {
                 field: this.experience.value,

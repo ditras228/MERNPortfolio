@@ -38,11 +38,11 @@ export type CreateDescOutput = GetDesc;
 
 export type CreateWorkInput = {
   demo: Scalars['String'];
-  description: Scalars['String'];
+  description: UpdateTranslationInput;
   figma?: InputMaybe<Scalars['String']>;
-  github?: InputMaybe<Scalars['String']>;
-  name: Scalars['String'];
-  tags: Array<InputMaybe<Scalars['Int']>>;
+  github: Scalars['String'];
+  name: UpdateTranslationInput;
+  tags: Array<Scalars['Int']>;
 };
 
 export type DeleteDescInput = {
@@ -78,13 +78,13 @@ export type GetDescOutput = GetDescResult | NotFoundError;
 
 export type GetDescResult = {
   __typename?: 'GetDescResult';
-  desc?: Maybe<Array<Maybe<GetDesc>>>;
+  desc: Array<GetDesc>;
 };
 
 export type GetInfo = {
   __typename?: 'GetInfo';
   contacts: Contacts;
-  desc: Array<Maybe<GetDesc>>;
+  desc: Array<GetDesc>;
   experience: GetTranslations;
   img: Scalars['String'];
   job: Scalars['String'];
@@ -106,12 +106,12 @@ export type GetTranslations = {
 export type GetWork = {
   __typename?: 'GetWork';
   demo: Scalars['String'];
-  description: Scalars['String'];
+  description: GetTranslations;
   figma: Scalars['String'];
-  github?: Maybe<Scalars['String']>;
+  github: Scalars['String'];
   id: Scalars['Int'];
-  name: Scalars['String'];
-  tags: Array<Maybe<GetTag>>;
+  name: GetTranslations;
+  tags: Array<GetTag>;
 };
 
 export type GetWorkTag = {
@@ -229,18 +229,17 @@ export type UpdateInfoInput = {
 };
 
 export type UpdateTranslationInput = {
-  translationId: Scalars['Int'];
-  translations: Array<InputMaybe<TranslationInput>>;
+  translations: Array<TranslationInput>;
 };
 
 export type UpdateWorkInput = {
   demo: Scalars['String'];
-  description: Scalars['String'];
-  figma: Scalars['String'];
-  github?: InputMaybe<Scalars['String']>;
+  description: UpdateTranslationInput;
+  figma?: InputMaybe<Scalars['String']>;
+  github: Scalars['String'];
   id: Scalars['Int'];
-  name: Scalars['String'];
-  tags: Array<InputMaybe<Scalars['Int']>>;
+  name: UpdateTranslationInput;
+  tags: Array<Scalars['Int']>;
 };
 
 export type UpdateWorkOutput = GetWork | NotFoundError;
@@ -315,7 +314,6 @@ export type UpdateInfoMutation = {
     img: string;
     experience: {
       __typename?: 'GetTranslations';
-      field: string;
       translations: Array<{
         __typename?: 'Translation';
         locale: number;
@@ -324,7 +322,6 @@ export type UpdateInfoMutation = {
     };
     name: {
       __typename?: 'GetTranslations';
-      field: string;
       translations: Array<{
         __typename?: 'Translation';
         locale: number;
@@ -351,11 +348,25 @@ export type CreateWorkMutation = {
     __typename: 'GetWork';
     id: number;
     demo: string;
-    description: string;
     figma: string;
-    github?: string | null;
-    name: string;
-    tags: Array<{ __typename?: 'GetTag'; id: number; title: string } | null>;
+    github: string;
+    description: {
+      __typename?: 'GetTranslations';
+      translations: Array<{
+        __typename?: 'Translation';
+        locale: number;
+        field: string;
+      } | null>;
+    };
+    name: {
+      __typename?: 'GetTranslations';
+      translations: Array<{
+        __typename?: 'Translation';
+        locale: number;
+        field: string;
+      } | null>;
+    };
+    tags: Array<{ __typename?: 'GetTag'; id: number; title: string }>;
   };
 };
 
@@ -370,15 +381,25 @@ export type UpdateWorkMutation = {
         __typename: 'GetWork';
         id: number;
         demo: string;
-        description: string;
         figma: string;
-        github?: string | null;
-        name: string;
-        tags: Array<{
-          __typename?: 'GetTag';
-          id: number;
-          title: string;
-        } | null>;
+        github: string;
+        description: {
+          __typename?: 'GetTranslations';
+          translations: Array<{
+            __typename?: 'Translation';
+            locale: number;
+            field: string;
+          } | null>;
+        };
+        name: {
+          __typename?: 'GetTranslations';
+          translations: Array<{
+            __typename?: 'Translation';
+            locale: number;
+            field: string;
+          } | null>;
+        };
+        tags: Array<{ __typename?: 'GetTag'; id: number; title: string }>;
       }
     | { __typename: 'NotFoundError'; id: number; message: string };
 };
@@ -436,7 +457,7 @@ export type GetInfoQuery = {
       id: number;
       text: string;
       img: string;
-    } | null>;
+    }>;
     experience: {
       __typename?: 'GetTranslations';
       field: string;
@@ -480,11 +501,27 @@ export type GetWorksQuery = {
     __typename: 'GetWork';
     id: number;
     demo: string;
-    description: string;
     figma: string;
-    github?: string | null;
-    name: string;
-    tags: Array<{ __typename?: 'GetTag'; id: number; title: string } | null>;
+    github: string;
+    description: {
+      __typename?: 'GetTranslations';
+      field: string;
+      translations: Array<{
+        __typename?: 'Translation';
+        locale: number;
+        field: string;
+      } | null>;
+    };
+    name: {
+      __typename?: 'GetTranslations';
+      field: string;
+      translations: Array<{
+        __typename?: 'Translation';
+        locale: number;
+        field: string;
+      } | null>;
+    };
+    tags: Array<{ __typename?: 'GetTag'; id: number; title: string }>;
   } | null>;
 };
 
@@ -535,7 +572,6 @@ export const UpdateInfoDocument = `
   result: updateInfo(input: $input) {
     __typename
     experience {
-      field
       translations {
         locale
         field
@@ -543,7 +579,6 @@ export const UpdateInfoDocument = `
     }
     job
     name {
-      field
       translations {
         locale
         field
@@ -566,10 +601,20 @@ export const CreateWorkDocument = `
     ... on GetWork {
       id
       demo
-      description
+      description {
+        translations {
+          locale
+          field
+        }
+      }
       figma
       github
-      name
+      name {
+        translations {
+          locale
+          field
+        }
+      }
       tags {
         id
         title
@@ -589,10 +634,20 @@ export const UpdateWorkDocument = `
     ... on GetWork {
       id
       demo
-      description
+      description {
+        translations {
+          locale
+          field
+        }
+      }
       figma
       github
-      name
+      name {
+        translations {
+          locale
+          field
+        }
+      }
       tags {
         id
         title
@@ -690,10 +745,22 @@ export const GetWorksDocument = `
     __typename
     id
     demo
-    description
+    description {
+      field
+      translations {
+        locale
+        field
+      }
+    }
     figma
     github
-    name
+    name {
+      field
+      translations {
+        locale
+        field
+      }
+    }
     tags {
       id
       title

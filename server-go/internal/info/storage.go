@@ -6,15 +6,11 @@ import (
 	"portfolio/pkg/utils"
 )
 
-func GetInfoForDTO(name, exp model.GetTranslations, desc []*model.GetDesc, contacts model.Contacts, img, job string) model.GetInfo {
-	var info model.GetInfo
+func GetInfoForDTO(info model.GetInfo, name, exp model.GetTranslations, desc []*model.GetDesc, contacts model.Contacts) model.GetInfo {
 	info.Name = &name
 	info.Experience = utils.FormatHTML(exp)
-	info.Img = img
-	info.Job = job
 	info.Desc = desc
 	info.Contacts = &contacts
-
 	return info
 }
 

@@ -26,7 +26,9 @@ import {
 export class CreateWorkComponent implements OnInit {
   public errors: { [key: string]: string } = {};
   public name = new FormControl();
+  public nameRu = new FormControl();
   public description = new FormControl();
+  public descriptionRu = new FormControl();
   public tags: GetTag[] | any = [];
   public allTags: GetTag[] = [];
   public github = new FormControl();
@@ -34,7 +36,9 @@ export class CreateWorkComponent implements OnInit {
   public demo = new FormControl();
   public form = {} as FormGroup<{
     name: FormControl<string>;
+    nameRu: FormControl<string>;
     description: FormControl<string>;
+    descriptionRu: FormControl<string>;
     demo: FormControl<string>;
     github: FormControl<string>;
     figma: FormControl<string>;
@@ -67,8 +71,30 @@ export class CreateWorkComponent implements OnInit {
       this.errors = {};
       this.store$.dispatch(
         setCreateWorkForm({
-          name: this.name.value,
-          description: this.description.value,
+          name: {
+            translations: [
+              {
+                field: this.name.value,
+                locale: 1,
+              },
+              {
+                field: this.nameRu.value,
+                locale: 2,
+              },
+            ],
+          },
+          description: {
+            translations: [
+              {
+                field: this.description.value,
+                locale: 1,
+              },
+              {
+                field: this.descriptionRu.value,
+                locale: 2,
+              },
+            ],
+          },
           demo: this.demo.value,
           github: this.github.value,
           tags: this.tags.reduce((idArray, tagObj) => {
@@ -84,7 +110,9 @@ export class CreateWorkComponent implements OnInit {
 
   ngOnInit(): void {
     this.name = new FormControl(null, [Validators.required]);
+    this.nameRu = new FormControl(null, [Validators.required]);
     this.description = new FormControl(null, [Validators.required]);
+    this.descriptionRu = new FormControl(null, [Validators.required]);
     this.github = new FormControl(null, [Validators.required]);
     this.figma = new FormControl(null);
     this.demo = new FormControl(null, [Validators.required]);
@@ -98,7 +126,9 @@ export class CreateWorkComponent implements OnInit {
     });
     this.form = new FormGroup({
       name: this.name,
+      nameRu: this.name,
       description: this.description,
+      descriptionRu: this.descriptionRu,
       github: this.github,
       figma: this.figma,
       demo: this.demo,

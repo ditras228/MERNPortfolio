@@ -1,23 +1,23 @@
 input CreateWorkInput {
-  name: String!
-  tags: [Int]!
-  description: String!
-  github: String
+  name: UpdateTranslationInput!
+  tags: [Int!]!
+  description: UpdateTranslationInput!
+  github: String!
   demo: String!
   figma: String
 }
 
 input UpdateWorkInput {
   id: Int!
-  name: String!
-  tags: [Int]!
-  description: String!
-  github: String
+  name: UpdateTranslationInput!
+  tags: [Int!]!
+  description: UpdateTranslationInput!
+  github: String!
   demo: String!
-  figma: String!
+  figma: String
 }
 
-union UpdateWorkOutput = GetWork  | NotFoundError
+union UpdateWorkOutput = GetWork | NotFoundError
 
 input DeleteWorkInput {
   id: Int!

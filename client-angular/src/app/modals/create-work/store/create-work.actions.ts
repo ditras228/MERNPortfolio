@@ -1,11 +1,12 @@
 import { createAction } from '@ngrx/store';
+import { UpdateTranslationInput } from '../../../../generated/graphql';
 
 export type CreateWorkInputs = {
   demo: string;
-  description: string;
+  description: UpdateTranslationInput;
   figma: string;
   github: string;
-  name: string;
+  name: UpdateTranslationInput;
   tags: Array<number>;
 };
 

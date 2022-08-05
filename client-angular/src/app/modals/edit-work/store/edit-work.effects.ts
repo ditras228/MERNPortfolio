@@ -82,13 +82,13 @@ export class EditWorkEffects extends GraphqlService {
           input: {
             id: editWorkInputs.id,
             name: editWorkInputs.name,
-            description: editWorkInputs.description.replace(/\r?\n/g, ''),
+            description: editWorkInputs.description,
             demo: editWorkInputs.demo,
             figma: editWorkInputs.figma,
             tags: editWorkInputs.tags,
             github: editWorkInputs.github,
           },
-        } as MutationUpdateWorkArgs).pipe(
+        } as unknown as MutationUpdateWorkArgs).pipe(
           map(({ result }) => {
             switch (result.__typename) {
               case 'GetWork': {

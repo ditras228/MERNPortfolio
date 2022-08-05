@@ -17,27 +17,19 @@
     <app-input-field
       i18n-placeholder="@@ei.t2.1"
       class="edit-info__field"
-      [error]="errors?.['name']"
+      [error]="errors?.['nameRu']"
       placeholder="Name RU"
       [internalValue]="nameRu.value"
       (valueChange)="nameRu.patchValue($event)"></app-input-field>
   </div>
-  <div class="edit-info__grid">
-    <app-input-field
-      i18n-placeholder="@@ei.t3"
-      class="edit-info__field"
-      [error]="errors?.['job']"
-      placeholder="Grade"
-      [internalValue]="job.value"
-      (valueChange)="job.patchValue($event)"></app-input-field>
-    <app-input-field
-      i18n-placeholder="@@ei.t3.1"
-      class="edit-info__field"
-      [error]="errors?.['job']"
-      placeholder="Grade RU"
-      [internalValue]="job.value"
-      (valueChange)="job.patchValue($event)"></app-input-field>
-  </div>
+  <app-input-field
+    i18n-placeholder="@@ei.t3"
+    class="edit-info__field"
+    [error]="errors?.['job']"
+    placeholder="Grade"
+    [internalValue]="job.value"
+    (valueChange)="job.patchValue($event)"></app-input-field>
+
   <div class="edit-info__grid">
     <app-text-area
       i18n-placeholder="@@ei.t4"
@@ -50,7 +42,7 @@
     <app-text-area
       i18n-placeholder="@@ei.t4.1"
       class="edit-info__field"
-      [error]="errors?.['experience']"
+      [error]="errors?.['experienceRu']"
       placeholder="Skills RU"
       [internalValue]="experienceRu.value"
       [rows]="13"

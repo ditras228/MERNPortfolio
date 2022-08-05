@@ -5,7 +5,6 @@ export const getInfoQuery = gql`
     result: updateInfo(input: $input) {
       __typename
       experience {
-        field
         translations {
           locale
           field
@@ -13,7 +12,6 @@ export const getInfoQuery = gql`
       }
       job
       name {
-        field
         translations {
           locale
           field

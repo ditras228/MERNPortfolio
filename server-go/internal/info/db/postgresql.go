@@ -21,6 +21,7 @@ type repository struct {
 
 func (r *repository) UpdateInfo(ctx context.Context, input model.UpdateInfoInput) (model.GetInfo, error) {
 	qImg := `
+
 				SELECT 
 					img
 				
@@ -28,7 +29,8 @@ func (r *repository) UpdateInfo(ctx context.Context, input model.UpdateInfoInput
 					public.info
 
 				WHERE 
-					id = 1
+					ID = 1
+
 			`
 
 	var oldLink string
@@ -45,14 +47,14 @@ func (r *repository) UpdateInfo(ctx context.Context, input model.UpdateInfoInput
 
 		SET
 			name = $1, job = $2,  experience = $3,
-			telegramtitle = $4, telegramlink = $5, githubtitle = $6, githublink = $7, img = $8
+			telegramTitle = $4, telegramLink = $5, githubTitle = $6, githubLink = $7, img = $8
 
 		WHERE 
 			id = 1
 
 		RETURNING 
 			name, job,  experience,
-			telegramtitle, telegramlink, githubtitle, githublink
+			telegramTitle, telegramLink, githubTitle, githubLink
 
 		`
 
@@ -71,14 +73,17 @@ func (r *repository) UpdateInfo(ctx context.Context, input model.UpdateInfoInput
 	var exp model.GetTranslations
 
 	var locale = keys.LocaleForContext(ctx) - 1
-	err = r.client.QueryRow(ctx, q, input.Name.Translations[locale].Field, input.Job, input.Experience.Translations[locale].Field, input.TelegramTitle, input.TelegramLink, input.GithubTitle, input.GithubLink, newLink).
+	err = r.client.QueryRow(ctx, q,
+		input.Name.Translations[locale].Field, input.Job,
+		input.Experience.Translations[locale].Field, input.TelegramTitle,
+		input.TelegramLink, input.GithubTitle, input.GithubLink, newLink).
 		Scan(&name.Field, &inf.Job, &exp.Field, &con.TelegramTitle, &con.TelegramLink, &con.GithubTitle, &con.GithubLink)
 
-	nameUpd, err := r.translationRepo.UpdateOne(ctx, input.Name, enitity.InfoTitle, name.Field)
+	nameUpd, err := r.translationRepo.Update(ctx, input.Name, 1, enitity.InfoTitle, name.Field)
 	if err != nil {
 		return model.GetInfo{}, err
 	}
-	expUpd, err := r.translationRepo.UpdateOne(ctx, input.Experience, enitity.InfoExperience, name.Field)
+	expUpd, err := r.translationRepo.Update(ctx, input.Experience, 1, enitity.InfoExperience, name.Field)
 	if err != nil {
 		return model.GetInfo{}, err
 	}
@@ -87,7 +92,7 @@ func (r *repository) UpdateInfo(ctx context.Context, input model.UpdateInfoInput
 	if err != nil {
 		return model.GetInfo{}, err
 	}
-	inf = info.GetInfoForDTO(nameUpd, expUpd, descs, con, inf.Img, inf.Job)
+	inf = info.GetInfoForDTO(inf, nameUpd, expUpd, descs, con)
 	return inf, nil
 }
 
@@ -104,7 +109,7 @@ func (r *repository) FindOne(ctx context.Context) (model.GetInfo, error) {
 			public.info 
 
 		WHERE 
-			id = 1
+			ID = 1
 
 		`
 
@@ -123,20 +128,20 @@ func (r *repository) FindOne(ctx context.Context) (model.GetInfo, error) {
 
 	descs, err := r.descRepo.FindAll(ctx)
 	if err != nil {
-		return model.GetInfo{}, tracerr.Errorf("Ошибка получения описаний: ", err)
+		return model.GetInfo{}, tracerr.Errorf("Ошибка получения описаний: %s", err)
 	}
 
 	infoNameTranslate, err := r.translationRepo.FindOne(ctx, 1, enitity.InfoTitle, name.Field)
 	if err != nil {
-		return model.GetInfo{}, tracerr.Errorf("Ошибка получения перевода имени: ", err)
+		return model.GetInfo{}, tracerr.Errorf("Ошибка получения перевода имени: %s", err)
 	}
 
 	infExperienceTranslate, err := r.translationRepo.FindOne(ctx, 1, enitity.InfoExperience, exp.Field)
 	if err != nil {
-		return model.GetInfo{}, tracerr.Errorf("Ошибка получения перевода опыта: ", err)
+		return model.GetInfo{}, tracerr.Errorf("Ошибка получения перевода опыта: %s", err)
 	}
 
-	inf = info.GetInfoForDTO(infoNameTranslate, infExperienceTranslate, descs, con, inf.Img, inf.Job)
+	inf = info.GetInfoForDTO(inf, infoNameTranslate, infExperienceTranslate, descs, con)
 
 	return inf, nil
 }

@@ -1,38 +1,3 @@
 <div class="edit-desc">
   <div class="edit-desc__title" i18n="@@ed.t1">Edit description</div>
-  <div class="edit-desc__close" (click)="closeModalHandler()"></div>
-
-  <app-image-input
-    class="edit-desc__img"
-    [imgUrlValue]="img.value"
-    (setFormImageUrl)="setImgUrlValue($event)"></app-image-input>
-  <app-text-area
-    i18n-placeholder="@@ed.t2"
-    class="edit-desc__field"
-    [error]="errors?.['text']"
-    placeholder="Text"
-    [rows]="4"
-    [internalValue]="text.value"
-    (valueChange)="text.patchValue($event)"></app-text-area>
-  <app-text-area
-    i18n-placeholder="@@ed.t2.1"
-    class="edit-desc__field"
-    [error]="errors?.['text']"
-    placeholder="Text RU"
-    [rows]="4"
-    [internalValue]="text.value"
-    (valueChange)="text.patchValue($event)"></app-text-area>
-
-  <button
-    class="edit-desc__delete"
-    (click)="deleteDescHandler()"
-    i18n="@@ed.t3">
-    Delete
-  </button>
-  <button
-    class="edit-desc__button"
-    (click)="submitFormHandler()"
-    i18n="@@ed.t4">
-    Apply
-  </button>
 </div>
