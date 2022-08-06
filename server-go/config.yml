@@ -1,6 +1,6 @@
 storage:
-  host: localhost
+  host: julepirnuk.beget.app
   port: 5432
-  database: stage
+  database: postgres
   username: postgres
-  password: secret
+  password: pM4*fJoS
