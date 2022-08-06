@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { selectIsAuth } from '../../modals/login/store/login-modal.selectors';
 import { AuthService } from '../../services/auth.service';
@@ -18,7 +18,11 @@ export class NavbarComponent implements OnInit {
   public isAuth: boolean | undefined;
   public isLanguageVisible: boolean | undefined;
 
-  constructor(public store$: Store, public authService: AuthService) {}
+  constructor(
+    public store$: Store,
+    public authService: AuthService,
+    @Inject(LOCALE_ID) public locale: string
+  ) {}
 
   ngOnInit() {
     this.store$.select(selectIsAuth).subscribe(value => (this.isAuth = value));
@@ -26,10 +30,12 @@ export class NavbarComponent implements OnInit {
       .select(selectIsLanguage)
       .subscribe(value => (this.isLanguageVisible = value));
   }
+
   showLangHandler(): void {
     this.store$.dispatch(setLanguageVisible());
     this.store$.dispatch(setLock());
   }
+
   showLoginHandler(): void {
     this.store$.dispatch(setLoginVisible());
   }

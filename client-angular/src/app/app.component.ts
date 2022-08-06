@@ -23,6 +23,9 @@ import {
   selectIsLoginVisible,
   selectLock,
 } from './modals/modal/store/modal.selectors';
+import { WindowService } from './services/window.service';
+import { Title } from '@angular/platform-browser';
+import { selectInfo } from './store/app.selectors';
 
 @Component({
   selector: 'app-root',
@@ -32,50 +35,33 @@ import {
 })
 export class AppComponent implements OnInit {
   title = 'client-angular';
-  public isLock = false;
   public isAuth;
+  public isLock = false;
 
   constructor(
     private store$: Store,
-    private renderer: Renderer2,
     public cookieService: CookieService,
+    public windowService: WindowService,
     @Inject(PLATFORM_ID) private platformId,
-    @Inject(LOCALE_ID) public locale: string
+    @Inject(LOCALE_ID) public locale: string,
+    private renderer: Renderer2,
+    public titleService: Title
   ) {}
-  public isLoginVisible: boolean | undefined;
-  public isEditInfoVisible: boolean | undefined;
-  public isEditWorkVisible: boolean | undefined;
-  public isEditDescVisible: boolean | undefined;
-  public isCreateWorkVisible: boolean | undefined;
-  public isCreateDescVisible: boolean | undefined;
 
   ngOnInit(): void {
+    let locale = this.cookieService.get('locale');
+    if (locale !== null) {
+      this.windowService.changeLang(locale);
+    } else {
+      this.cookieService.set('locale', this.locale);
+    }
     if (isPlatformBrowser(this.platformId)) {
       if (this.cookieService.get('token')) {
-        this.cookieService.set('locale', this.locale);
         this.store$.dispatch(setAuth(true));
       }
       this.store$
         .select(selectIsAuth)
         .subscribe(value => (this.isAuth = value));
-      this.store$
-        .select(selectIsLoginVisible)
-        .subscribe(value => (this.isLoginVisible = value));
-      this.store$
-        .select(selectEditInfoVisible)
-        .subscribe(value => (this.isEditInfoVisible = value));
-      this.store$
-        .select(selectEditWorkVisible)
-        .subscribe(value => (this.isEditWorkVisible = value));
-      this.store$
-        .select(selectEditDescVisible)
-        .subscribe(value => (this.isEditDescVisible = value));
-      this.store$
-        .select(selectCreateWorkVisible)
-        .subscribe(value => (this.isCreateWorkVisible = value));
-      this.store$
-        .select(selectCreateDescVisible)
-        .subscribe(value => (this.isCreateDescVisible = value));
 
       this.store$.select(selectLock).subscribe(value => {
         this.isLock = value;
@@ -86,8 +72,11 @@ export class AppComponent implements OnInit {
         }
       });
     }
-
     this.store$.dispatch(getWorks());
     this.store$.dispatch(getInfo());
+
+    this.store$
+      .select(selectInfo)
+      .subscribe(value => this.titleService.setTitle(value.name.field));
   }
 }

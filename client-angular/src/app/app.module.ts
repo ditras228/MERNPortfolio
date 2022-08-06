@@ -52,6 +52,7 @@ import { WindowService } from './services/window.service';
 import { NavLanguageComponent } from './components/nav-language/nav-language.component';
 import { modalReducer } from './modals/modal/store/modal.reducer';
 import { navbarReducer } from './components/navbar/store/navbar.reducer';
+import { ModalContainerComponent } from './modals/modal-container/modal-container.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +77,7 @@ import { navbarReducer } from './components/navbar/store/navbar.reducer';
     CreateWorkComponent,
     CreateDescComponent,
     NavLanguageComponent,
+    ModalContainerComponent,
   ],
   imports: [
     SwiperModule,

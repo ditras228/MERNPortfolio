@@ -22,6 +22,10 @@
 
   &__container {
     @include navbar();
+
+    @include screen-lg {
+      min-height: 60px;
+    }
   }
 
   &__icon {
@@ -55,10 +59,7 @@
       align-items: center;
       justify-content: center;
       grid-column-gap: 15px;
-      background-color: #eff0f7;
-      &:nth-child(even) {
-        background-color: #ffffff;
-      }
+
       &:hover {
         cursor: pointer;
         background-color: #eff0f7;
@@ -68,15 +69,21 @@
       &__icon {
         width: 28px;
         height: 20px;
-
-        &--RU {
+        border: 1px solid gray;
+        border-radius: 3px;
+        background-position: center;
+        background-size: auto;
+        &--ru {
           @include icon('RU.svg');
         }
 
-        &--GB {
+        &--en-US {
           @include icon('GB.svg');
         }
       }
+    }
+    @include screen-lg {
+      top: 60px;
     }
   }
   &:after {

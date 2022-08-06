@@ -1,7 +1,4 @@
-<div
-  class="notification-list"
-  [@listAnimation]="notifications?.length"
-  [ngClass]="isLock ? 'notification-list--lock' : ''">
+<div class="notification-list" [@listAnimation]="notifications?.length">
   <div
     class="notification"
     *ngFor="let notification of notifications"

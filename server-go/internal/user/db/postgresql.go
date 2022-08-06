@@ -50,7 +50,7 @@ func (r *repository) Auth(ctx context.Context, input model.UserInput) (model.Use
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, utils.TokenClaims{StandardClaims: jwt.StandardClaims{
-		ExpiresAt: time.Now().Add(time.Hour).Unix(),
+		ExpiresAt: time.Now().Add(time.Hour * 24 * 30).Unix(),
 		Subject:   usr.Login,
 	}, UserId: usr.ID})
 

@@ -12,6 +12,6 @@
   min-height: 48px;
 
   @include screen-lg {
-    grid-template-columns: 30px 1fr repeat(2, 100px);
+    grid-template-columns: 30px 1fr repeat(2, 110px);
   }
 }

@@ -18,6 +18,11 @@ export class WindowService {
     }
   }
   public changeLang(url: string): void {
-    location.href = url;
+    if (platformBrowser(this.platformId)) {
+      let newLocation = location.origin + '/' + url;
+      if (newLocation != location.href) {
+        location.href = newLocation;
+      }
+    }
   }
 }

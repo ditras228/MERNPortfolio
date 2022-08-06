@@ -36,12 +36,6 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
-
-    &--lock {
-      @include screen-lg {
-        margin-right: 15px;
-      }
-    }
   }
   @include screen-lg {
     width: 400px;
