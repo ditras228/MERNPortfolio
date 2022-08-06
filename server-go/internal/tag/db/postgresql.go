@@ -95,65 +95,38 @@ func (r *repository) Delete(ctx context.Context, workId int) ([]*int, error) {
 }
 
 func (r *repository) FindOne(ctx context.Context, workId int) (tags []*model.GetTag, err error) {
-	qWorkTag := `
+	qTags := `
 
-					SELECT 
-						ID, workID, tagID
+			SELECT
+				tag.id, title
 			
-					FROM 
-						public.workTag 
+			FROM 
+				public.tag
 
-					WHERE 
-						workID = $1
+			INNER JOIN 
+				workTag w on tag.id = w.tagId
+			
+			WHERE
+				workId = $1
 
-					`
-
-	workTagRows, err := r.client.Query(ctx, qWorkTag, &workId)
-	if err != nil {
-		return nil, tracerr.Errorf("Не удалось найти теги: %s", err)
-	}
+			`
 
 	tags = make([]*model.GetTag, 0)
-	for workTagRows.Next() {
-		var wrkTg model.GetWorkTag
-		err = workTagRows.Scan(&wrkTg.ID, &wrkTg.WorkID, &wrkTg.TagID)
-		if err != nil {
-			return nil, err
-		}
-
-		qTag := `
-
-					SELECT
-						ID, title
-		
-					FROM 
-						public.tag
-
-					WHERE 
-						ID = $1
-
-					`
-
-		tagRows, err := r.client.Query(ctx, qTag, &wrkTg.TagID)
-		if err != nil {
-			return nil, err
-		}
-
-		for tagRows.Next() {
-			var tg model.GetTag
-			err = tagRows.Scan(&tg.ID, &tg.Title)
-
-			if err != nil {
-				return nil, err
-			}
-
-			tags = append(tags, &tg)
-		}
-
+	tagRows, err := r.client.Query(ctx, qTags, &workId)
+	if err != nil {
+		return nil, err
 	}
-	defer workTagRows.Close()
-	return tags, nil
+	for tagRows.Next() {
+		var tg model.GetTag
+		err = tagRows.Scan(&tg.ID, &tg.Title)
+		if err != nil {
+			return nil, err
+		}
 
+		tags = append(tags, &tg)
+	}
+	defer tagRows.Close()
+	return tags, nil
 }
 
 func (r *repository) FindAll(ctx context.Context) ([]*model.GetTag, error) {

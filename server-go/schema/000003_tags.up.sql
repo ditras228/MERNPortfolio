@@ -12,7 +12,9 @@ VALUES ('Angular'),
        ('Express'),
        ('NestJS'),
        ('NodeJS'),
-       ('Golang');
+       ('Golang'),
+       ('MongoDB'),
+       ('PostgresQL');
 
 CREATE TABLE public.worktag
 (
@@ -22,13 +24,17 @@ CREATE TABLE public.worktag
 );
 
 INSERT INTO public.worktag(workId, tagId)
-VALUES (1, 1),
-       (1, 2),
+VALUES (1, 3),
+       (1, 5),
+       (1, 7),
+       (1, 9),
 
        (2, 4),
        (2, 6),
        (2, 7),
+       (2, 9),
 
        (3, 1),
        (3, 2),
-       (3, 8);
+       (3, 8),
+       (3, 10);

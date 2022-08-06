@@ -42,6 +42,6 @@ VALUES ('Облачное хранилище',
         'https://github.com/ditras228/cloud-disk',
         'http://localhost:5432'),
        ( 'Портфолио',
-        '<ul> <li> Презентация работ, раздел «обо мне» </li> <li> Админка: CRUD всех данных, предоставленных на сайте </li>  <li> Оригинальный UI/UX дизайн, Mobile first </li></ul>',
+        '<ul> <li> Презентация работ, раздел «обо мне» </li> <li> Админка: CRUD всех данных, предоставленных на сайте </li>  <li> Оригинальный UI/UX дизайн, Mobile first </li>  <li> Свитч языков, редактирование переводов</li><</ul>',
         'https://github.com/ditras228/MERNPortfolio',
         'http://localhost:4200')
