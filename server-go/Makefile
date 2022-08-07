@@ -1,13 +1,13 @@
 .PHONY: dev
 dev:
 	$(call _info, "\nНакатывание миграций");
-	migrate -database postgresql://postgres:secret@localhost:5432/stage?sslmode=disable -path ./schema/ up
+	migrate -database postgresql://postgres:pM4*fJoS@localhost:5432/postgres?sslmode=disable -path ./schema/ up
 	$(call _info, "\nСтарт GraphQL сервера");
 	go run server.go
 .PHONY: drop
 drop:
 	$(call _warning, "\nДроп миграций");
-	migrate -database postgresql://postgres:secret@localhost:5432/stage?sslmode=disable -path ./schema/ drop
+	migrate -database postgresql://postgres:pM4*fJoS@localhost:5432/postgres?sslmode=disable -path ./schema/ drop
 	go run migrate.go
 .PHONY: gen
 gen:
