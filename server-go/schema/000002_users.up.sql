@@ -6,4 +6,4 @@ CREATE TABLE public.user
 );
 
 INSERT INTO public.user(login, password)
-VALUES ('admin', 'admin')
+VALUES ('admin', 'admin');
