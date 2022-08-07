@@ -1,5 +1,4 @@
 import { createAction } from '@ngrx/store';
-import { GetDesc, GetWork } from '../../../../generated/graphql';
 import { errorInputs } from './login-modal.reducer';
 
 export type loginInputs = {

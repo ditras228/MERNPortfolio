@@ -1,14 +1,6 @@
-import {
-  Component,
-  Inject,
-  OnInit,
-  PLATFORM_ID,
-  Renderer2,
-} from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { fadeAnimation, modalAnimation } from '../../app.animation';
 import { isPlatformBrowser } from '@angular/common';
-import { setAuth } from '../login/store/login-modal.actions';
-import { selectIsAuth } from '../login/store/login-modal.selectors';
 import {
   selectCreateDescVisible,
   selectCreateWorkVisible,
@@ -16,7 +8,6 @@ import {
   selectEditInfoVisible,
   selectEditWorkVisible,
   selectIsLoginVisible,
-  selectLock,
 } from '../modal/store/modal.selectors';
 import { Store } from '@ngrx/store';
 

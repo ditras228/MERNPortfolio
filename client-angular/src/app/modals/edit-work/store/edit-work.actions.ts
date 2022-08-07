@@ -1,11 +1,5 @@
 import { createAction } from '@ngrx/store';
-import {
-  GetTag,
-  InputMaybe,
-  Scalars,
-  TranslationInput,
-  UpdateTranslationInput,
-} from '../../../../generated/graphql';
+import { GetTag, UpdateTranslationInput } from '../../../../generated/graphql';
 
 export type EditWorkInputs = {
   id: number | undefined;

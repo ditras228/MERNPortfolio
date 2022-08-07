@@ -14,15 +14,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { selectIsAuth } from './modals/login/store/login-modal.selectors';
 import { CookieService } from 'ngx-cookie-service';
 import { setAuth } from './modals/login/store/login-modal.actions';
-import {
-  selectCreateDescVisible,
-  selectCreateWorkVisible,
-  selectEditDescVisible,
-  selectEditInfoVisible,
-  selectEditWorkVisible,
-  selectIsLoginVisible,
-  selectLock,
-} from './modals/modal/store/modal.selectors';
+import { selectLock } from './modals/modal/store/modal.selectors';
 import { WindowService } from './services/window.service';
 import { Title } from '@angular/platform-browser';
 import { selectInfo } from './store/app.selectors';
@@ -77,6 +69,6 @@ export class AppComponent implements OnInit {
 
     this.store$
       .select(selectInfo)
-      .subscribe(value => this.titleService.setTitle(value.name.field));
+      .subscribe(value => this.titleService.setTitle(value?.name?.field));
   }
 }

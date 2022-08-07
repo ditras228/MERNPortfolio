@@ -53,6 +53,7 @@ import { NavLanguageComponent } from './components/nav-language/nav-language.com
 import { modalReducer } from './modals/modal/store/modal.reducer';
 import { navbarReducer } from './components/navbar/store/navbar.reducer';
 import { ModalContainerComponent } from './modals/modal-container/modal-container.component';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -122,6 +123,7 @@ import { ModalContainerComponent } from './modals/modal-container/modal-containe
     ValidationService,
     GraphqlService,
     WindowService,
+    CookieService,
   ],
   bootstrap: [AppComponent],
 })

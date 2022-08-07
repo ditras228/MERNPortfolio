@@ -1,8 +1,5 @@
 import { createAction } from '@ngrx/store';
-import {
-  UpdateInfoInput,
-  UpdateTranslationInput,
-} from '../../../../generated/graphql';
+import { UpdateTranslationInput } from '../../../../generated/graphql';
 
 export type EditInfoInputs = {
   experience: UpdateTranslationInput;
