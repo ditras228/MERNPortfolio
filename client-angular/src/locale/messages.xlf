@@ -3,52 +3,52 @@
   <file source-language="en-US" datatype="plaintext" original="ng2.template">
     <body>
       <trans-unit id="nb.t1" datatype="html">
-        <source>Login</source>
+        <source> Login </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/navbar/navbar.component.html</context>
-          <context context-type="linenumber">10</context>
+          <context context-type="linenumber">15,17</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nb.t2" datatype="html">
-        <source>Logout</source>
+        <source> Logout </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/navbar/navbar.component.html</context>
-          <context context-type="linenumber">20</context>
+          <context context-type="linenumber">26,28</context>
         </context-group>
       </trans-unit>
       <trans-unit id="wl.t1" datatype="html">
-        <source> Create Work </source>
+        <source> CreateWork </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/work-list/work-list.component.html</context>
-          <context context-type="linenumber">5,7</context>
+          <context context-type="linenumber">6,8</context>
         </context-group>
       </trans-unit>
       <trans-unit id="wс.t1" datatype="html">
         <source> GitHub </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/work/work.component.html</context>
-          <context context-type="linenumber">17,19</context>
+          <context context-type="linenumber">20,22</context>
         </context-group>
       </trans-unit>
       <trans-unit id="wс.t2" datatype="html">
         <source> Figma </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/work/work.component.html</context>
-          <context context-type="linenumber">23,25</context>
+          <context context-type="linenumber">27,29</context>
         </context-group>
       </trans-unit>
       <trans-unit id="wс.t3" datatype="html">
         <source>Demo</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/work/work.component.html</context>
-          <context context-type="linenumber">32</context>
+          <context context-type="linenumber">36</context>
         </context-group>
       </trans-unit>
       <trans-unit id="wс.t4" datatype="html">
         <source>You are here</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/work/work.component.html</context>
-          <context context-type="linenumber">33</context>
+          <context context-type="linenumber">37</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cd.t1" datatype="html">
@@ -65,11 +65,18 @@
           <context context-type="linenumber">12</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="cd.t2.1" datatype="html">
+        <source>Text RU</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/create-desc/create-desc.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="cd.t3" datatype="html">
         <source> Create </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/modals/create-desc/create-desc.component.html</context>
-          <context context-type="linenumber">20,22</context>
+          <context context-type="linenumber">28,30</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cw.t1" datatype="html">
@@ -86,32 +93,46 @@
           <context context-type="linenumber">9</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="cw.t2.1" datatype="html">
+        <source>Name RU</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/create-work/create-work.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="cw.t3" datatype="html">
         <source>Work tags</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/modals/create-work/create-work.component.html</context>
-          <context context-type="linenumber">13</context>
+          <context context-type="linenumber">23</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cw.t4" datatype="html">
         <source>All tags</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/modals/create-work/create-work.component.html</context>
-          <context context-type="linenumber">24</context>
+          <context context-type="linenumber">34</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cd.t5" datatype="html">
         <source>Description</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/modals/create-work/create-work.component.html</context>
-          <context context-type="linenumber">38</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cd.t5.1" datatype="html">
+        <source>Description RU</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/create-work/create-work.component.html</context>
+          <context context-type="linenumber">57</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cw.t8" datatype="html">
         <source> Apply </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/modals/create-work/create-work.component.html</context>
-          <context context-type="linenumber">60,62</context>
+          <context context-type="linenumber">80,82</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ed.t1" datatype="html">
@@ -128,18 +149,25 @@
           <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="ed.t2.1" datatype="html">
+        <source>Text RU</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-desc/edit-desc.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="ed.t3" datatype="html">
         <source> Delete </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/modals/edit-desc/edit-desc.component.html</context>
-          <context context-type="linenumber">21,23</context>
+          <context context-type="linenumber">29,31</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ed.t4" datatype="html">
         <source> Apply </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/modals/edit-desc/edit-desc.component.html</context>
-          <context context-type="linenumber">27,29</context>
+          <context context-type="linenumber">35,37</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ei.t1" datatype="html">
@@ -156,53 +184,67 @@
           <context context-type="linenumber">14</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="ei.t2.1" datatype="html">
+        <source>Name RU</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-info/edit-info.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="ei.t3" datatype="html">
         <source>Grade</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/modals/edit-info/edit-info.component.html</context>
-          <context context-type="linenumber">21</context>
+          <context context-type="linenumber">29</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ei.t4" datatype="html">
         <source>Skills</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/modals/edit-info/edit-info.component.html</context>
-          <context context-type="linenumber">28</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ei.t4.1" datatype="html">
+        <source>Skills RU</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-info/edit-info.component.html</context>
+          <context context-type="linenumber">46</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ei.t5" datatype="html">
         <source>Telegram title</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/modals/edit-info/edit-info.component.html</context>
-          <context context-type="linenumber">38</context>
+          <context context-type="linenumber">57</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ei.t6" datatype="html">
         <source>Telegram link</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/modals/edit-info/edit-info.component.html</context>
-          <context context-type="linenumber">45</context>
+          <context context-type="linenumber">64</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ei.t7" datatype="html">
         <source>Github title</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/modals/edit-info/edit-info.component.html</context>
-          <context context-type="linenumber">54</context>
+          <context context-type="linenumber">73</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ei.t8" datatype="html">
         <source>Github link</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/modals/edit-info/edit-info.component.html</context>
-          <context context-type="linenumber">61</context>
+          <context context-type="linenumber">80</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ei.t9" datatype="html">
         <source> Apply </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/modals/edit-info/edit-info.component.html</context>
-          <context context-type="linenumber">65,67</context>
+          <context context-type="linenumber">84,86</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ew.t1" datatype="html">
@@ -219,53 +261,67 @@
           <context context-type="linenumber">9</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="ew.t2.1" datatype="html">
+        <source>Name RU</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-work/edit-work.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="ew.t3" datatype="html">
         <source>Work tags</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/modals/edit-work/edit-work.component.html</context>
-          <context context-type="linenumber">13</context>
+          <context context-type="linenumber">23</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ew.t4" datatype="html">
         <source>All tags</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/modals/edit-work/edit-work.component.html</context>
-          <context context-type="linenumber">24</context>
+          <context context-type="linenumber">34</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ew.t5" datatype="html">
         <source>Description</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/modals/edit-work/edit-work.component.html</context>
-          <context context-type="linenumber">38</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ew.t5.t1" datatype="html">
+        <source>Description RU</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-work/edit-work.component.html</context>
+          <context context-type="linenumber">58</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ew.t6" datatype="html">
         <source>Github</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/modals/edit-work/edit-work.component.html</context>
-          <context context-type="linenumber">48</context>
+          <context context-type="linenumber">69</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ew.t7" datatype="html">
         <source>Demo</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/modals/edit-work/edit-work.component.html</context>
-          <context context-type="linenumber">55</context>
+          <context context-type="linenumber">76</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ew.t8" datatype="html">
         <source> Delete </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/modals/edit-work/edit-work.component.html</context>
-          <context context-type="linenumber">63,65</context>
+          <context context-type="linenumber">84,86</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ew.t9" datatype="html">
         <source> Apply </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/modals/edit-work/edit-work.component.html</context>
-          <context context-type="linenumber">66,68</context>
+          <context context-type="linenumber">87,89</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lm.t1" datatype="html">

@@ -72,6 +72,14 @@
           <context context-type="linenumber">12</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="cd.t2.1" datatype="html">
+        <source>Text RU</source>
+        <target>Текст RU</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/create-desc/create-desc.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="cd.t3" datatype="html">
         <source> Create </source>
         <target>Создать</target>
@@ -94,6 +102,14 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/modals/create-work/create-work.component.html</context>
           <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cw.t2.1" datatype="html">
+        <source>Name RU</source>
+        <target>Имя RU</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/create-work/create-work.component.html</context>
+          <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cw.t3" datatype="html">
@@ -120,6 +136,14 @@
           <context context-type="linenumber">38</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="cd.t5.1" datatype="html">
+        <source>Description RU</source>
+        <target>Описание RU</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/create-work/create-work.component.html</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="cw.t8" datatype="html">
         <source> Apply </source>
         <target>Применить</target>
@@ -142,6 +166,14 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/modals/edit-desc/edit-desc.component.html</context>
           <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ed.t2.1" datatype="html">
+        <source>Text RU</source>
+        <target>Текст RU</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-desc/edit-desc.component.html</context>
+          <context context-type="linenumber">21</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ed.t3" datatype="html">
@@ -176,6 +208,14 @@
           <context context-type="linenumber">14</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="ei.t2.1" datatype="html">
+        <source>Name RU</source>
+        <target>Имя RU</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-info/edit-info.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="ei.t3" datatype="html">
         <source>Grade</source>
         <target>Грейд</target>
@@ -190,6 +230,14 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/modals/edit-info/edit-info.component.html</context>
           <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ei.t4.1" datatype="html">
+        <source>Skills RU</source>
+        <target>Навыки RU</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-info/edit-info.component.html</context>
+          <context context-type="linenumber">46</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ei.t5" datatype="html">
@@ -244,6 +292,14 @@
           <context context-type="linenumber">9</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="ew.t2.1" datatype="html">
+        <source>Name RU</source>
+        <target>Имя RU</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-work/edit-work.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="ew.t3" datatype="html">
         <source>Work tags</source>
         <target>Теги работы</target>
@@ -266,6 +322,14 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/modals/edit-work/edit-work.component.html</context>
           <context context-type="linenumber">38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ew.t5.t1" datatype="html">
+        <source>Description RU</source>
+        <target>Описание RU</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modals/edit-work/edit-work.component.html</context>
+          <context context-type="linenumber">58</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ew.t6" datatype="html">
