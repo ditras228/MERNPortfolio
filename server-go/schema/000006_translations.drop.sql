@@ -1,2 +1,2 @@
-DROP TABLE IF EXISTS "translation" CASCADE;
-DROP TABLE IF EXISTS "locales" CASCADE;
+DROP TABLE IF EXISTS public.translation;
+DROP TABLE IF EXISTS public.locales;
