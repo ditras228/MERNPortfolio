@@ -1,2 +1,2 @@
-DROP TABLE public.tag;
-DROP TABLE public.worktag;
+DROP TABLE IF EXISTS public.tag;
+DROP TABLE IF EXISTS public.worktag;

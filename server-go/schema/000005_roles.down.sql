@@ -1,1 +1,1 @@
-DROP TABLE public.role;
+DROP TABLE IF EXISTS public.role;

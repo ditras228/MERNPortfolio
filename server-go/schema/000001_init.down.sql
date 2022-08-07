@@ -1,2 +1,2 @@
-DROP TABLE public.work;
-DROP TABLE public.info;
+DROP TABLE IF EXISTS public.work;
+DROP TABLE IF EXISTS public.info;

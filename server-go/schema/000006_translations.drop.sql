@@ -1,2 +1,2 @@
-DROP TABLE public.translation;
-DROP TABLE public.locales;
+DROP TABLE IF EXISTS public.translation;
+DROP TABLE IF EXISTS public.locales;
