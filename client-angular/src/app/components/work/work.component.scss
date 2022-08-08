@@ -23,27 +23,31 @@
   }
 
   &__title {
-    @include font(32px, 34px, 700, 2.5px);
-    margin-bottom: 27px;
-    padding: 0 21px;
+    @include fontHeaderSmall(bold);
+    margin-bottom: 25px;
+    padding: 0 20px;
     text-align: center;
     @include screen-lg {
-      margin-bottom: 17px;
+      margin-bottom: 15px;
       padding: 32px 32px 0 32px;
+      @include fontLarge(bold);
+    }
+    @include screen-xlg {
+      @include fontHeaderSmall(bold);
     }
   }
 
   &__tags {
     display: flex;
     flex-wrap: wrap;
-    margin-bottom: 26px;
+    margin-bottom: 25px;
     grid-row-gap: 8px;
     grid-column-gap: 8px;
-    padding: 0 21px;
+    padding: 0 20px;
     justify-content: center;
 
     &__item {
-      @include font(12px, 24px, 400, 1px);
+      @include fontXSmall();
       color: #2a00a2;
       padding: 0 8px;
       border-radius: 4px;
@@ -53,7 +57,7 @@
     }
 
     @include screen-lg {
-      margin-bottom: 21px;
+      margin-bottom: 15px;
       padding: 0 32px;
     }
   }
@@ -67,14 +71,13 @@
       li {
         background-color: #eff0f7;
         padding: 12px 32px 12px 80px;
+        display: block;
+        position: relative;
+        @include fontSmall();
 
         &:nth-child(even) {
           background-color: #ffffff;
         }
-        display: block;
-        position: relative;
-        @include font(16px, 28px, 400, 1px);
-
         &:before {
           content: '';
           width: 32px;
@@ -92,9 +95,13 @@
         }
 
         @include screen-lg {
-          padding: 13px 32px 13px 95px;
-          @include font(20px, 32px, 400, 1.5px);
+          padding: 6px 32px 6px 95px;
+          @include fontMedium();
           left: 0;
+        }
+        @include screen-xlg {
+          @include fontMedium();
+          padding: 13px 32px 13px 95px;
         }
       }
 

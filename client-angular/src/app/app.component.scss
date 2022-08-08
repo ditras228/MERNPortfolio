@@ -21,10 +21,16 @@
   @include screen-lg {
     &__content {
       display: grid;
-      max-width: 1200px;
+      max-width: 1000px;
       margin: 0 auto;
-      grid-template-columns: 465px 1fr;
-      grid-column-gap: 106px;
+      grid-template-columns: $info-size 1fr;
+      grid-column-gap: 50px;
+      padding: 0 20px;
+      @include screen-xlg {
+        max-width: 1200px;
+        grid-template-columns: $info-sizeLg 1fr;
+        grid-column-gap: 100px;
+      }
     }
   }
 }

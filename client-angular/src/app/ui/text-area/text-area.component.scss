@@ -5,7 +5,7 @@
   $root: &;
   &__error {
     color: #c30052;
-    @include font(14px, 22px, 500, 1.5px);
+    @include fontXSmall();
     position: absolute;
     bottom: -28px;
   }
@@ -25,14 +25,14 @@
     &:focus ~ #{$root}__label,
     &:not(:placeholder-shown) ~ #{$root}__label {
       top: 13px;
-      @include font(14px, 22px, 500, 0.25px);
+      @include fontXSmall();
     }
   }
 
   &__label {
     position: absolute;
     left: 24px;
-    @include font(16px, 28px, 400, 0.75px);
+    @include fontSmall();
     top: 30px;
     transform: translateY(-50%);
     color: #6e7191;

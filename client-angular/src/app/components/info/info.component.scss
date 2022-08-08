@@ -1,4 +1,3 @@
-@import '../../../styles/mixins/font';
 @import '../../../styles/mixins/screen';
 @import '../../../styles/mixins/icon';
 @import '../../../styles/mixins/button';
@@ -9,12 +8,14 @@
 
   @include screen-lg {
     display: grid;
-    width: 465px;
+    width: $info-size;
     position: fixed;
     margin: 0;
-    padding: 0;
-    height: calc(100vh - 60px);
-    grid-template-rows: 20% 20% 45% 15%;
+    padding: 20px 0 0 0;
+    height: calc(100vh - 48px);
+  }
+  @include screen-xlg {
+    width: $info-sizeLg;
   }
 }
 

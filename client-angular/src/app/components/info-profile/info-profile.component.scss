@@ -4,7 +4,6 @@
 @import '../../../styles/mixins/button';
 
 .profile {
-  align-content: center;
   text-align: center;
   justify-items: center;
   display: grid;
@@ -17,16 +16,20 @@
 
   &__content {
     display: grid;
-    align-content: center;
+    align-content: flex-start;
 
     &__who {
-      @include font(32px, 36px, 700, 1px);
+      @include fontHeaderSmall(bold);
       margin-bottom: 8px;
       position: relative;
       display: grid;
 
       @include screen-lg {
-        margin-bottom: 10px;
+        margin-bottom: 0;
+        @include fontLarge(bold);
+      }
+      @include screen-xlg {
+        @include fontHeaderSmall(bold);
       }
     }
 
@@ -65,7 +68,10 @@
       }
 
       &__text {
-        @include font(24px, 32px, 400, 1.5px);
+        @include fontLarge();
+        @include screen-xlg {
+          @include fontLarge();
+        }
       }
 
       @include screen-lg {
@@ -82,6 +88,7 @@
     background-size: cover;
     border-radius: 50%;
     position: relative;
+
     &__edit {
       @include button-icon();
       right: -15px;
@@ -92,11 +99,24 @@
         @include icon('edit.svg');
       }
     }
+    @include screen-lg {
+      width: 75px;
+      height: 75px;
+    }
+
+    @include screen-xlg {
+      width: 100px;
+      height: 100px;
+    }
   }
 
   @include screen-lg {
     grid-template-columns: auto 1fr;
     grid-row-gap: 0;
     text-align: right;
+  }
+  @include screen-xlg {
+    grid-template-columns: auto;
+    justify-items: center;
   }
 }

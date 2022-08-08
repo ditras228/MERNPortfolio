@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { WorkListComponent } from './components/work-list/work-list.component';
 import { WorkComponent } from './components/work/work.component';

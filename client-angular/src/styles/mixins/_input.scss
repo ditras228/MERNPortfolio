@@ -3,11 +3,10 @@
 @mixin input() {
   font-family: 'Poppins', sans-serif;
   background-color: #eff0f6;
-  //border-radius: 16px;
   padding: 18px 24px;
   color: #a0a3bd;
   border-color: transparent;
-  @include font(16px, 28px, 400, 0.75px);
+  @include fontSmall();
   width: 100%;
   &:focus {
     border: 2px solid #14142b;

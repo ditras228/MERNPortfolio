@@ -39,15 +39,21 @@
         @include icon('github.svg');
         background-color: #231e1b;
       }
+      @include screen-lg {
+        height: 34px;
+      }
     }
 
     &__text {
-      @include font(16px, 28px, 600, 0.9px);
+      @include fontSmall(bold);
       text-align: right;
       align-self: center;
 
       @include screen-lg {
-        @include font(24px, 32px, 700, 1.5px);
+        @include fontMedium(bold);
+      }
+      @include screen-xlg {
+        @include fontLarge(bold);
       }
     }
 
@@ -62,6 +68,9 @@
       &:after {
         opacity: 1;
       }
+    }
+    @include screen-lg {
+      grid-template-columns: 34px 1fr;
     }
   }
 }

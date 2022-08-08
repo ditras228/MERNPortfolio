@@ -5,3 +5,9 @@
     @content;
   }
 }
+
+@mixin screen-xlg {
+  @media only screen and (min-width: map_get($screen-breakpoints, 'xlg') + 1) {
+    @content;
+  }
+}

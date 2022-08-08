@@ -8,12 +8,17 @@
   width: calc(100vw - 40px);
 
   @include screen-lg {
-    width: 465px;
+    width: $info-size;
+    padding-top: 20px;
+  }
+  @include screen-xlg {
+    width: $info-sizeLg;
+    padding-top: 45px;
   }
 }
 
 .swiper-slide {
-  @include font(20px, 32px, 400, 1.5px);
+  @include fontMedium();
   margin-bottom: 23px;
   color: black;
   text-align: right;
@@ -37,11 +42,21 @@
       grid-template-columns: 1fr 76px;
       grid-column-gap: 25px;
       align-items: center;
+      @include fontSmall();
+
       img {
         display: block;
-        height: 76px;
-        width: 76px;
+        height: 60px;
+        width: 60px;
         object-fit: cover;
+      }
+    }
+    @include screen-xlg {
+      @include fontMedium();
+
+      img {
+        height: 68px;
+        width: 68px;
       }
     }
   }

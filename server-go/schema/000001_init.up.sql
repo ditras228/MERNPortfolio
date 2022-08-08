@@ -34,14 +34,14 @@ CREATE TABLE public.work
 INSERT INTO public.work( name, description, github, demo)
 
 VALUES ('Облачное хранилище',
-        '<ul> <li> Загрузка, поиск, скачивание<br/> файлов, либо папок </li>  <li> Рекурсивная загрузка папок на сервер, скачивание с помощью ZIP-архива </li> <li> Система drag & drop </li> <li> Система авторизации </li> <li> Рассылка писем на email </li> </ul>',
+        '<ul> <li> Загрузка, поиск, скачивание<br/> файлов, либо папок </li>  <li> Рекурсивная загрузка папок, <br> скачивание с помощью ZIP-архива </li> <li> Система drag & drop </li> <li> Система авторизации </li> <li> Email рассылка </li> </ul>',
         'https://github.com/ditras228/cloud-disk',
         'http://localhost:4201'),
        ('Музыкальная платформа',
-        '<ul> <li> Загрузка, комментирование треков </li> <li> Группировка по плейлистам </li> <li> Авторизация с помощью OAuth </li> <li> Server Side Rendering </li> <li> Переключение дневной и ночной тем </li> </ul>',
+        '<ul> <li> Загрузка, комментирование треков </li> <li> Группировка по плейлистам </li> <li> Авторизация с помощью OAuth </li> <li> Server Side Rendering </li> <li> Переключение дневной и ночной темы </li> </ul>',
         'https://github.com/ditras228/cloud-disk',
         'http://localhost:5432'),
        ( 'Портфолио',
-        '<ul> <li> Презентация работ, раздел «обо мне» </li> <li> Админка: CRUD всех данных, предоставленных на сайте </li>  <li> Оригинальный UI/UX дизайн, Mobile first </li>  <li> Свитч языков, редактирование переводов</li><</ul>',
+        '<ul> <li> Презентация работ, раздел «обо мне» </li> <li> CRUD всех данных, <br> предоставленных на сайте</li>  <li> Оригинальный UI/UX дизайн, Mobile first </li>  <li> Свитч языков, редактирование переводов</li><</ul>',
         'https://github.com/ditras228/MERNPortfolio',
         'http://localhost:4200');

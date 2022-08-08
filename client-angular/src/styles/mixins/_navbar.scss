@@ -3,7 +3,7 @@
 @mixin navbar() {
   padding: 0 20px;
   align-items: center;
-  max-width: 1200px;
+  max-width: 1000px;
   display: grid;
   grid-template-columns: 30px 1fr repeat(2, 30px);
   margin: 0 auto;
@@ -13,5 +13,8 @@
 
   @include screen-lg {
     grid-template-columns: 30px 1fr repeat(2, 110px);
+  }
+  @include screen-xlg {
+    max-width: 1200px;
   }
 }

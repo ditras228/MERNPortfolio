@@ -5,7 +5,7 @@
 .notification {
   background-color: green;
   padding: 20px 30px;
-  @include font(16px, 28px, 600, 0.9px);
+  @include fontSmall(bold);
   font-weight: bold;
   color: #ffffff;
   border-radius: 15px;

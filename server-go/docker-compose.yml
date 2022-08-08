@@ -8,9 +8,9 @@ services:
     image: postgres
     restart: always
     environment:
-      - POSTGRES_PASSWORD=secret
+      - POSTGRES_PASSWORD=pM4*fJoS
       - POSTGRES_USER=postgres
-      - POSTGRES_DB=stage
+      - POSTGRES_DB=postgres
     volumes:
       - pg_project:/var/lib/postgresql/data
     ports:
