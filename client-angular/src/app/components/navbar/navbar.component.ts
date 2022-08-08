@@ -39,4 +39,8 @@ export class NavbarComponent implements OnInit {
   showLoginHandler(): void {
     this.store$.dispatch(setLoginVisible());
   }
+
+  get currentLocale() {
+    return this.locale.slice(0, 2);
+  }
 }

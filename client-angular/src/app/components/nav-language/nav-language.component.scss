@@ -24,7 +24,7 @@
     @include navbar();
 
     @include screen-lg {
-      min-height: 60px;
+      min-height: $navbar-height;
     }
   }
 
@@ -83,7 +83,7 @@
       }
     }
     @include screen-lg {
-      top: 60px;
+      top: $navbar-height;
     }
   }
   &:after {

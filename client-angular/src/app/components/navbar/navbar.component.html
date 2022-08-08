@@ -2,32 +2,15 @@
   <div class="navbar__container">
     <div class="navbar__container__logo"></div>
     MERNPortfolio
-    <button class="navbar__container__language-btn" (click)="showLangHandler()">
-      {{ locale }}
-    </button>
+    <div class="navbar__container__lang-btn" (click)="showLangHandler()">
+      {{ currentLocale }}
+    </div>
     <div
-      class="navbar__container__lang-btn-mobile"
-      (click)="showLangHandler()"></div>
-    <button
       class="navbar__container__admin-btn"
       (click)="showLoginHandler()"
-      *ngIf="!isAuth"
-      i18n="@@nb.t1">
-      Login
-    </button>
-    <div
-      class="navbar__container__admin-btn-mobile"
-      (click)="showLoginHandler()"
       *ngIf="!isAuth"></div>
-    <button
-      class="navbar__container__logout"
-      (click)="authService.logout()"
-      *ngIf="isAuth"
-      i18n="@@nb.t2">
-      Logout
-    </button>
     <div
-      class="navbar__container__logout-mobile"
+      class="navbar__container__logout"
       (click)="authService.logout()"
       *ngIf="isAuth"></div>
   </div>

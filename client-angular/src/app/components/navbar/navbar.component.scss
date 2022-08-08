@@ -5,7 +5,7 @@
 @import '../../../styles/mixins/navbar';
 
 .navbar {
-  @include fontLarge();
+  @include fontMedium();
   color: #14142a;
   box-shadow: 0 2px 2px rgba(0, 32, 51, 0.02), 0 2px 8px rgba(0, 32, 51, 0.16);
   background: #ffffff;
@@ -18,56 +18,29 @@
       @include icon('logo.svg');
     }
     &__logout {
-      display: none;
-      @include screen-lg {
-        @include button-small();
-        display: block;
-        text-transform: uppercase;
-      }
-    }
-    &__logout-mobile {
       @include icon('power.svg');
       background-size: contain;
       width: 30px;
       height: 30px;
-      @include screen-lg {
-        display: none;
-      }
-    }
-    &__language {
-      display: none;
-      @include screen-lg {
-        @include button-small();
-        display: grid;
-        text-transform: uppercase;
-      }
-    }
-    &__admin-btn,
-    &__language-btn {
-      display: none;
 
-      @include screen-lg {
-        @include button-small();
-        display: grid;
-        text-transform: uppercase;
+      &:hover {
+        cursor: pointer;
       }
     }
-    &__admin-btn-mobile {
+    &__admin-btn {
       @include icon('admin.svg');
       background-size: contain;
       width: 30px;
       height: 30px;
-      @include screen-lg {
-        display: none;
+
+      &:hover {
+        cursor: pointer;
       }
     }
-    &__lang-btn-mobile {
-      @include icon('translate.svg');
-      background-size: contain;
-      width: 30px;
-      height: 30px;
-      @include screen-lg {
-        display: none;
+    &__lang-btn {
+      text-align: center;
+      &:hover {
+        cursor: pointer;
       }
     }
   }

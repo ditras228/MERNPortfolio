@@ -9,11 +9,8 @@
   margin: 0 auto;
   width: 100%;
   grid-column-gap: 7px;
-  min-height: 48px;
+  min-height: $navbar-height;
 
-  @include screen-lg {
-    grid-template-columns: 30px 1fr repeat(2, 110px);
-  }
   @include screen-xlg {
     max-width: 1200px;
   }

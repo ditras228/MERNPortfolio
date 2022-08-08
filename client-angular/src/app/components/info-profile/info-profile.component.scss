@@ -43,8 +43,9 @@
       &__icon {
         display: none;
         @include icon('briefcase.svg');
-        width: 30px;
-        height: 30px;
+        width: 20px;
+        height: 20px;
+
         position: relative;
         background-size: contain;
 
@@ -52,23 +53,36 @@
           display: block;
 
           &:after {
-            animation: blinker 3s linear infinite;
-
             display: block;
             position: absolute;
-            bottom: 4px;
+            width: 12px;
+            height: 1px;
+            bottom: 2px;
             right: -7px;
             content: '';
-            width: 15px;
-            height: 2px;
             background: #000000;
             border-radius: 2px;
+
+            animation: blinker 3s linear infinite;
+
+            @include screen-xlg {
+              bottom: 4px;
+              width: 15px;
+              height: 2px;
+            }
           }
+        }
+        @include screen-xlg {
+          width: 30px;
+          height: 30px;
         }
       }
 
       &__text {
         @include fontLarge();
+        @include screen-lg {
+          @include fontMedium();
+        }
         @include screen-xlg {
           @include fontLarge();
         }
@@ -77,6 +91,7 @@
       @include screen-lg {
         margin: 0;
         justify-content: flex-end;
+        align-items: center;
       }
     }
   }
@@ -99,6 +114,7 @@
         @include icon('edit.svg');
       }
     }
+
     @include screen-lg {
       width: 75px;
       height: 75px;
