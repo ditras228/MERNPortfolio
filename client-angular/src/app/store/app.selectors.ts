@@ -7,3 +7,4 @@ const infoState = createFeatureSelector<State>(featureName);
 
 export const selectInfo = createSelector(infoState, state => state.info);
 export const selectWorks = createSelector(infoState, state => state.works);
+export const selectLocale = createSelector(infoState, state => state.locale);

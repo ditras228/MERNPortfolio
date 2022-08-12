@@ -5,18 +5,12 @@ import { platformBrowser } from '@angular/platform-browser';
 export class WindowService {
   constructor(@Inject(PLATFORM_ID) private platformId) {}
 
-  public isOurLink(url: string | undefined): boolean {
-    if (platformBrowser(this.platformId)) {
-      return window.location.origin == url;
-    }
-    return false;
-  }
-
   public get(url: string | undefined): void {
     if (platformBrowser(this.platformId)) {
       window.open(url);
     }
   }
+
   public changeLang(url: string): void {
     if (platformBrowser(this.platformId)) {
       let newLocation = location.origin + '/' + url;

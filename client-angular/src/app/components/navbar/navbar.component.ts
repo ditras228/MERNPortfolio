@@ -1,4 +1,10 @@
-import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
+import {
+  Component,
+  Inject,
+  LOCALE_ID,
+  OnInit,
+  PLATFORM_ID,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { selectIsAuth } from '../../modals/login/store/login-modal.selectors';
 import { AuthService } from '../../services/auth.service';
@@ -8,6 +14,7 @@ import {
 } from '../../modals/modal/store/modal.actions';
 import { selectIsLanguage } from './store/navbar.selectors';
 import { setLanguageVisible } from './store/navbar.actions';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
@@ -21,14 +28,19 @@ export class NavbarComponent implements OnInit {
   constructor(
     public store$: Store,
     public authService: AuthService,
-    @Inject(LOCALE_ID) public locale: string
+    @Inject(LOCALE_ID) public locale: string,
+    @Inject(PLATFORM_ID) private platformId
   ) {}
 
-  ngOnInit() {
-    this.store$.select(selectIsAuth).subscribe(value => (this.isAuth = value));
-    this.store$
-      .select(selectIsLanguage)
-      .subscribe(value => (this.isLanguageVisible = value));
+  ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.store$
+        .select(selectIsAuth)
+        .subscribe(value => (this.isAuth = value));
+      this.store$
+        .select(selectIsLanguage)
+        .subscribe(value => (this.isLanguageVisible = value));
+    }
   }
 
   showLangHandler(): void {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
   setCreateDescForm,
@@ -7,6 +7,7 @@ import {
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ValidationService } from '../../services/validation.service';
 import { setCreateDescVisible } from '../modal/store/modal.actions';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-create-desc',
@@ -26,7 +27,8 @@ export class CreateDescComponent implements OnInit {
 
   constructor(
     public store$: Store,
-    public validationService: ValidationService
+    public validationService: ValidationService,
+    @Inject(PLATFORM_ID) private platformId
   ) {}
 
   closeModalHandler(): void {
@@ -56,12 +58,14 @@ export class CreateDescComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.text = new FormControl(null, [Validators.required]);
-    this.img = new FormControl(null, [Validators.required]);
+    if (isPlatformBrowser(this.platformId)) {
+      this.text = new FormControl(null, [Validators.required]);
+      this.img = new FormControl(null, [Validators.required]);
 
-    this.form = new FormGroup({
-      text: this.text,
-      imgUrl: this.img,
-    });
+      this.form = new FormGroup({
+        text: this.text,
+        imgUrl: this.img,
+      });
+    }
   }
 }

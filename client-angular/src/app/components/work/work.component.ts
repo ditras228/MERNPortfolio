@@ -1,4 +1,4 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { GetWork } from '../../../generated/graphql';
 import { Store } from '@ngrx/store';
 import { setEditWorkTags } from '../../modals/edit-work/store/edit-work.actions';
@@ -11,9 +11,10 @@ import { setEditWorkVisible } from '../../modals/modal/store/modal.actions';
   styleUrls: ['./work.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class WorkComponent {
+export class WorkComponent implements OnInit {
   @Input() work: GetWork | undefined;
   @Input() isAuth: boolean = false;
+  public isOurLink: boolean = false;
 
   constructor(public store$: Store, public windowService: WindowService) {}
 
@@ -22,16 +23,13 @@ export class WorkComponent {
     this.store$.dispatch(setEditWorkVisible(this.work));
   }
 
-  get isOurLink(): boolean {
-    this.windowService.isOurLink(this.work?.demo);
-    return false;
-  }
-
-  get isNotOurLink(): boolean {
-    return !this.isOurLink;
-  }
-
   public openLinkHandler(url: any): void {
     this.windowService.get(url);
+  }
+
+  public ngOnInit(): void {
+    if ('/' === this.work?.demo) {
+      this.isOurLink = true;
+    }
   }
 }

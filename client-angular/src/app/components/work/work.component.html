@@ -33,7 +33,7 @@
       *ngIf="work?.demo"
       (click)="openLinkHandler(work?.demo)"
       [disabled]="isOurLink">
-      <span *ngIf="isNotOurLink" i18n="@@wс.t3">Demo</span>
+      <span *ngIf="!isOurLink" i18n="@@wс.t3">Demo</span>
       <span *ngIf="isOurLink" i18n="@@wс.t4">You are here</span>
     </button>
   </div>

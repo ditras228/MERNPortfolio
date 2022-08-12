@@ -7,7 +7,7 @@ import {
   Renderer2,
   ViewEncapsulation,
 } from '@angular/core';
-import { getInfo, getWorks } from './store/app.actions';
+import { getInfo, getWorks, setLocale } from './store/app.actions';
 import { Store } from '@ngrx/store';
 
 import { isPlatformBrowser } from '@angular/common';
@@ -26,7 +26,7 @@ import { selectInfo } from './store/app.selectors';
   encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent implements OnInit {
-  title = 'client-angular';
+  title = 'MERNPortfolio';
   public isAuth;
   public isLock = false;
 
@@ -38,25 +38,29 @@ export class AppComponent implements OnInit {
     @Inject(LOCALE_ID) public locale: string,
     private renderer: Renderer2,
     public titleService: Title
-  ) {}
+  ) {
+    this.store$.dispatch(setLocale(this.locale));
+    this.store$.dispatch(getWorks());
+    this.store$.dispatch(getInfo());
+
+    this.store$
+      .select(selectInfo)
+      .subscribe(value => this.titleService.setTitle(value?.name?.field));
+  }
 
   ngOnInit(): void {
-    let locale = this.cookieService.get('locale');
-    if (locale !== null) {
-      this.windowService.changeLang(locale);
-    } else {
-      this.cookieService.set('locale', this.locale);
-    }
     if (isPlatformBrowser(this.platformId)) {
       if (this.cookieService.get('token')) {
         this.store$.dispatch(setAuth(true));
       }
+
       this.store$
         .select(selectIsAuth)
         .subscribe(value => (this.isAuth = value));
 
       this.store$.select(selectLock).subscribe(value => {
         this.isLock = value;
+
         if (this.isLock) {
           this.renderer.addClass(document.body, 'stop-scrolling');
         } else {
@@ -64,11 +68,5 @@ export class AppComponent implements OnInit {
         }
       });
     }
-    this.store$.dispatch(getWorks());
-    this.store$.dispatch(getInfo());
-
-    this.store$
-      .select(selectInfo)
-      .subscribe(value => this.titleService.setTitle(value?.name?.field));
   }
 }

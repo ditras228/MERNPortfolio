@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
   setDeleteDesc,
@@ -11,6 +11,7 @@ import { ValidationService } from '../../services/validation.service';
 import { GetDesc, GetWork } from '../../../generated/graphql';
 import { selectCurrentDesc } from '../modal/store/modal.selectors';
 import { setEditDescVisible } from '../modal/store/modal.actions';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-edit-desc',
@@ -34,7 +35,8 @@ export class EditDescComponent implements OnInit {
 
   constructor(
     public store$: Store,
-    public validationService: ValidationService
+    public validationService: ValidationService,
+    @Inject(PLATFORM_ID) private platformId
   ) {}
 
   closeModalHandler(): void {
@@ -44,10 +46,12 @@ export class EditDescComponent implements OnInit {
   setImgUrlValue(e: string | ArrayBuffer | null): void {
     this.img.setValue(e);
   }
+
   deleteDescHandler(): void {
     this.store$.dispatch(setDeleteDesc(this.currentDesc?.id || 0));
     this.store$.dispatch(submitDeleteDesc());
   }
+
   submitFormHandler(): void {
     if (this.form?.invalid) {
       this.errors = this.validationService.GetValidationMessage(
@@ -80,20 +84,22 @@ export class EditDescComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.text = new FormControl(null, [Validators.required]);
-    this.img = new FormControl(null, [Validators.required]);
+    if (isPlatformBrowser(this.platformId)) {
+      this.text = new FormControl(null, [Validators.required]);
+      this.img = new FormControl(null, [Validators.required]);
 
-    this.store$.select(selectCurrentDesc).subscribe(info => {
-      this.currentDesc = info;
-      this.text.setValue(this.currentDesc?.text.translations[0]?.field);
-      this.textRu.setValue(this.currentDesc?.text.translations[1]?.field);
-      this.img.setValue(info?.img);
-    });
+      this.store$.select(selectCurrentDesc).subscribe(info => {
+        this.currentDesc = info;
+        this.text.setValue(this.currentDesc?.text.translations[0]?.field);
+        this.textRu.setValue(this.currentDesc?.text.translations[1]?.field);
+        this.img.setValue(info?.img);
+      });
 
-    this.form = new FormGroup({
-      text: this.text,
-      textRu: this.text,
-      imgUrl: this.img,
-    });
+      this.form = new FormGroup({
+        text: this.text,
+        textRu: this.text,
+        imgUrl: this.img,
+      });
+    }
   }
 }

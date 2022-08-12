@@ -32,13 +32,13 @@ export class LoginEffects extends GraphqlService {
 
   constructor(
     private actions$: Actions,
-    public store$: Store,
+    override store$: Store,
     public authService: AuthService,
     public notificationService: NotificationService,
     override httpClient: HttpClient,
     override cookieService: CookieService
   ) {
-    super(httpClient, cookieService);
+    super(httpClient, cookieService, store$);
   }
 
   getTags$ = createEffect(() =>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { setLoginForm, submitLoginForm } from './store/login-modal.actions';
@@ -6,6 +6,7 @@ import { selectLoginError } from './store/login-modal.selectors';
 import { ValidationService } from '../../services/validation.service';
 import { errorInputs, LoginErrors } from './store/login-modal.reducer';
 import { setLoginVisible } from '../modal/store/modal.actions';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-login-modal',
@@ -24,24 +25,27 @@ export class LoginModalComponent implements OnInit {
 
   constructor(
     public store$: Store,
-    public validationService: ValidationService
+    public validationService: ValidationService,
+    @Inject(PLATFORM_ID) private platformId
   ) {}
 
   ngOnInit(): void {
-    this.store$
-      .select(selectLoginError)
-      .subscribe(value => (this.serverError = value));
-    this.login = new FormControl(null, [Validators.required]);
-    this.password = new FormControl(null, [
-      Validators.required,
-      Validators.minLength(5),
-      Validators.maxLength(12),
-    ]);
+    if (isPlatformBrowser(this.platformId)) {
+      this.store$
+        .select(selectLoginError)
+        .subscribe(value => (this.serverError = value));
+      this.login = new FormControl(null, [Validators.required]);
+      this.password = new FormControl(null, [
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(12),
+      ]);
 
-    this.form = new FormGroup({
-      login: this.login,
-      password: this.password,
-    });
+      this.form = new FormGroup({
+        login: this.login,
+        password: this.password,
+      });
+    }
   }
 
   closeModalHandler(): void {

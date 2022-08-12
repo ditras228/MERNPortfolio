@@ -14,4 +14,8 @@ export const setWorks = createAction(
   (works: GetWork[] | any) => ({ works })
 );
 
+export const setLocale = createAction('[App] SetLocale', (locale: string) => ({
+  locale,
+}));
+
 export const okay = createAction('[App] Okay');

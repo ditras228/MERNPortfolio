@@ -27,7 +27,7 @@ export class ModalContainerComponent implements OnInit {
   public isCreateWorkVisible: boolean | undefined;
   public isCreateDescVisible: boolean | undefined;
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.store$
         .select(selectIsLoginVisible)

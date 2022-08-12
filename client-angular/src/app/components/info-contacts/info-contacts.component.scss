@@ -12,6 +12,7 @@
     grid-template-columns: 40px 1fr;
     transition: all 0.1s linear;
     position: relative;
+
     &:after {
       transition: all 0.3s ease-in-out;
       content: '';
@@ -25,12 +26,13 @@
       width: 100%;
       opacity: 0;
     }
+
     &__icon {
+      @include icon('telegram.svg');
       height: 40px;
       background-color: #27a6e5;
       background-repeat: no-repeat;
       background-position: center;
-      @include icon('telegram.svg');
       background-size: 20px;
       transition: background-size 0.1s linear;
       border-radius: 0;
@@ -39,8 +41,9 @@
         @include icon('github.svg');
         background-color: #231e1b;
       }
+
       @include screen-lg {
-        height: 34px;
+        height: 38px;
       }
     }
 
@@ -62,15 +65,18 @@
       color: #ffffff;
       text-shadow: 1px 0 1px #000, 0 1px 1px #000, -1px 0 1px #000,
         0 -1px 1px #000;
+
       #{$root}__icon {
         background-size: 25px;
       }
+
       &:after {
         opacity: 1;
       }
     }
+
     @include screen-lg {
-      grid-template-columns: 34px 1fr;
+      grid-template-columns: 38px 1fr;
     }
   }
 }

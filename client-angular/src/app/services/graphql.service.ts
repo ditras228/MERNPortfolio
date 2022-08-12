@@ -4,16 +4,20 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import appConfig from '../config/appConfig';
 import { CookieService } from 'ngx-cookie-service';
+import { Store } from '@ngrx/store';
+import { selectLocale } from '../store/app.selectors';
 
 @Injectable({ providedIn: 'root' })
 export class GraphqlService {
   constructor(
     protected httpClient: HttpClient,
-    protected cookieService: CookieService
+    protected cookieService: CookieService,
+    public store$: Store
   ) {}
   doRequest<T>(query: string, variables: any): Observable<T> {
     const token = this.cookieService.get('token');
-    const locale = this.cookieService.get('locale');
+    let locale;
+    this.store$.select(selectLocale).subscribe(value => (locale = value));
     return this.httpClient
       .post<{ data: T }>(
         appConfig.baseUrl,

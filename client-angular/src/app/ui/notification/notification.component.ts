@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { selectNotifications } from './store/notification.selectors';
 import {
@@ -6,6 +6,7 @@ import {
   NotificationTypes,
 } from './store/notification.reducer';
 import { listAnimation } from '../../app.animation';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-notification',
@@ -16,11 +17,13 @@ import { listAnimation } from '../../app.animation';
 export class NotificationComponent implements OnInit {
   public notifications: NotificationItem[] | undefined;
   public notificationTypes = NotificationTypes;
-  constructor(public store$: Store) {}
+  constructor(public store$: Store, @Inject(PLATFORM_ID) private platformId) {}
 
   ngOnInit(): void {
-    this.store$
-      .select(selectNotifications)
-      .subscribe(value => (this.notifications = value));
+    if (isPlatformBrowser(this.platformId)) {
+      this.store$
+        .select(selectNotifications)
+        .subscribe(value => (this.notifications = value));
+    }
   }
 }

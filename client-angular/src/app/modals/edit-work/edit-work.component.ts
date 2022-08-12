@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { selectWorks } from '../../store/app.selectors';
 import { Store } from '@ngrx/store';
@@ -18,6 +18,7 @@ import {
 import { deleteWork } from '../edit-info/store/edit-info.actions';
 import { setEditWorkVisible } from '../modal/store/modal.actions';
 import { selectCurrentWorkID } from '../modal/store/modal.selectors';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-edit-work',
@@ -46,7 +47,8 @@ export class EditWorkComponent implements OnInit {
 
   constructor(
     public store$: Store,
-    public validationService: ValidationService
+    public validationService: ValidationService,
+    @Inject(PLATFORM_ID) private platformId
   ) {}
 
   deleteWorkHandler(): void {
@@ -114,43 +116,45 @@ export class EditWorkComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.name = new FormControl(null, [Validators.required]);
-    this.description = new FormControl(null, [Validators.required]);
-    this.github = new FormControl(null, [Validators.required]);
-    this.figma = new FormControl(null);
-    this.demo = new FormControl(null, [Validators.required]);
+    if (isPlatformBrowser(this.platformId)) {
+      this.name = new FormControl(null, [Validators.required]);
+      this.description = new FormControl(null, [Validators.required]);
+      this.github = new FormControl(null, [Validators.required]);
+      this.figma = new FormControl(null);
+      this.demo = new FormControl(null, [Validators.required]);
 
-    this.store$.dispatch(getTags());
-    this.store$
-      .select(selectCurrentWorkID)
-      .subscribe(work => (this.currentWork = work));
-    this.store$.select(selectWorks).subscribe(works => {
-      if (works?.length && this.currentWork) {
-        this.name.setValue(this.currentWork.name.translations[0]?.field);
-        this.nameRu.setValue(this.currentWork.name.translations[1]?.field);
-        this.description.setValue(
-          this.currentWork.description.translations[0]?.field
-        );
-        this.descriptionRu.setValue(
-          this.currentWork.description.translations[1]?.field
-        );
-        this.github.setValue(this.currentWork.github);
-        this.figma.setValue(this.currentWork.figma);
-        this.demo.setValue(this.currentWork.demo);
-      }
-      this.store$.select(selectEditFormTags).subscribe(value => {
-        this.tags = value;
+      this.store$.dispatch(getTags());
+      this.store$
+        .select(selectCurrentWorkID)
+        .subscribe(work => (this.currentWork = work));
+      this.store$.select(selectWorks).subscribe(works => {
+        if (works?.length && this.currentWork) {
+          this.name.setValue(this.currentWork.name.translations[0]?.field);
+          this.nameRu.setValue(this.currentWork.name.translations[1]?.field);
+          this.description.setValue(
+            this.currentWork.description.translations[0]?.field
+          );
+          this.descriptionRu.setValue(
+            this.currentWork.description.translations[1]?.field
+          );
+          this.github.setValue(this.currentWork.github);
+          this.figma.setValue(this.currentWork.figma);
+          this.demo.setValue(this.currentWork.demo);
+        }
+        this.store$.select(selectEditFormTags).subscribe(value => {
+          this.tags = value;
+        });
+        this.store$.select(selectFilterTags).subscribe(value => {
+          this.allTags = value;
+        });
       });
-      this.store$.select(selectFilterTags).subscribe(value => {
-        this.allTags = value;
+      this.form = new FormGroup({
+        name: this.name,
+        description: this.description,
+        github: this.github,
+        figma: this.figma,
+        demo: this.demo,
       });
-    });
-    this.form = new FormGroup({
-      name: this.name,
-      description: this.description,
-      github: this.github,
-      figma: this.figma,
-      demo: this.demo,
-    });
+    }
   }
 }

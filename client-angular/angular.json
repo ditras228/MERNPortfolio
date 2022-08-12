@@ -117,6 +117,7 @@
           },
           "configurations": {
             "production": {
+              "localize": true,
               "outputHashing": "media",
               "fileReplacements": [
                 {

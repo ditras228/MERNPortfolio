@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { selectInfo } from '../../store/app.selectors';
@@ -6,6 +6,7 @@ import { setEditInfoForm, submitEditInfoForm } from './store/edit-info.actions';
 import { ValidationService } from '../../services/validation.service';
 import { GetInfo } from '../../../generated/graphql';
 import { setEditInfoVisible } from '../modal/store/modal.actions';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-edit-info',
@@ -39,7 +40,8 @@ export class EditInfoComponent implements OnInit {
 
   constructor(
     public store$: Store,
-    public validationService: ValidationService
+    public validationService: ValidationService,
+    @Inject(PLATFORM_ID) private platformId
   ) {}
 
   closeModalHandler(): void {
@@ -97,38 +99,42 @@ export class EditInfoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.name = new FormControl(null, [Validators.required]);
-    this.job = new FormControl(null, [Validators.required]);
-    this.telegramTitle = new FormControl(null, [Validators.required]);
-    this.telegramLink = new FormControl(null, [Validators.required]);
-    this.githubTitle = new FormControl(null, [Validators.required]);
-    this.githubLink = new FormControl(null, [Validators.required]);
-    this.experience = new FormControl(null, [Validators.required]);
+    if (isPlatformBrowser(this.platformId)) {
+      this.name = new FormControl(null, [Validators.required]);
+      this.job = new FormControl(null, [Validators.required]);
+      this.telegramTitle = new FormControl(null, [Validators.required]);
+      this.telegramLink = new FormControl(null, [Validators.required]);
+      this.githubTitle = new FormControl(null, [Validators.required]);
+      this.githubLink = new FormControl(null, [Validators.required]);
+      this.experience = new FormControl(null, [Validators.required]);
 
-    this.store$.select(selectInfo).subscribe(info => {
-      this.info = info;
-      this.name.setValue(info.name.translations[0]?.field);
-      this.nameRu.setValue(info.name.translations[1]?.field || info.name.field);
-      this.job.setValue(info.job);
-      this.telegramTitle.setValue(info.contacts.telegramTitle);
-      this.telegramLink.setValue(info.contacts.telegramLink);
-      this.githubTitle.setValue(info.contacts.githubTitle);
-      this.githubLink.setValue(info.contacts.githubLink);
-      this.experience.setValue(info.experience.translations[0]?.field);
-      this.experienceRu.setValue(
-        info.experience.translations[1]?.field || info.experience.field
-      );
-      this.img.setValue(info.img);
-    });
+      this.store$.select(selectInfo).subscribe(info => {
+        this.info = info;
+        this.name.setValue(info.name.translations[0]?.field);
+        this.nameRu.setValue(
+          info.name.translations[1]?.field || info.name.field
+        );
+        this.job.setValue(info.job);
+        this.telegramTitle.setValue(info.contacts.telegramTitle);
+        this.telegramLink.setValue(info.contacts.telegramLink);
+        this.githubTitle.setValue(info.contacts.githubTitle);
+        this.githubLink.setValue(info.contacts.githubLink);
+        this.experience.setValue(info.experience.translations[0]?.field);
+        this.experienceRu.setValue(
+          info.experience.translations[1]?.field || info.experience.field
+        );
+        this.img.setValue(info.img);
+      });
 
-    this.form = new FormGroup({
-      name: this.name,
-      job: this.job,
-      telegramTitle: this.telegramTitle,
-      telegramLink: this.telegramLink,
-      githubTitle: this.githubTitle,
-      githubLink: this.githubLink,
-      experience: this.experience,
-    });
+      this.form = new FormGroup({
+        name: this.name,
+        job: this.job,
+        telegramTitle: this.telegramTitle,
+        telegramLink: this.telegramLink,
+        githubTitle: this.githubTitle,
+        githubLink: this.githubLink,
+        experience: this.experience,
+      });
+    }
   }
 }

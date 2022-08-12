@@ -1,11 +1,17 @@
-import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
+import {
+  Component,
+  Inject,
+  LOCALE_ID,
+  OnInit,
+  PLATFORM_ID,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { selectIsLanguage } from '../navbar/store/navbar.selectors';
 import { setLanguageVisible } from '../navbar/store/navbar.actions';
 import { fadeAnimation, languageAnimation } from '../../app.animation';
 import { setLock } from '../../modals/modal/store/modal.actions';
-import { CookieService } from 'ngx-cookie-service';
 import { WindowService } from '../../services/window.service';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-nav-language',
@@ -29,15 +35,17 @@ export class NavLanguageComponent implements OnInit {
 
   constructor(
     public store$: Store,
-    public cookieService: CookieService,
     public windowService: WindowService,
-    @Inject(LOCALE_ID) public locale: string
+    @Inject(LOCALE_ID) public locale: string,
+    @Inject(PLATFORM_ID) private platformId
   ) {}
 
-  ngOnInit() {
-    this.store$
-      .select(selectIsLanguage)
-      .subscribe(value => (this.isLanguageVisible = value));
+  ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.store$
+        .select(selectIsLanguage)
+        .subscribe(value => (this.isLanguageVisible = value));
+    }
   }
 
   showLangHandler(): void {
@@ -47,7 +55,6 @@ export class NavLanguageComponent implements OnInit {
 
   setLanguageHandler(lang: string): void {
     this.showLangHandler();
-    this.cookieService.set('locale', lang);
     this.windowService.changeLang(lang);
   }
 

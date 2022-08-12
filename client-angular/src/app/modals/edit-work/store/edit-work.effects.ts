@@ -26,12 +26,12 @@ import { setEditWorkVisible } from '../../modal/store/modal.actions';
 export class EditWorkEffects extends GraphqlService {
   constructor(
     private actions$: Actions,
-    public store$: Store,
+    override store$: Store,
     public notificationService: NotificationService,
     override httpClient: HttpClient,
     override cookieService: CookieService
   ) {
-    super(httpClient, cookieService);
+    super(httpClient, cookieService, store$);
   }
 
   deleteWork$ = createEffect(() =>

@@ -1,4 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  OnInit,
+  Output,
+  PLATFORM_ID,
+} from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-text-area',
@@ -13,9 +22,11 @@ export class TextAreaComponent implements OnInit {
   @Input() internalValue = '';
   internalValueUpdate = new EventEmitter<string>();
 
-  constructor() {}
+  constructor(@Inject(PLATFORM_ID) private platformId) {}
 
   ngOnInit(): void {
-    this.internalValueUpdate.subscribe(value => this.valueChange.emit(value));
+    if (isPlatformBrowser(this.platformId)) {
+      this.internalValueUpdate.subscribe(value => this.valueChange.emit(value));
+    }
   }
 }

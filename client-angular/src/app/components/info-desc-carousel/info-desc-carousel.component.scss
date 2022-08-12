@@ -5,7 +5,6 @@
 
 .swiper {
   padding-top: 45px;
-  width: calc(100vw - 40px);
 
   @include screen-lg {
     width: $info-size;

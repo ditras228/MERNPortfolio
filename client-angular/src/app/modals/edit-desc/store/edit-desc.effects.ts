@@ -27,11 +27,11 @@ export class EditDescEffects extends GraphqlService {
   constructor(
     private actions$: Actions,
     public notificationService: NotificationService,
-    public store$: Store,
+    override store$: Store,
     override httpClient: HttpClient,
     override cookieService: CookieService
   ) {
-    super(httpClient, cookieService);
+    super(httpClient, cookieService, store$);
   }
 
   deleteDesc$ = createEffect(() =>
